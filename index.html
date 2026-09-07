@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Prática com IA — Protocolo Ovídio</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --dark:#232323;--red:#E11B22;--bg:#F5F5F2;--card:#fff;
+  --border:#E2E0D8;--border-strong:#CFCCC0;
+  --text:#232323;--soft:#6B6A63;--faint:#99978C;
+  --gold:#FFFBEA;--s1:#2C6FD1;--s1t:#E8F0FC;
+  --font-d:'Space Grotesk',sans-serif;
+  --font-b:'Inter',sans-serif;
+  --font-m:'JetBrains Mono',monospace;
+}
+body{font-family:var(--font-b);background:var(--bg);color:var(--text);min-height:100vh;padding:20px 16px 60px;font-size:15px}
+h1{font-family:var(--font-d);font-size:22px;font-weight:700;margin-bottom:4px}
+.kicker{font-family:var(--font-m);font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--faint);display:block;margin-bottom:6px}
+.lead{font-size:14px;color:var(--soft);line-height:1.55;margin-bottom:20px}
+
+/* selector */
+.selector{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:24px}
+.sel-btn{padding:9px 16px;border:1.5px solid var(--border-strong);border-radius:8px;background:var(--card);font-family:var(--font-d);font-size:13px;font-weight:600;cursor:pointer;transition:all .15s}
+.sel-btn:hover{border-color:var(--dark)}
+.sel-btn.active{border-color:var(--red);background:var(--red);color:#fff}
+.sel-btn .sub{display:block;font-family:var(--font-m);font-size:10px;font-weight:400;opacity:.8;margin-top:2px}
+
+/* lego card */
+.lego-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px 20px;margin-bottom:16px}
+.lego-head{display:flex;align-items:baseline;gap:10px;margin-bottom:10px}
+.lego-num{font-family:var(--font-m);font-size:11px;color:var(--faint)}
+.lego-stem{font-family:var(--font-m);font-size:16px;font-weight:600;color:var(--dark)}
+.lego-pt{font-size:13px;color:var(--soft)}
+.lego-note{font-size:12px;color:var(--soft);font-style:italic;margin-bottom:10px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:var(--dark);color:#fff;padding:7px 10px;text-align:left;font-family:var(--font-m);font-size:10.5px;text-transform:uppercase;letter-spacing:.04em}
+th:first-child{border-radius:5px 0 0 0}th:last-child{border-radius:0 5px 0 0}
+td{padding:7px 10px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.45}
+tr:nth-child(even) td{background:rgba(0,0,0,.018)}
+tr:last-child td{border:none}
+td strong{font-family:var(--font-m)}
+.mono{font-family:var(--font-m);font-size:12px;color:var(--soft)}
+
+/* ai-practice */
+.ai-practice{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin-top:12px}
+.ap-trigger{width:100%;display:flex;align-items:center;gap:10px;background:var(--card);border:none;padding:12px 16px;cursor:pointer;font-size:13.5px;font-weight:600;font-family:var(--font-d);color:var(--text);text-align:left;transition:background .15s}
+.ap-trigger:hover{background:var(--bg)}
+.ap-icon{font-size:16px}
+.ap-trigger span:nth-child(2){flex:1}
+.ap-chev{font-size:14px;color:var(--faint);transition:transform .2s}
+.ap-body{border-top:1px solid var(--border);background:#FAFAF7;padding:18px 20px}
+
+.ap-lead{font-size:13.5px;color:var(--soft);margin-bottom:14px;line-height:1.55}
+.ap-diff-row{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.ap-diff-label{font-size:13px;font-weight:600;white-space:nowrap}
+select{font-family:var(--font-b);font-size:13px;padding:7px 10px;border:1px solid var(--border-strong);border-radius:6px;background:#FFFEF9;color:var(--text)}
+.btn{display:inline-flex;align-items:center;gap:6px;background:var(--red);color:#fff;border:none;border-radius:8px;padding:10px 18px;font-size:13.5px;font-weight:600;cursor:pointer;transition:background .15s;font-family:var(--font-b)}
+.btn:hover{background:#B5151B}
+.btn-dark{background:var(--dark)}.btn-dark:hover{background:#3a3a3a}
+.btn-outline{background:transparent;color:var(--text);border:1px solid var(--border-strong)}.btn-outline:hover{background:var(--bg)}
+.ap-warn{padding:10px 14px;background:#FEF3C7;border-left:3px solid #F59E0B;border-radius:0 6px 6px 0;font-size:13px;color:#78350F;margin-top:8px}
+
+/* loading */
+.ap-loading{display:flex;flex-direction:column;align-items:center;gap:14px;padding:28px 0;color:var(--soft);font-size:14px}
+.spinner{width:30px;height:30px;border:3px solid var(--border);border-top-color:var(--red);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* question */
+.ap-qhead{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.ap-counter{font-family:var(--font-m);font-size:12px;color:var(--faint);white-space:nowrap}
+.ap-pbar{flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden}
+.ap-pfill{height:100%;background:var(--red);border-radius:3px;transition:width .4s}
+.ap-att{font-family:var(--font-m);font-size:11px;background:#FEF3C7;color:#92400E;padding:2px 8px;border-radius:20px}
+
+.ap-qcard{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:12px}
+.ap-qtxt{font-size:15px;font-weight:600;font-family:var(--font-d);margin-bottom:10px}
+.ap-vocab-row{display:flex;flex-wrap:wrap;gap:7px}
+.ap-vpill{font-size:12px;background:var(--bg);border:1px solid var(--border-strong);border-radius:20px;padding:3px 9px}
+
+.ap-rec-area{display:flex;flex-direction:column;gap:10px}
+.ap-mic{display:flex;align-items:center;gap:10px;background:var(--dark);color:#fff;border:none;border-radius:50px;padding:13px 26px;font-size:14px;font-weight:700;cursor:pointer;transition:background .15s,transform .1s;font-family:var(--font-b)}
+.ap-mic:hover{background:#3a3a3a;transform:scale(1.02)}
+.ap-mic.rec{background:var(--red);animation:pulse 1.2s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(225,27,34,.4)}50%{box-shadow:0 0 0 8px rgba(225,27,34,0)}}
+.ap-mic-icon{font-size:18px}
+.ap-rec-ind{display:none;align-items:center;gap:8px;font-size:13px;color:var(--red);font-weight:600}
+.ap-recdot{width:9px;height:9px;border-radius:50%;background:var(--red);animation:blink 1s step-start infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* feedback */
+.ap-fbcard{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px 18px}
+.ap-score-row{display:flex;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.ap-spill{display:flex;flex-direction:column;align-items:center;padding:9px 16px;border:2px solid;border-radius:10px;min-width:76px}
+.ap-snum{font-family:var(--font-d);font-size:26px;font-weight:700;line-height:1}
+.ap-slbl{font-size:11px;margin-top:2px;font-weight:600;opacity:.85}
+.ap-minis{display:flex;flex-direction:column;gap:4px}
+.ap-minis span{font-size:12px;color:var(--soft)}
+.ap-words{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:10px}
+.ap-wb{font-family:var(--font-m);font-size:12.5px;padding:3px 9px;border-radius:20px;cursor:help}
+.ap-wb.ok{background:#DCFCE7;color:#166534}
+.ap-wb.err{background:#FEE2E2;color:#991B1B}
+.ap-fb{font-size:13.5px;line-height:1.6;margin-bottom:10px}
+.ap-pron{background:var(--dark);color:#fff;border-radius:8px;padding:9px 13px;margin-bottom:10px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.ap-pron-lbl{font-size:11px;color:#B7B5AC;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
+.ap-pron-txt{font-family:var(--font-m);font-size:14px}
+.ap-hint{font-size:13px;color:var(--soft);font-style:italic;margin-bottom:8px}
+.ap-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.ap-retry-btn{background:var(--dark);color:#fff;border:none;border-radius:8px;padding:10px 18px;font-size:13.5px;font-weight:600;cursor:pointer;font-family:var(--font-b)}
+
+/* analyzing */
+.ap-analyzing{display:flex;flex-direction:column;align-items:center;gap:10px;padding:24px 0}
+.ap-analyzing p{font-size:13.5px;color:var(--soft)}
+.ap-transcript{font-family:var(--font-m);font-size:12.5px;color:var(--faint);font-style:italic}
+
+/* result */
+.ap-result{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px}
+.ap-rtitle{font-size:16px;font-weight:600;font-family:var(--font-d);margin-bottom:10px}
+.ap-rscore{font-family:var(--font-d);font-size:52px;font-weight:700;text-align:center;line-height:1;margin-bottom:4px}
+.ap-rpct{font-size:22px}
+.ap-bars{display:flex;flex-direction:column;gap:7px;margin:14px 0}
+.ap-barrow{display:flex;align-items:center;gap:10px;font-size:13px}
+.ap-barrow span:first-child{width:78px;color:var(--soft)}
+.ap-btrack{flex:1;height:7px;background:var(--border);border-radius:4px;overflow:hidden}
+.ap-bval{height:100%;border-radius:4px;transition:width .6s}
+.ap-barrow strong{width:34px;text-align:right;font-family:var(--font-m);font-size:11.5px}
+.ap-rsec{margin-top:12px}
+.ap-rsec h4{font-size:13px;margin-bottom:6px}
+.ap-rsec ul{list-style:none;padding:0;display:flex;flex-direction:column;gap:5px}
+.ap-rsec li{font-size:13px}
+</style>
+</head>
+<body>
+
+<span class="kicker">Protocolo Ovídio · Inglês</span>
+<h1>🗣️ Prática com IA</h1>
+<p class="lead">Escolha uma estrutura LEGO abaixo e pratique em voz alta. A IA gera perguntas, analisa sua pronúncia e dá feedback específico em português.</p>
+
+<div class="selector" id="selector"></div>
+<div id="lego-area"></div>
+
+<script>
+// ── dados dos LEGOs (Day 1) ──────────────────────────────
+const DAYS = {
+  1: {"day":1,"sprint":1,"kind":"lesson","title":"Hello! (Apresentação)","legos":[{"stem":"I'm","stem_pr":"aim","stem_pt":"eu sou / eu estou","note":"I'm + nome ou estado","blocks":[{"en":"Paulo","pr":"PAUlo","pt":"o Paulo"},{"en":"Brazilian","pr":"braZÍlian","pt":"brasileiro"},{"en":"fine, thanks","pr":"fain, fénks","pt":"bem, obrigado"},{"en":"very happy","pr":"véri RÉpi","pt":"muito feliz"},{"en":"here to learn English","pr":"rír tchu lãrn ÍNglish","pt":"aqui para aprender inglês"}]},{"stem":"This is my","stem_pr":"dis is mai","stem_pt":"este(a) é meu/minha","note":"This is my + pessoa","blocks":[{"en":"friend","pr":"frénd","pt":"amigo(a)"},{"en":"wife","pr":"uaif","pt":"esposa"},{"en":"husband","pr":"RÃSbend","pt":"marido"},{"en":"brother","pr":"BRÓder","pt":"irmão"},{"en":"friend Carlos","pr":"frénd CARlos","pt":"amigo Carlos"}]},{"stem":"Nice to","stem_pr":"naiss tchu","stem_pt":"que bom / prazer em","note":"Nice to + verbo","blocks":[{"en":"meet you","pr":"MÍT-iu","pt":"te conhecer"},{"en":"meet you too","pr":"mít-iu TCHÚ","pt":"te conhecer também"},{"en":"see you again","pr":"SSÍ-iu aGUÉN","pt":"te ver de novo"},{"en":"talk to you","pr":"TÓK tchu iú","pt":"falar com você"},{"en":"have you here","pr":"RÉV iu rír","pt":"ter você aqui"}]},{"stem":"How are","stem_pr":"rau ar","stem_pt":"como está(ão)","note":"How are + pessoa","blocks":[{"en":"you?","pr":"IÚ","pt":"você?"},{"en":"you today?","pr":"iu tchuDEI","pt":"você hoje?"},{"en":"you doing?","pr":"iu DÚin","pt":"você indo?"},{"en":"things?","pr":"FINGS","pt":"as coisas?"},{"en":"your kids?","pr":"iór KIDS","pt":"seus filhos?"}]},{"stem":"See you","stem_pr":"SSÍ-iu","stem_pt":"até / te vejo","note":"See you + quando","blocks":[{"en":"later","pr":"LEIrer","pt":"mais tarde"},{"en":"tomorrow","pr":"tchuMÓrou","pt":"amanhã"},{"en":"soon","pr":"SSÚN","pt":"em breve"},{"en":"on Monday","pr":"ón MÃNdei","pt":"na segunda"},{"en":"next week","pr":"nékst UÍK","pt":"semana que vem"}]}]}
+};
+
+// ── estado ─────────────────────────────────────────────
+let currentLego = null;
+let state = 'idle'; // idle|loading|question|analyzing|feedback|result|retry
+let questions = [];
+let attempts = [];
+let currentQ = 0;
+let currentAttempt = 1;
+let rec = null;
+
+const TOLERANCE = { excellent: 92, good: 75, improve: 50 };
+const MAX_ATTEMPTS = 3;
+const HAS_SPEECH = !!(window.SpeechRecognition || window.webkitSpeechRecognition);
+
+// ── build selector ──────────────────────────────────────
+function buildSelector() {
+  const sel = document.getElementById('selector');
+  DAYS[1].legos.forEach((l, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'sel-btn';
+    btn.innerHTML = `${l.stem}<span class="sub">${l.stem_pt}</span>`;
+    btn.onclick = () => selectLego(l, i, btn);
+    sel.appendChild(btn);
+  });
+}
+
+function selectLego(lego, idx, btn) {
+  document.querySelectorAll('.sel-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentLego = lego;
+  resetPractice();
+  renderLegoCard(lego, idx);
+}
+
+function renderLegoCard(l, idx) {
+  const rows = l.blocks.map(b =>
+    `<tr><td><strong>${l.stem}</strong> ${b.en}</td><td class="mono">${l.stem_pr} ${b.pr}</td><td>${l.stem_pt} ${b.pt}</td></tr>`
+  ).join('');
+  document.getElementById('lego-area').innerHTML = `
+    <div class="lego-card">
+      <div class="lego-head">
+        <span class="lego-num">ESTRUTURA ${idx+1}</span>
+        <span class="lego-stem">${l.stem}</span>
+        <span class="lego-pt">(${l.stem_pt})</span>
+      </div>
+      <p class="lego-note">${l.note}</p>
+      <table>
+        <tr><th>English</th><th>Transcript</th><th>Português</th></tr>
+        ${rows}
+      </table>
+    </div>
+    <div class="ai-practice">
+      <button class="ap-trigger" id="ap-trig">
+        <span class="ap-icon">🗣️</span>
+        <span>Praticar com IA — ${l.stem}</span>
+        <span class="ap-chev" id="ap-chev">›</span>
+      </button>
+      <div id="ap-body" style="display:none">
+        <div class="ap-body" id="ap-inner"></div>
+      </div>
+    </div>`;
+  document.getElementById('ap-trig').onclick = toggleBody;
+  renderIdle();
+}
+
+function toggleBody() {
+  const b = document.getElementById('ap-body');
+  const c = document.getElementById('ap-chev');
+  const open = b.style.display !== 'none';
+  b.style.display = open ? 'none' : 'block';
+  c.style.transform = open ? '' : 'rotate(90deg)';
+}
+
+// ── idle ────────────────────────────────────────────────
+function renderIdle() {
+  state = 'idle';
+  setInner(`
+    <p class="ap-lead">A IA vai gerar 3 situações para você praticar <strong>${currentLego.stem}</strong> em voz alta.</p>
+    <div class="ap-diff-row">
+      <span class="ap-diff-label">Dificuldade:</span>
+      <select id="ap-diff">
+        <option value="easy">Fácil — tradução direta</option>
+        <option value="medium" selected>Médio — situação contextual</option>
+        <option value="hard">Difícil — situação espontânea</option>
+      </select>
+    </div>
+    ${HAS_SPEECH
+      ? `<button class="btn" onclick="startPractice()">Começar prática →</button>`
+      : `<div class="ap-warn">⚠️ Use Chrome ou Edge para praticar por voz.</div>`}`);
+}
+
+// ── Claude API ───────────────────────────────────────────
+async function callClaude(system, user, maxTokens) {
+  const r = await fetch('/api/claude', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-5', max_tokens: maxTokens || 700,
+      system, messages: [{ role: 'user', content: user }],
+    }),
+  });
+  if (!r.ok) throw new Error('Erro ' + r.status + ' na API. Tente novamente.');
+  return (await r.json()).content[0].text.trim();
+}
+
+async function genQuestions(lego, difficulty) {
+  const vocab = lego.blocks.map(b => `${b.en} = ${b.pt}`).join('; ');
+  const raw = await callClaude(
+    'Você é professor de inglês para brasileiros. Responda APENAS em JSON válido, sem markdown, sem texto extra.',
+    `Estrutura: "${lego.stem}" (${lego.stem_pt})\nNota: ${lego.note}\nVocabulário: ${vocab}\nDificuldade: ${difficulty}\n\nGere 3 perguntas de prática usando SOMENTE este vocabulário.\nJSON exato:\n{"questions":[{"id":1,"prompt":"pergunta em português","vocab":[{"en":"...","pt":"..."}],"expected":"frase modelo em inglês"},{"id":2,...},{"id":3,...}]}`
+  );
+  try { return JSON.parse(raw.replace(/```json|```/g,'').trim()).questions; }
+  catch {
+    return lego.blocks.slice(0,3).map((b,i) => ({
+      id: i+1,
+      prompt: `Como dizer "${lego.stem_pt} ${b.pt}"?`,
+      vocab: [{en:lego.stem,pt:lego.stem_pt},{en:b.en,pt:b.pt}],
+      expected: `${lego.stem} ${b.en}.`
+    }));
+  }
+}
+
+async function analyzeAnswer(lego, expected, transcript) {
+  const raw = await callClaude(
+    'Você é avaliador de inglês para brasileiros. Responda APENAS em JSON válido, sem markdown, sem texto extra.',
+    `Estrutura: "${lego.stem}" (${lego.stem_pt}) — regra: ${lego.note}\nPronúncia da estrutura: "${lego.stem_pr}"\nEsperado: "${expected}"\nAluno disse: "${transcript}"\n\nAvalie e retorne JSON:\n{"grammarScore":0-100,"pronunciationScore":0-100,"fluencyScore":0-100,"overallScore":0-100,"grammarOk":true/false,"grammarIssue":"string ou null","correctedSentence":"frase correta","wordFeedback":[{"word":"...","ok":true/false,"issue":"string ou null"}],"correctedPronunciation":"pronúncia figurada no padrão pedagógico brasileiro","feedbackPt":"feedback em português 2-3 linhas encorajador e específico","canAdvance":true/false}\ncanAdvance=true se overallScore>=${TOLERANCE.good}. Não penalize sotaque brasileiro. Foco em inteligibilidade e estrutura.`,
+    900
+  );
+  return JSON.parse(raw.replace(/```json|```/g,'').trim());
+}
+
+// ── start ────────────────────────────────────────────────
+async function startPractice() {
+  const diff = document.getElementById('ap-diff').value;
+  state = 'loading';
+  setInner(`<div class="ap-loading"><div class="spinner"></div><p>Gerando perguntas…</p></div>`);
+  try {
+    questions = await genQuestions(currentLego, diff);
+    currentQ = 0; currentAttempt = 1;
+    renderQuestion();
+  } catch(e) {
+    renderIdle();
+    setInner(document.getElementById('ap-inner').innerHTML +
+      `<div class="ap-warn" style="margin-top:10px">❌ ${e.message}</div>`);
+  }
+}
+
+// ── question ─────────────────────────────────────────────
+function renderQuestion() {
+  state = 'question';
+  const q = questions[currentQ];
+  const pct = Math.round((currentQ / questions.length) * 100);
+  const attBadge = currentAttempt > 1 ? `<span class="ap-att">Tentativa ${currentAttempt}/${MAX_ATTEMPTS}</span>` : '';
+  const vocabHtml = q.vocab.map(v =>
+    `<span class="ap-vpill"><strong>${v.en}</strong> = ${v.pt}</span>`).join('');
+  setInner(`
+    <div class="ap-qhead">
+      <span class="ap-counter">${currentQ+1} / ${questions.length}</span>
+      <div class="ap-pbar"><div class="ap-pfill" style="width:${pct}%"></div></div>
+      ${attBadge}
+    </div>
+    <div class="ap-qcard">
+      <p class="ap-qtxt">${q.prompt}</p>
+      <div class="ap-vocab-row">${vocabHtml}</div>
+    </div>
+    <div class="ap-rec-area">
+      <button class="ap-mic" id="ap-mic" onclick="toggleRecord()">
+        <span class="ap-mic-icon">🎤</span>
+        <span id="ap-mic-lbl">Falar</span>
+      </button>
+      <div class="ap-rec-ind" id="ap-rec-ind">
+        <span class="ap-recdot"></span> Gravando…
+      </div>
+    </div>`);
+}
+
+// ── record ────────────────────────────────────────────────
+function toggleRecord() {
+  if (!HAS_SPEECH) return;
+  const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const mic = document.getElementById('ap-mic');
+  const lbl = document.getElementById('ap-mic-lbl');
+  const ind = document.getElementById('ap-rec-ind');
+
+  if (rec) {
+    rec.stop(); rec = null;
+    mic && mic.classList.remove('rec');
+    if(lbl) lbl.textContent = 'Falar';
+    if(ind) ind.style.display = 'none';
+    return;
+  }
+
+  rec = new SpeechRec();
+  rec.lang = 'en-US'; rec.continuous = false; rec.interimResults = false;
+  mic && mic.classList.add('rec');
+  if(lbl) lbl.textContent = 'Parar';
+  if(ind) ind.style.display = 'flex';
+
+  rec.onresult = async (e) => {
+    const transcript = e.results[0][0].transcript;
+    rec = null;
+    mic && mic.classList.remove('rec');
+    if(lbl) lbl.textContent = 'Falar';
+    if(ind) ind.style.display = 'none';
+    await processTranscript(transcript);
+  };
+  rec.onerror = (e) => {
+    rec = null;
+    mic && mic.classList.remove('rec');
+    if(lbl) lbl.textContent = 'Falar';
+    if(ind) ind.style.display = 'none';
+    setInner(document.getElementById('ap-inner').innerHTML +
+      `<div class="ap-warn">⚠️ Erro no microfone: ${e.error}. Tente novamente.</div>`);
+  };
+  rec.start();
+}
+
+// ── analyze ───────────────────────────────────────────────
+async function processTranscript(transcript) {
+  state = 'analyzing';
+  setInner(`
+    <div class="ap-analyzing">
+      <div class="spinner"></div>
+      <p>Analisando sua resposta…</p>
+      <p class="ap-transcript">"${transcript}"</p>
+    </div>`);
+  try {
+    const q = questions[currentQ];
+    const analysis = await analyzeAnswer(currentLego, q.expected, transcript);
+    analysis.questionIdx = currentQ;
+    analysis.attempt = currentAttempt;
+    analysis.transcript = transcript;
+    attempts.push(analysis);
+    renderFeedback(analysis, q);
+  } catch(e) {
+    setInner(`<div class="ap-warn">❌ ${e.message}
+      <br><br><button class="btn btn-outline" onclick="renderQuestion()" style="margin-top:6px">Tentar novamente</button>
+    </div>`);
+  }
+}
+
+// ── feedback ──────────────────────────────────────────────
+function renderFeedback(analysis, q) {
+  state = 'feedback';
+  const ov = analysis.overallScore;
+  const color = scoreColor(ov);
+  const label = scoreLabel(ov);
+  const canAdvance = analysis.canAdvance || ov >= TOLERANCE.good;
+  const isLast = currentQ === questions.length - 1;
+
+  const wordHtml = (analysis.wordFeedback || []).map(w =>
+    `<span class="ap-wb ${w.ok?'ok':'err'}" title="${w.ok?'correto':(w.issue||'revisar pronúncia')}">${w.ok?'✅':'❌'} ${w.word}</span>`
+  ).join('');
+
+  let action = '';
+  if (canAdvance) {
+    action = isLast
+      ? `<button class="btn" onclick="finishPractice()">Ver resultado →</button>`
+      : `<button class="btn" onclick="nextQuestion()">Próxima →</button>`;
+  } else if (currentAttempt >= MAX_ATTEMPTS) {
+    action = isLast
+      ? `<button class="btn" onclick="finishPractice()">Ver resultado →</button>`
+      : `<button class="btn" onclick="nextQuestion()">Continuar →</button>`;
+  } else {
+    action = `<button class="ap-retry-btn" onclick="retryQuestion()">🎤 Repetir</button>`;
+  }
+
+  setInner(`
+    <div class="ap-qhead">
+      <span class="ap-counter">${currentQ+1} / ${questions.length}</span>
+      <div class="ap-pbar"><div class="ap-pfill" style="width:${Math.round(((currentQ+1)/questions.length)*100)}%"></div></div>
+    </div>
+    <div class="ap-fbcard">
+      <div class="ap-score-row">
+        <div class="ap-spill" style="background:${color}22;border-color:${color}">
+          <span class="ap-snum" style="color:${color}">${ov}</span>
+          <span class="ap-slbl">${label}</span>
+        </div>
+        <div class="ap-minis">
+          <span>Estrutura <strong>${analysis.grammarScore}%</strong></span>
+          <span>Pronúncia <strong>${analysis.pronunciationScore}%</strong></span>
+          <span>Fluidez <strong>${analysis.fluencyScore}%</strong></span>
+        </div>
+      </div>
+      ${wordHtml ? `<div class="ap-words">${wordHtml}</div>` : ''}
+      <div class="ap-fb">${analysis.feedbackPt || ''}</div>
+      ${analysis.correctedPronunciation ? `
+        <div class="ap-pron">
+          <span class="ap-pron-lbl">Pronúncia correta:</span>
+          <span class="ap-pron-txt">${analysis.correctedPronunciation}</span>
+        </div>` : ''}
+      ${!canAdvance && currentAttempt < MAX_ATTEMPTS
+        ? `<p class="ap-hint">Ouça a pronúncia correta acima e repita a frase completa.</p>` : ''}
+      <div class="ap-actions">${action}</div>
+    </div>`);
+}
+
+function retryQuestion() {
+  currentAttempt++;
+  renderQuestion();
+}
+function nextQuestion() {
+  currentQ++;
+  currentAttempt = 1;
+  renderQuestion();
+}
+
+// ── result ────────────────────────────────────────────────
+function finishPractice() {
+  state = 'result';
+  const avg = arr => Math.round(arr.reduce((a,x)=>a+x,0)/arr.length);
+  const lego = currentLego;
+  const avgStr = avg(attempts.map(a=>a.grammarScore));
+  const avgPr  = avg(attempts.map(a=>a.pronunciationScore));
+  const avgFl  = avg(attempts.map(a=>a.fluencyScore));
+  const avgOv  = avg(attempts.map(a=>a.overallScore));
+  const color  = scoreColor(avgOv);
+
+  const dominated = lego.blocks.filter((_,i) => {
+    const r = attempts.filter(a=>a.questionIdx===i);
+    return r.length && r[r.length-1].overallScore >= TOLERANCE.good;
+  }).map(b=>b.en);
+  const needs = lego.blocks.filter((_,i) => {
+    const r = attempts.filter(a=>a.questionIdx===i);
+    return r.length && r[r.length-1].overallScore < TOLERANCE.good;
+  }).map(b=>b.en);
+
+  setInner(`
+    <div class="ap-result">
+      <h3 class="ap-rtitle">🎯 Resultado da prática</h3>
+      <div class="ap-rscore" style="color:${color}">${avgOv}<span class="ap-rpct">%</span></div>
+      <div class="ap-bars">
+        <div class="ap-barrow"><span>Estrutura</span><div class="ap-btrack"><div class="ap-bval" style="width:${avgStr}%;background:${scoreColor(avgStr)}"></div></div><strong>${avgStr}%</strong></div>
+        <div class="ap-barrow"><span>Pronúncia</span><div class="ap-btrack"><div class="ap-bval" style="width:${avgPr}%;background:${scoreColor(avgPr)}"></div></div><strong>${avgPr}%</strong></div>
+        <div class="ap-barrow"><span>Fluidez</span><div class="ap-btrack"><div class="ap-bval" style="width:${avgFl}%;background:${scoreColor(avgFl)}"></div></div><strong>${avgFl}%</strong></div>
+      </div>
+      ${dominated.length ? `<div class="ap-rsec"><h4>Você já domina:</h4><ul>${dominated.map(w=>`<li>✅ <em>${lego.stem}</em> ${w}</li>`).join('')}</ul></div>` : ''}
+      ${needs.length ? `<div class="ap-rsec"><h4>Precisa praticar:</h4><ul>${needs.map(w=>`<li>🔄 pronúncia de <strong>${w}</strong></li>`).join('')}</ul></div>` : ''}
+      <div class="ap-actions" style="margin-top:14px">
+        <button class="ap-retry-btn" onclick="resetPractice();renderIdle()">Praticar novamente</button>
+      </div>
+    </div>`);
+}
+
+// ── helpers ───────────────────────────────────────────────
+function setInner(html) {
+  const el = document.getElementById('ap-inner');
+  if(el) el.innerHTML = html;
+}
+function resetPractice() {
+  attempts = []; questions = []; currentQ = 0; currentAttempt = 1; rec = null;
+}
+function scoreColor(s) {
+  return s >= TOLERANCE.excellent ? '#22C55E' : s >= TOLERANCE.good ? '#F59E0B' : '#EF4444';
+}
+function scoreLabel(s) {
+  return s >= TOLERANCE.excellent ? 'Excelente' : s >= TOLERANCE.good ? 'Bom' : s >= TOLERANCE.improve ? 'Precisa melhorar' : 'Tente novamente';
+}
+
+// ── init ──────────────────────────────────────────────────
+buildSelector();
+// auto-selecionar o primeiro LEGO
+const firstBtn = document.querySelector('.sel-btn');
+if (firstBtn) firstBtn.click();
+</script>
+</body>
+</html>
