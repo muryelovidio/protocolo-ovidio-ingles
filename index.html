@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Praticar fala — Protocolo Ovídio</title>
+<title>Day 1 - Hello! | Protocolo Ovídio</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -90,9 +90,13 @@ td strong{font-family:var(--font-m)}
 .ap-hint-btn:hover{border-color:var(--red);color:var(--red)}
 .ap-hint-panel{display:none;margin-top:12px;padding:12px 14px;background:var(--gold);border:1px solid #F0E4B0;border-radius:8px;font-size:13.5px;line-height:1.55}
 .ap-hint-panel.show{display:block}
-.ap-hint-panel .expected{font-family:var(--font-m);font-weight:600;font-size:14.5px;color:var(--text);display:block;margin-bottom:6px}
-.ap-hint-panel .expected-pron{font-family:var(--font-m);font-size:13px;color:var(--soft);display:block}
-.ap-hint-panel .play-btn{background:var(--dark);color:#fff;border:none;border-radius:20px;padding:5px 12px;font-size:12px;cursor:pointer;margin-top:10px;font-weight:500;display:inline-flex;align-items:center;gap:5px}
+.ap-hint-grid{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.ap-hint-row{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;padding:7px 10px;background:#fff;border:1px solid #E8E0B4;border-radius:7px}
+.ap-hint-en{font-family:var(--font-m);font-weight:700;font-size:15px;color:var(--dark)}
+.ap-hint-pr{font-family:var(--font-m);font-size:12.5px;color:var(--soft);font-style:italic}
+.ap-hint-eq{color:var(--faint);font-size:13px;margin:0 2px}
+.ap-hint-pt{font-size:13.5px;color:var(--text-soft, #6B6A63)}
+.ap-hint-panel .play-btn{background:var(--dark);color:#fff;border:none;border-radius:20px;padding:5px 12px;font-size:12px;cursor:pointer;font-weight:500;display:inline-flex;align-items:center;gap:5px}
 .ap-hint-panel .play-btn:hover{background:#3a3a3a}
 
 /* record */
@@ -174,7 +178,7 @@ td strong{font-family:var(--font-m)}
 <body>
 
 <span class="kicker">Protocolo Ovídio · Inglês</span>
-<h1>🗣️ Praticar fala</h1>
+<h1>🗣️ Day 1 - Hello!</h1>
 <p class="lead">Escolha uma estrutura LEGO abaixo e pratique em voz alta. São 3 perguntas em português e você responde falando em inglês.</p>
 
 <div class="selector" id="selector"></div>
@@ -304,7 +308,7 @@ function renderLegoCard(l, idx) {
 
     <div class="ai-practice">
       <button class="ap-trigger" id="ap-trig">
-        <span>🗣️ Praticar fala — ${l.stem}</span>
+        <span>🗣️ PRATICAR FALA — ${l.stem}</span>
         <span class="ap-chev" id="ap-chev">›</span>
       </button>
       <div id="ap-body" style="display:none">
@@ -371,38 +375,26 @@ async function claudeText(system, user, vocabHint, maxTokens) {
 }
 
 // ── geração de perguntas: formato "Como dizer 'X' em inglês?" ──
-async function genQuestions(lego) {
-  const vocab = lego.blocks.map(b => `${lego.stem} ${b.en} = ${b.pt_stem} ${b.pt_tail}`).join('; ');
-  const vocabWords = [lego.stem, ...lego.blocks.map(b => b.en)];
-  const raw = await claudeText(
-    'Você é professor de inglês para brasileiros iniciantes. Responda APENAS em JSON válido, sem markdown.',
-    `Estrutura LEGO: "${lego.stem}" (${lego.stem_pt})
-Nota: ${lego.note}
-Vocabulário disponível: ${vocab}
+// Geração determinística: sem IA, sem latência, sem alucinação.
+// Seleciona 3 blocos distintos do LEGO e monta pergunta + resposta + dica.
+function genQuestions(lego) {
+  // pegar 3 blocos distribuídos (primeiro, do meio, último)
+  const n = lego.blocks.length;
+  const idxs = n <= 3
+    ? lego.blocks.map((_, i) => i)
+    : [0, Math.floor(n / 2), n - 1];
 
-Gere EXATAMENTE 3 perguntas de prática oral.
-- Cada pergunta segue o formato: Como dizer "[frase em português natural]" em inglês?
-- A frase em português deve ser natural para um brasileiro (não literal palavra-por-palavra).
-- Use SOMENTE o vocabulário fornecido, sem inventar palavras novas.
-- Cada pergunta usa um bloco diferente do vocabulário.
-- "expected" é a resposta esperada em inglês, usando exatamente a estrutura LEGO.
-
-Formato JSON exato:
-{"questions":[
-  {"id":1,"prompt":"Como dizer \"frase natural em português\" em inglês?","expected":"resposta em inglês"},
-  {"id":2,"prompt":"...","expected":"..."},
-  {"id":3,"prompt":"...","expected":"..."}
-]}`,
-    vocabWords, 700
-  );
-  try { return JSON.parse(raw.replace(/```json|```/g,'').trim()).questions; }
-  catch {
-    return lego.blocks.slice(0,3).map((b,i) => ({
-      id: i+1,
-      prompt: `Como dizer "${b.pt_stem} ${b.pt_tail}" em inglês?`,
-      expected: `${lego.stem} ${b.en}`
-    }));
-  }
+  return idxs.map((bi, i) => {
+    const b = lego.blocks[bi];
+    const prompt = `Como dizer "${b.pt_stem} ${b.pt_tail}"?`;
+    const expected = `${lego.stem} ${b.en}`;
+    // dica: dois blocos — o stem e a expressão complementar
+    const hint = [
+      { en: lego.stem,  pr: lego.stem_pr,  pt: `${b.pt_stem}` },
+      { en: b.en,       pr: b.pr,           pt: b.pt_tail      }
+    ];
+    return { id: i + 1, prompt, expected, hint };
+  });
 }
 
 // ── análise textual + pronúncia figurada da frase inteira ─────
@@ -447,10 +439,9 @@ Regras:
 }
 
 // ── start / next / retry ───────────────────────────────
-async function startPractice() {
-  setInner(`<div class="ap-loading"><div class="spinner"></div><p>Gerando perguntas…</p></div>`);
+function startPractice() {
   try {
-    questions = await genQuestions(currentLego);
+    questions = genQuestions(currentLego);
     currentQ = 0;
     attemptsMade = 0;
     sessionResults = [];
@@ -463,6 +454,16 @@ async function startPractice() {
 function renderQuestion() {
   const q = questions[currentQ];
   const pct = Math.round((currentQ / questions.length) * 100);
+
+  // dica: blocos do LEGO (stem + expressão), sem revelar a resposta em inglês junta
+  const hintRows = (q.hint || []).map(h => `
+    <div class="ap-hint-row">
+      <span class="ap-hint-en">${h.en}</span>
+      <span class="ap-hint-pr">${h.pr}</span>
+      <span class="ap-hint-eq">=</span>
+      <span class="ap-hint-pt">${h.pt}</span>
+    </div>`).join('');
+
   setInner(`
     <div class="ap-qhead">
       <span class="ap-counter">${currentQ+1} / ${questions.length}</span>
@@ -470,11 +471,10 @@ function renderQuestion() {
     </div>
     <div class="ap-qcard">
       <p class="ap-qtxt">${q.prompt}</p>
-      <button class="ap-hint-btn" onclick="toggleHint()">💡 Ver dica</button>
+      <button class="ap-hint-btn" id="ap-hint-btn" onclick="toggleHint()">💡 Ver dica</button>
       <div class="ap-hint-panel" id="ap-hint-panel">
-        <span class="expected">${q.expected}</span>
-        <span class="expected-pron" id="ap-hint-pron">carregando pronúncia…</span>
-        <button class="play-btn" data-speak="${q.expected.replace(/"/g,'&quot;')}">🔊 Ouvir</button>
+        <div class="ap-hint-grid">${hintRows}</div>
+        <button class="play-btn" data-speak="${q.expected.replace(/"/g,'&quot;')}">🔊 Ouvir frase completa</button>
       </div>
     </div>
     <div class="ap-rec-area">
@@ -486,26 +486,9 @@ function renderQuestion() {
         <span class="ap-recdot"></span> Gravando…
       </div>
     </div>`);
-  loadHintPronunciation(q.expected);
 }
 
-async function loadHintPronunciation(expected) {
-  const words = expected.replace(/[.,?!;:]/g,'').split(/\s+/).filter(Boolean);
-  try {
-    const r = await fetch('/api/claude', {
-      method: 'POST', headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ action: 'lookup', words })
-    });
-    const j = await r.json();
-    const dict = j.dictionary || {};
-    const parts = words.map(w => dict[w] || dict[w.toLowerCase()] || `<em>?${w}</em>`);
-    const target = el('ap-hint-pron');
-    if (target) target.innerHTML = parts.join(' ');
-  } catch(e) {
-    const target = el('ap-hint-pron');
-    if (target) target.textContent = '(pronúncia indisponível)';
-  }
-}
+// loadHintPronunciation removida — dica agora vem diretamente dos dados do LEGO
 
 function toggleHint() {
   const p = el('ap-hint-panel');
