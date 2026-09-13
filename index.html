@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Prática com IA — Protocolo Ovídio</title>
+<title>Praticar fala — Protocolo Ovídio</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -45,6 +45,13 @@ tr:nth-child(even) td{background:rgba(0,0,0,.018)}
 tr:last-child td{border:none}
 td strong{font-family:var(--font-m)}
 .mono{font-family:var(--font-m);font-size:12px;color:var(--soft)}
+
+/* notes card */
+.notes-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:16px}
+.notes-label{display:block;font-family:var(--font-d);font-size:13.5px;font-weight:600;margin-bottom:8px;color:var(--text)}
+.notes-area{width:100%;min-height:70px;max-height:220px;resize:vertical;font-family:var(--font-b);font-size:14px;line-height:1.5;padding:10px 12px;border:1px solid var(--border-strong);border-radius:8px;background:#FFFEF9;color:var(--text);transition:border-color .15s}
+.notes-area:focus{outline:none;border-color:var(--red)}
+.notes-area::placeholder{color:var(--faint);font-style:italic}
 
 /* ai-practice */
 .ai-practice{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin-top:12px}
@@ -99,6 +106,26 @@ td strong{font-family:var(--font-m)}
 .ap-recdot{width:10px;height:10px;border-radius:50%;background:var(--red);animation:blink 1s step-start infinite}
 @keyframes blink{50%{opacity:0}}
 
+
+/* sentence pronunciation — item 11 (SEMPRE aparece) */
+.ap-sentence-pr{font-family:var(--font-m);font-size:18px;font-weight:600;color:var(--dark);background:var(--gold);border:1px solid #F0E4B0;border-radius:10px;padding:14px 16px;margin:12px 0;text-align:center;letter-spacing:.01em;line-height:1.4}
+
+/* error box — item 12 (só aparece se houve erro) */
+.ap-err-box{background:#FFF8F8;border:1px solid #F5D0D0;border-radius:10px;padding:12px 14px;margin-bottom:12px;display:flex;flex-direction:column;gap:10px}
+.ap-err-line{padding:8px 10px;background:#fff;border-radius:6px;border:1px solid #F0DADA}
+.ap-err-word-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:14.5px;margin-bottom:4px}
+.ap-err-x{font-size:14px}
+.ap-err-word-row strong{font-family:var(--font-m);color:var(--dark);font-size:15px}
+.ap-err-arrow{color:var(--faint);margin:0 2px}
+.ap-word-pr{font-family:var(--font-m);color:var(--rose);font-weight:600}
+.ap-err-heard{font-size:12.5px;color:var(--soft);padding-left:22px}
+.ap-heard-txt{font-family:var(--font-m);color:var(--dark);font-style:italic}
+.ap-heard-none{font-style:italic;color:var(--faint)}
+
+/* success card variant */
+.ap-fb-card.success{border-color:#BFE6C9;background:#F6FBF7}
+.ap-fb-card.warn{border-color:#F0DADA;background:#FEFBFB}
+
 /* analyzing */
 .ap-analyzing{display:flex;flex-direction:column;align-items:center;gap:10px;padding:24px 0}
 .ap-analyzing p{font-size:13.5px;color:var(--soft)}
@@ -147,8 +174,8 @@ td strong{font-family:var(--font-m)}
 <body>
 
 <span class="kicker">Protocolo Ovídio · Inglês</span>
-<h1>🗣️ Prática com IA</h1>
-<p class="lead">Escolha uma estrutura LEGO abaixo e pratique em voz alta. A IA gera 3 perguntas em português e você responde falando em inglês.</p>
+<h1>🗣️ Praticar fala</h1>
+<p class="lead">Escolha uma estrutura LEGO abaixo e pratique em voz alta. São 3 perguntas em português e você responde falando em inglês.</p>
 
 <div class="selector" id="selector"></div>
 <div id="lego-area"></div>
@@ -156,7 +183,43 @@ td strong{font-family:var(--font-m)}
 <script>
 // ── dados do Day 1 (idênticos ao data.js) ──────────────
 const DAYS = {
-  1: {"day":1,"sprint":1,"kind":"lesson","title":"Hello! (Apresentação)","legos":[{"stem":"I'm","stem_pr":"aim","stem_pt":"eu sou / eu estou","note":"I'm + nome ou estado","blocks":[{"en":"Paulo","pr":"PAUlo","pt":"o Paulo"},{"en":"Brazilian","pr":"braZÍlian","pt":"brasileiro"},{"en":"fine, thanks","pr":"fain, fénks","pt":"bem, obrigado"},{"en":"very happy","pr":"véri RÉpi","pt":"muito feliz"},{"en":"here to learn English","pr":"rír tchu lãrn ÍNglish","pt":"aqui para aprender inglês"}]},{"stem":"This is my","stem_pr":"dis is mai","stem_pt":"este(a) é meu/minha","note":"This is my + pessoa","blocks":[{"en":"friend","pr":"frénd","pt":"amigo(a)"},{"en":"wife","pr":"uaif","pt":"esposa"},{"en":"husband","pr":"RÃSbend","pt":"marido"},{"en":"brother","pr":"BRÓder","pt":"irmão"},{"en":"friend Carlos","pr":"frénd CARlos","pt":"amigo Carlos"}]},{"stem":"Nice to","stem_pr":"naiss tchu","stem_pt":"que bom / prazer em","note":"Nice to + verbo","blocks":[{"en":"meet you","pr":"MÍT-iu","pt":"te conhecer"},{"en":"meet you too","pr":"mít-iu TCHÚ","pt":"te conhecer também"},{"en":"see you again","pr":"SSÍ-iu aGUÉN","pt":"te ver de novo"},{"en":"talk to you","pr":"TÓK tchu iú","pt":"falar com você"},{"en":"have you here","pr":"RÉV iu rír","pt":"ter você aqui"}]},{"stem":"How are","stem_pr":"rau ar","stem_pt":"como está(ão)","note":"How are + pessoa","blocks":[{"en":"you?","pr":"IÚ","pt":"você?"},{"en":"you today?","pr":"iu tchuDEI","pt":"você hoje?"},{"en":"you doing?","pr":"iu DÚin","pt":"você indo?"},{"en":"things?","pr":"FINGS","pt":"as coisas?"},{"en":"your kids?","pr":"iór KIDS","pt":"seus filhos?"}]},{"stem":"See you","stem_pr":"SSÍ-iu","stem_pt":"até / te vejo","note":"See you + quando","blocks":[{"en":"later","pr":"LEIrer","pt":"mais tarde"},{"en":"tomorrow","pr":"tchuMÓrou","pt":"amanhã"},{"en":"soon","pr":"SSÚN","pt":"em breve"},{"en":"on Monday","pr":"ón MÃNdei","pt":"na segunda"},{"en":"next week","pr":"nékst UÍK","pt":"semana que vem"}]}]}
+  1: {"day":1,"sprint":1,"kind":"lesson","title":"Hello! (Apresentação)","legos":[
+    {"stem":"I'm","stem_pr":"aim","stem_pt":"eu sou / eu estou","note":"I'm + nome ou estado","blocks":[
+      {"en":"Paulo","pr":"PAUlo","pt_stem":"eu sou","pt_tail":"Paulo"},
+      {"en":"Brazilian","pr":"braZÍlian","pt_stem":"eu sou","pt_tail":"brasileiro"},
+      {"en":"fine, thanks","pr":"fain, fénks","pt_stem":"eu estou","pt_tail":"bem, obrigado"},
+      {"en":"very happy","pr":"véri RÉpi","pt_stem":"eu estou","pt_tail":"muito feliz"},
+      {"en":"here to learn English","pr":"rír tchu lãrn ÍNglish","pt_stem":"eu estou","pt_tail":"aqui para aprender inglês"}
+    ]},
+    {"stem":"This is my","stem_pr":"dis is mai","stem_pt":"este(a) é meu/minha","note":"This is my + pessoa","blocks":[
+      {"en":"friend","pr":"frénd","pt_stem":"este é meu","pt_tail":"amigo"},
+      {"en":"wife","pr":"uaif","pt_stem":"esta é minha","pt_tail":"esposa"},
+      {"en":"husband","pr":"RÃSbend","pt_stem":"este é meu","pt_tail":"marido"},
+      {"en":"brother","pr":"BRÓder","pt_stem":"este é meu","pt_tail":"irmão"},
+      {"en":"friend Carlos","pr":"frénd CARlos","pt_stem":"este é meu","pt_tail":"amigo Carlos"}
+    ]},
+    {"stem":"Nice to","stem_pr":"naiss tchu","stem_pt":"prazer em / que bom","note":"Nice to + verbo","blocks":[
+      {"en":"meet you","pr":"MÍT-iu","pt_stem":"prazer em","pt_tail":"te conhecer"},
+      {"en":"meet you too","pr":"mít-iu TCHÚ","pt_stem":"prazer em","pt_tail":"te conhecer também"},
+      {"en":"see you again","pr":"SSÍ-iu aGUÉN","pt_stem":"que bom","pt_tail":"te ver de novo"},
+      {"en":"talk to you","pr":"TÓK tchu iú","pt_stem":"prazer em","pt_tail":"falar com você"},
+      {"en":"have you here","pr":"RÉV iu rír","pt_stem":"que bom","pt_tail":"ter você aqui"}
+    ]},
+    {"stem":"How are","stem_pr":"rau ar","stem_pt":"como está / como estão","note":"How are + pessoa","blocks":[
+      {"en":"you?","pr":"IÚ","pt_stem":"como está","pt_tail":"você?"},
+      {"en":"you today?","pr":"iu tchuDEI","pt_stem":"como está","pt_tail":"você hoje?"},
+      {"en":"you doing?","pr":"iu DÚin","pt_stem":"como está","pt_tail":"você indo?"},
+      {"en":"things?","pr":"FINGS","pt_stem":"como estão","pt_tail":"as coisas?"},
+      {"en":"your kids?","pr":"iór KIDS","pt_stem":"como estão","pt_tail":"seus filhos?"}
+    ]},
+    {"stem":"See you","stem_pr":"SSÍ-iu","stem_pt":"até / te vejo","note":"See you + quando","blocks":[
+      {"en":"later","pr":"LEIrer","pt_stem":"até","pt_tail":"mais tarde"},
+      {"en":"tomorrow","pr":"tchuMÓrou","pt_stem":"até","pt_tail":"amanhã"},
+      {"en":"soon","pr":"SSÚN","pt_stem":"até","pt_tail":"breve"},
+      {"en":"on Monday","pr":"ón MÃNdei","pt_stem":"te vejo","pt_tail":"na segunda"},
+      {"en":"next week","pr":"nékst UÍK","pt_stem":"te vejo","pt_tail":"semana que vem"}
+    ]}
+  ]}
 };
 
 // ── estado global ──────────────────────────────────────
@@ -211,8 +274,13 @@ function selectLego(lego, idx, btn) {
 
 function renderLegoCard(l, idx) {
   const rows = l.blocks.map(b =>
-    `<tr><td><strong>${l.stem}</strong> ${b.en}</td><td class="mono">${l.stem_pr} ${b.pr}</td><td>${l.stem_pt} ${b.pt}</td></tr>`
+    `<tr>
+       <td><strong>${l.stem}</strong> ${b.en}</td>
+       <td class="mono">${l.stem_pr} ${b.pr}</td>
+       <td><strong>${b.pt_stem}</strong> ${b.pt_tail}</td>
+     </tr>`
   ).join('');
+  const noteKey = `notes:day${currentLego && currentLego.day ? currentLego.day : 1}:lego${idx}`;
   el('lego-area').innerHTML = `
     <div class="lego-card">
       <div class="lego-head">
@@ -222,14 +290,21 @@ function renderLegoCard(l, idx) {
       </div>
       <p class="lego-note">${l.note}</p>
       <table>
-        <tr><th>English</th><th>Transcript</th><th>Português</th></tr>
+        <tr><th>🇺🇸 English</th><th>🗣️ Pronounce</th><th>🇧🇷 Portuguese</th></tr>
         ${rows}
       </table>
     </div>
+
+    <div class="notes-card">
+      <label class="notes-label" for="notes-${idx}">📝 Minhas anotações</label>
+      <textarea id="notes-${idx}" class="notes-area"
+        placeholder="Escreva suas notas, associações, dúvidas ou exemplos..."
+        data-notekey="${noteKey}"></textarea>
+    </div>
+
     <div class="ai-practice">
       <button class="ap-trigger" id="ap-trig">
-        <span class="ap-icon">🗣️</span>
-        <span>Praticar com IA — ${l.stem}</span>
+        <span>🗣️ Praticar fala — ${l.stem}</span>
         <span class="ap-chev" id="ap-chev">›</span>
       </button>
       <div id="ap-body" style="display:none">
@@ -237,6 +312,17 @@ function renderLegoCard(l, idx) {
       </div>
     </div>`;
   el('ap-trig').onclick = toggleBody;
+  // carregar e ligar persistência das anotações
+  const noteEl = document.getElementById(`notes-${idx}`);
+  if (noteEl) {
+    try {
+      const saved = localStorage.getItem(noteKey);
+      if (saved !== null) noteEl.value = saved;
+    } catch(e) {}
+    noteEl.addEventListener('input', () => {
+      try { localStorage.setItem(noteKey, noteEl.value); } catch(e) {}
+    });
+  }
   renderStart();
 }
 
@@ -256,7 +342,7 @@ function renderStart() {
   setInner(`
     <div class="ap-start">
       <div class="ap-start-title">Praticar "${currentLego.stem}" em voz alta</div>
-      <div class="ap-start-sub">A IA vai gerar 3 perguntas em português usando o vocabulário desta estrutura. Você responde falando em inglês.</div>
+      <div class="ap-start-sub">Vamos gerar 3 perguntas em português usando o vocabulário desta estrutura. Você responde falando em inglês.</div>
       ${HAS_SPEECH
         ? `<button class="btn" onclick="startPractice()">🚀 Começar prática</button>`
         : `<div class="ap-warn">⚠️ Use Chrome, Edge ou Safari para praticar por voz. O Firefox não suporta reconhecimento de fala.</div>`}
@@ -284,9 +370,9 @@ async function claudeText(system, user, vocabHint, maxTokens) {
   return json.content[0].text.trim();
 }
 
-// ── geração de perguntas (modo único: tradução direta) ──
+// ── geração de perguntas: formato "Como dizer 'X' em inglês?" ──
 async function genQuestions(lego) {
-  const vocab = lego.blocks.map(b => `${b.en} = ${b.pt}`).join('; ');
+  const vocab = lego.blocks.map(b => `${lego.stem} ${b.en} = ${b.pt_stem} ${b.pt_tail}`).join('; ');
   const vocabWords = [lego.stem, ...lego.blocks.map(b => b.en)];
   const raw = await claudeText(
     'Você é professor de inglês para brasileiros iniciantes. Responda APENAS em JSON válido, sem markdown.',
@@ -294,14 +380,16 @@ async function genQuestions(lego) {
 Nota: ${lego.note}
 Vocabulário disponível: ${vocab}
 
-Gere EXATAMENTE 3 perguntas de prática, no modo tradução direta.
-- Cada pergunta é uma frase curta em português para o aluno traduzir e falar em inglês.
+Gere EXATAMENTE 3 perguntas de prática oral.
+- Cada pergunta segue o formato: Como dizer "[frase em português natural]" em inglês?
+- A frase em português deve ser natural para um brasileiro (não literal palavra-por-palavra).
 - Use SOMENTE o vocabulário fornecido, sem inventar palavras novas.
-- Perguntas variadas: cada uma usa um bloco diferente do vocabulário.
+- Cada pergunta usa um bloco diferente do vocabulário.
+- "expected" é a resposta esperada em inglês, usando exatamente a estrutura LEGO.
 
 Formato JSON exato:
 {"questions":[
-  {"id":1,"prompt":"pergunta ou frase em português","expected":"resposta esperada em inglês"},
+  {"id":1,"prompt":"Como dizer \"frase natural em português\" em inglês?","expected":"resposta em inglês"},
   {"id":2,"prompt":"...","expected":"..."},
   {"id":3,"prompt":"...","expected":"..."}
 ]}`,
@@ -311,39 +399,49 @@ Formato JSON exato:
   catch {
     return lego.blocks.slice(0,3).map((b,i) => ({
       id: i+1,
-      prompt: `Diga: "${lego.stem_pt} ${b.pt}".`,
+      prompt: `Como dizer "${b.pt_stem} ${b.pt_tail}" em inglês?`,
       expected: `${lego.stem} ${b.en}`
     }));
   }
 }
 
-// ── análise (comparação textual palavra a palavra) ─────
+// ── análise textual + pronúncia figurada da frase inteira ─────
+// Nota: com Web Speech API só temos TEXTO, não áudio real. A análise é comparação textual.
+// O sentence_pr é obtido pelo dicionário oficial Ovídio (backend faz lookup ou aplica padrões).
 async function analyzeAnswer(lego, expected, transcript) {
   const expectedWords = expected.replace(/[.,?!;:]/g,'').split(/\s+/).filter(Boolean);
   const raw = await claudeText(
-    'Você é avaliador de inglês para brasileiros. Compara a fala transcrita com a esperada e retorna JSON válido, sem markdown.',
+    'Você é avaliador de inglês para brasileiros. Compara a fala transcrita com a esperada e devolve JSON válido, sem markdown.',
     `Estrutura ensinada: "${lego.stem}" (${lego.stem_pt})
 Frase esperada (o que o aluno DEVERIA ter dito): "${expected}"
 Transcript do reconhecedor de voz (o que o sistema OUVIU): "${transcript}"
 
-IMPORTANTE: O reconhecedor de voz só devolve texto — ele NÃO avalia pronúncia. Você só tem acesso ao TEXTO que foi reconhecido. Nunca invente análise de pronúncia que você não tem como fazer. Sua tarefa é comparar palavra por palavra o texto reconhecido com o texto esperado.
+IMPORTANTE:
+- O reconhecedor só devolve TEXTO — não avalia pronúncia foneticamente. Nunca invente análise de pronúncia.
+- Se o transcript está vazio ou o sistema não capturou algo utilizável, marque as palavras como ok:false e heard:null.
+- NUNCA invente uma transcrição diferente do que o reconhecedor entregou.
+- Para "sentence_pr" (pronúncia da FRASE inteira), use EXATAMENTE a pronúncia figurada oficial do Protocolo Ovídio para "${expected}" que está no DICIONÁRIO OFICIAL do system prompt. Se a frase completa não estiver, use pronúncias das palavras individuais concatenadas com espaço. Nunca use IPA.
+- Para "correct_pr" de cada palavra errada, use EXATAMENTE a pronúncia figurada oficial do dicionário Ovídio.
 
 Retorne JSON:
 {
   "words": [
-    {"expected": "palavra1", "ok": true/false, "heard": "o que foi ouvido no lugar (ou null se veio certo)", "correct_pr": "pronúncia figurada Ovídio se ok=false, senão null"},
+    {"expected": "palavra1", "ok": true/false, "heard": "o que foi ouvido no lugar OU null se não deu para identificar", "correct_pr": "pronúncia figurada Ovídio se ok=false, senão null"},
     ...uma entrada por palavra da frase esperada, na mesma ordem
   ],
-  "structure_ok": true/false,  // usou a estrutura "${lego.stem}" corretamente
-  "all_ok": true/false,        // todas as palavras corretas E estrutura correta
-  "brief": "1 frase curta em português sobre o que faltou (só se all_ok=false)"
+  "sentence_pr": "pronúncia figurada Ovídio da frase completa: ${expected}",
+  "structure_ok": true/false,
+  "all_ok": true/false,
+  "no_capture": true/false
 }
 
 Regras:
-- Considere pequenas diferenças de conjugação/artigo como aceitáveis (ex: "a friend" vs "friend")
-- Se o transcript está vazio ou muito curto, marque todas as palavras como {ok:false, heard:null}
-- Para correct_pr, use SEMPRE o sistema Ovídio de pronúncia figurada em português brasileiro (nunca IPA)`,
-    expectedWords, 900
+- Considere pequenas diferenças de artigo/pontuação como aceitáveis (ex: "a friend" vs "friend").
+- Se o transcript não representa fala reconhecível (vazio, ruído), retorne no_capture:true e todas as palavras com ok:false + heard:null.`,
+    // vocabHint inclui a frase esperada completa E cada palavra, para o backend anexar
+    // as pronúncias oficiais no system prompt (evita alucinação da IA).
+    [expected, ...expectedWords],
+    900
   );
   return JSON.parse(raw.replace(/```json|```/g,'').trim());
 }
@@ -474,44 +572,109 @@ async function processTranscript(transcript) {
   }
 }
 
+
+// ── SONS de acerto/erro (Web Audio API sintético — item 16) ──
+let audioCtx = null;
+let lastSoundKey = null;
+function playSound(type) {
+  // toca uma única vez por tentativa: guarda chave da questão+tentativa+tipo
+  const key = `${currentQ}:${attemptsMade}:${type}`;
+  if (lastSoundKey === key) return;
+  lastSoundKey = key;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    // navegador pode bloquear autoplay — resumir se necessário
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    const now = audioCtx.currentTime;
+    if (type === 'success') {
+      // dois beeps curtos ascendentes
+      [[660, 0], [880, 0.09]].forEach(([f, t]) => {
+        const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+        o.type = 'sine'; o.frequency.value = f;
+        g.gain.setValueAtTime(0, now + t);
+        g.gain.linearRampToValueAtTime(0.12, now + t + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.001, now + t + 0.09);
+        o.connect(g).connect(audioCtx.destination);
+        o.start(now + t); o.stop(now + t + 0.1);
+      });
+    } else {
+      // um beep grave curto
+      const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.type = 'sine'; o.frequency.value = 220;
+      g.gain.setValueAtTime(0, now);
+      g.gain.linearRampToValueAtTime(0.11, now + 0.01);
+      g.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
+      o.connect(g).connect(audioCtx.destination);
+      o.start(now); o.stop(now + 0.17);
+    }
+  } catch(e) { /* silencioso se não suportado */ }
+}
+
 function renderFeedback(analysis, transcript, q) {
   const allOk = !!analysis.all_ok;
+  const noCapture = !!analysis.no_capture;
   const isLast = currentQ === questions.length - 1;
   const canRetry = !allOk && attemptsMade < MAX_ATTEMPTS_PER_QUESTION;
 
-  // linha de palavras marcadas
+  // ── 1. CHIPS: uma marcação por palavra da frase esperada (item 10) ──
   const wordsHtml = (analysis.words || []).map(w =>
     w.ok
       ? `<span class="ap-word ok">✓ ${w.expected}</span>`
-      : `<span class="ap-word err">${w.expected}</span>`
+      : `<span class="ap-word err">✗ ${w.expected}</span>`
   ).join('');
 
-  // bloco de erros: mostra o que faltou/foi errado
-  const errorBlocks = (analysis.words || [])
-    .filter(w => !w.ok)
-    .map(w => `
-      <div class="ap-err-block">
-        <span class="err-word">${w.expected}${w.heard ? ` <span style="color:var(--soft);font-weight:400">— você disse "${w.heard}"</span>` : ''}</span>
-        ${w.correct_pr ? `<span class="err-pron">Pronúncia: ${w.correct_pr}</span>` : ''}
-        <button class="play-word" data-speak="${w.expected.replace(/"/g,'&quot;')}">🔊 Ouvir</button>
-      </div>`).join('');
+  // ── 2. PRONÚNCIA FIGURADA DA FRASE — SEMPRE APARECE (item 11) ──
+  // A frase inteira num único bloco. Nunca palavra-por-palavra aqui.
+  const sentencePr = analysis.sentence_pr || '';
+  const sentencePrBlock = sentencePr
+    ? `<div class="ap-sentence-pr" title="Pronúncia figurada Ovídio da frase completa">${sentencePr}</div>`
+    : '';
 
-  // ação: próxima ou repetir
+  // ── 3. CAIXA DE FEEDBACK: só se houve erro (item 12) ──
+  //     Só lista as palavras erradas. Sem repetir a frase toda.
+  let errorBox = '';
+  if (!allOk) {
+    const wrongWords = (analysis.words || []).filter(w => !w.ok);
+    const errorLines = wrongWords.map(w => {
+      const heardTxt = noCapture || !w.heard
+        ? `<span class="ap-heard-none">não conseguimos identificar com clareza</span>`
+        : `Você disse algo como: <span class="ap-heard-txt">"${w.heard}"</span>`;
+      const pron = w.correct_pr
+        ? `pronuncia-se <span class="ap-word-pr">"${w.correct_pr}"</span>`
+        : '';
+      return `
+        <div class="ap-err-line">
+          <div class="ap-err-word-row">
+            <span class="ap-err-x">❌</span>
+            <strong>${w.expected}</strong>
+            ${pron ? `<span class="ap-err-arrow">→</span> ${pron}` : ''}
+          </div>
+          <div class="ap-err-heard">${heardTxt}</div>
+        </div>`;
+    }).join('');
+    errorBox = `<div class="ap-err-box">${errorLines}</div>`;
+  }
+
+  // ── 4. AÇÃO: próxima ou repetir ──
   let action;
   if (allOk) {
     sessionResults.push({ passed: true, attempts: attemptsMade });
+    playSound('success');
     action = isLast
       ? `<button class="btn" onclick="finishPractice()">Ver resultado →</button>`
       : `<button class="btn" onclick="nextQuestion()">Próxima →</button>`;
   } else if (canRetry) {
+    playSound('error');
     action = `<button class="ap-retry-btn" onclick="retryQuestion()">🎤 Tentar de novo</button>`;
   } else {
     sessionResults.push({ passed: false, attempts: attemptsMade });
+    playSound('error');
     action = isLast
       ? `<button class="btn" onclick="finishPractice()">Ver resultado →</button>`
       : `<button class="btn" onclick="nextQuestion()">Continuar →</button>`;
   }
 
+  // ── 5. VERDICT (feedback visual — item 17) ──
   const verdict = allOk
     ? `<div class="ap-verdict ok">✅ Perfeito!</div>`
     : `<div class="ap-verdict err">Quase lá — revise as palavras marcadas</div>`;
@@ -521,21 +684,23 @@ function renderFeedback(analysis, transcript, q) {
       <span class="ap-counter">${currentQ+1} / ${questions.length}</span>
       <div class="ap-pbar"><div class="ap-pfill" style="width:${Math.round(((currentQ+1)/questions.length)*100)}%"></div></div>
     </div>
-    <div class="ap-fb-card">
+    <div class="ap-fb-card ${allOk ? 'success' : 'warn'}">
       <div class="ap-fb-header">${verdict}</div>
       ${wordsHtml ? `<div class="ap-word-line">${wordsHtml}</div>` : ''}
-      <p class="ap-heard">Você disse: <span>"${transcript}"</span></p>
-      ${errorBlocks}
+      ${sentencePrBlock}
+      ${errorBox}
       <div class="ap-actions">${action}</div>
     </div>`);
 }
 
 function retryQuestion() {
+  lastSoundKey = null;
   renderQuestion();
 }
 function nextQuestion() {
   currentQ++;
   attemptsMade = 0;
+  lastSoundKey = null;
   renderQuestion();
 }
 
