@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Day 1 - Hello! | Protocolo Ovídio</title>
+<title>Praticar fala — Protocolo Ovídio</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -22,6 +22,33 @@ body{font-family:var(--font-b);background:var(--bg);color:var(--text);min-height
 h1{font-family:var(--font-d);font-size:24px;font-weight:700;margin-bottom:4px}
 .kicker{font-family:var(--font-m);font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--faint);display:block;margin-bottom:6px}
 .lead{font-size:14px;color:var(--soft);line-height:1.55;margin-bottom:20px}
+
+
+/* tabs de seção (LEGO / Boosts / Fluency) */
+.section-tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.section-tab{
+  flex:1;min-width:calc(33% - 6px);
+  padding:12px 14px;border:1.5px solid var(--border-strong);border-radius:10px;
+  background:var(--card);cursor:pointer;transition:all .15s;
+  font-family:var(--font-d);font-size:13px;font-weight:600;text-align:left;
+  color:var(--text);line-height:1.3;
+}
+.section-tab:hover{transform:translateY(-1px)}
+.section-tab .tab-emoji{font-size:16px;display:block;margin-bottom:3px}
+.section-tab .tab-sub{display:block;font-family:var(--font-b);font-weight:400;font-size:11px;color:var(--soft);margin-top:2px}
+/* estados ativos por seção — cor de fundo indica tipo */
+.section-tab.tab-lego.active{background:var(--red);color:#fff;border-color:var(--red)}
+.section-tab.tab-lego.active .tab-sub{color:rgba(255,255,255,.8)}
+.section-tab.tab-boosts{background:#EBF3FC;border-color:#B8D4F0}
+.section-tab.tab-boosts.active{background:#2C6FD1;color:#fff;border-color:#2C6FD1}
+.section-tab.tab-boosts.active .tab-sub{color:rgba(255,255,255,.8)}
+.section-tab.tab-fluency{background:#FFF8E0;border-color:#F0E4B0}
+.section-tab.tab-fluency.active{background:#C98A00;color:#fff;border-color:#C98A00}
+.section-tab.tab-fluency.active .tab-sub{color:rgba(255,255,255,.8)}
+
+/* section container */
+.section-body{display:none}
+.section-body.active{display:block}
 
 /* selector */
 .selector{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:24px}
@@ -130,6 +157,115 @@ td strong{font-family:var(--font-m)}
 .ap-fb-card.success{border-color:#BFE6C9;background:#F6FBF7}
 .ap-fb-card.warn{border-color:#F0DADA;background:#FEFBFB}
 
+
+/* Boosts de Vocabulário */
+.boost-card{background:#EBF3FC;border:1px solid #B8D4F0;border-radius:14px;padding:18px 20px;margin-bottom:16px}
+.boost-head{display:flex;align-items:baseline;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.boost-num{font-family:var(--font-m);font-size:11px;color:#2C6FD1;font-weight:600}
+.boost-pattern{font-family:var(--font-m);font-size:16px;font-weight:700;color:#1A4A94}
+.boost-rule{font-size:13px;color:var(--soft);font-style:italic}
+.boost-model{font-size:13.5px;color:var(--text);margin-bottom:12px;padding:8px 12px;background:#fff;border-radius:8px;border-left:3px solid #2C6FD1}
+.boost-model .lbl{font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.04em;display:block;margin-bottom:3px}
+.boost-model .txt{font-family:var(--font-m);font-weight:600}
+
+/* Exercício de tradução escrita */
+.exercise-card{background:#fff;border:2px solid #B8D4F0;border-radius:12px;padding:16px 18px;margin-top:14px}
+.exercise-title{font-family:var(--font-d);font-size:15px;font-weight:600;margin-bottom:6px;color:var(--dark);display:flex;align-items:center;gap:8px}
+.exercise-desc{font-size:13px;color:var(--soft);margin-bottom:14px;line-height:1.5}
+.exercise-example{background:#FFF8E0;border:1px solid #F0E4B0;border-radius:8px;padding:10px 12px;margin-bottom:14px;font-size:13.5px}
+.exercise-example .ex-lbl{display:block;font-size:11px;color:#8F6300;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}
+.exercise-example .ex-en{font-family:var(--font-m);font-weight:600;font-size:15px}
+.exercise-example .ex-pr{font-family:var(--font-m);font-size:12.5px;color:var(--soft);margin:0 6px}
+.exercise-example .ex-pt{color:var(--text)}
+
+.exq-item{margin-bottom:18px;padding-top:14px;border-top:1px dashed var(--border)}
+.exq-item:first-of-type{border-top:none;padding-top:0}
+.exq-counter{font-family:var(--font-m);font-size:11px;color:var(--faint);margin-bottom:6px;display:block}
+.exq-prompt{font-family:var(--font-d);font-size:15px;font-weight:600;margin-bottom:10px;line-height:1.4}
+.exq-hint{background:#F5F5F2;border-radius:7px;padding:8px 10px;margin-bottom:10px;font-size:12.5px}
+.exq-hint .hint-w{font-family:var(--font-m);font-weight:600;color:var(--dark)}
+.exq-hint .hint-pr{font-family:var(--font-m);color:var(--soft);font-style:italic;margin:0 4px}
+.exq-hint .hint-pt{color:var(--text-soft)}
+.exq-input{width:100%;font-family:var(--font-b);font-size:14px;padding:9px 12px;border:1px solid var(--border-strong);border-radius:7px;background:#FFFEF9}
+.exq-input:focus{outline:none;border-color:#2C6FD1}
+.exq-check-btn{background:#2C6FD1;color:#fff;border:none;border-radius:7px;padding:8px 18px;font-size:13px;font-weight:600;cursor:pointer;margin-top:8px}
+.exq-check-btn:hover{background:#1A4A94}
+.exq-check-btn:disabled{opacity:.4;cursor:not-allowed}
+
+.exq-reveal{display:none;margin-top:12px;padding:12px;background:#F5F5F2;border-radius:8px}
+.exq-reveal.show{display:block}
+.exq-reveal .rev-lbl{font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.04em;display:block;margin-bottom:4px}
+.exq-reveal .rev-en{font-family:var(--font-m);font-weight:600;font-size:15px;color:var(--dark)}
+.exq-reveal .rev-pr{font-family:var(--font-m);font-size:13px;color:var(--soft);margin-top:3px;display:block}
+.exq-reveal .rev-user{font-size:12.5px;color:var(--soft);margin-top:8px;font-style:italic}
+.exq-reveal .rev-user b{font-family:var(--font-m);font-style:normal;color:var(--text)}
+
+.self-eval{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.self-eval-btn{flex:1;min-width:80px;padding:9px 12px;border:1.5px solid var(--border-strong);border-radius:8px;background:#fff;cursor:pointer;font-family:var(--font-b);font-size:13px;font-weight:600;transition:all .15s}
+.self-eval-btn:hover{transform:translateY(-1px)}
+.self-eval-btn.acertei{color:#166534}
+.self-eval-btn.quase{color:#8F6300}
+.self-eval-btn.errei{color:#991B1B}
+.self-eval-btn.acertei.selected{background:#DCFCE7;border-color:#22C55E;color:#166534}
+.self-eval-btn.quase.selected{background:#FEF3C7;border-color:#F59E0B;color:#8F6300}
+.self-eval-btn.errei.selected{background:#FEE2E2;border-color:#EF4444;color:#991B1B}
+
+.boost-gen-loading{display:flex;flex-direction:column;align-items:center;gap:10px;padding:26px 0;color:var(--soft);font-size:13.5px}
+
+/* Fluency Training */
+.fluency-card{background:#FFF8E0;border:1px solid #F0E4B0;border-radius:14px;padding:18px 20px;margin-bottom:16px}
+.fluency-head{margin-bottom:12px}
+.fluency-title{font-family:var(--font-d);font-size:16px;font-weight:600;color:#8F6300;margin-bottom:4px}
+.fluency-scenario{font-size:13px;color:var(--text-soft);line-height:1.55}
+.fluency-roles{display:flex;gap:10px;margin-top:12px;align-items:center;flex-wrap:wrap}
+.role-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:20px;font-size:12px;font-weight:600;background:#fff;border:1px solid #F0E4B0}
+.role-badge.you{background:#DCFCE7;border-color:#22C55E;color:#166534}
+.swap-roles-btn{margin-left:auto;background:transparent;border:1px solid #C98A00;color:#8F6300;border-radius:20px;padding:5px 12px;font-size:12px;font-weight:600;cursor:pointer}
+.swap-roles-btn:hover{background:#C98A00;color:#fff}
+
+.chat-window{background:#fff;border:1px solid #F0E4B0;border-radius:12px;padding:12px 14px;max-height:420px;overflow-y:auto;margin-bottom:12px}
+.chat-msg{display:flex;flex-direction:column;margin-bottom:10px;max-width:78%}
+.chat-msg.a{align-self:flex-start;margin-right:auto}
+.chat-msg.b{align-self:flex-end;margin-left:auto;align-items:flex-end}
+.chat-msg .speaker{font-size:10.5px;color:var(--faint);font-family:var(--font-m);margin-bottom:2px;text-transform:uppercase;letter-spacing:.04em}
+.chat-bubble{padding:9px 13px;border-radius:14px;font-size:14px;line-height:1.45}
+.chat-msg.a .chat-bubble{background:#F5F5F2;border-bottom-left-radius:4px}
+.chat-msg.b .chat-bubble{background:#2C6FD1;color:#fff;border-bottom-right-radius:4px}
+.chat-msg .msg-actions{display:flex;gap:6px;margin-top:5px;flex-wrap:wrap}
+.msg-action-btn{background:#fff;border:1px solid var(--border-strong);border-radius:14px;padding:3px 10px;font-size:11.5px;font-weight:500;cursor:pointer;color:var(--soft)}
+.msg-action-btn:hover{background:var(--bg);border-color:var(--dark);color:var(--text)}
+.msg-action-btn:disabled{opacity:.4;cursor:not-allowed}
+.msg-feedback{margin-top:6px;font-size:12.5px;padding:7px 10px;border-radius:8px;line-height:1.45}
+.msg-feedback.ok{background:#DCFCE7;color:#166534;border:1px solid #86EFAC}
+.msg-feedback.err{background:#FFF8F8;color:#991B1B;border:1px solid #F5D0D0}
+.msg-feedback .fb-title{font-weight:700;margin-bottom:3px}
+
+.chat-input-row{display:flex;gap:8px;align-items:flex-end}
+.chat-input-wrap{flex:1;position:relative}
+.chat-input-txt{width:100%;font-family:var(--font-b);font-size:14px;padding:10px 12px;border:1px solid var(--border-strong);border-radius:9px;background:#fff;resize:none;min-height:40px;max-height:120px}
+.chat-input-txt:focus{outline:none;border-color:#C98A00}
+.chat-send-btn{background:#C98A00;color:#fff;border:none;border-radius:9px;padding:10px 18px;font-size:14px;font-weight:600;cursor:pointer}
+.chat-send-btn:hover{background:#8F6300}
+.chat-send-btn:disabled{opacity:.4;cursor:not-allowed}
+.chat-suggest-btn{background:#fff;border:1px dashed #C98A00;color:#8F6300;border-radius:9px;padding:9px 12px;font-size:12.5px;font-weight:600;cursor:pointer}
+.chat-suggest-btn:hover{background:#FFF8E0}
+.chat-suggested{background:#FFF8E0;border:1px dashed #C98A00;padding:8px 12px;border-radius:8px;margin-bottom:8px;font-size:13px;color:var(--text)}
+.chat-suggested .lbl{font-size:11px;color:#8F6300;font-weight:600;text-transform:uppercase;letter-spacing:.04em;display:block;margin-bottom:3px}
+.chat-suggested .txt{font-family:var(--font-m)}
+.chat-suggested .use-btn{background:#C98A00;color:#fff;border:none;border-radius:14px;padding:2px 10px;font-size:11px;font-weight:600;cursor:pointer;margin-left:8px}
+
+.chat-thinking{display:flex;gap:3px;padding:8px 13px;background:#F5F5F2;border-radius:14px;width:fit-content;margin-bottom:10px}
+.chat-thinking span{width:6px;height:6px;background:var(--faint);border-radius:50%;animation:think 1.2s ease-in-out infinite}
+.chat-thinking span:nth-child(2){animation-delay:.2s}
+.chat-thinking span:nth-child(3){animation-delay:.4s}
+@keyframes think{0%,60%,100%{opacity:.3}30%{opacity:1}}
+
+.fluency-complete{background:#DCFCE7;border:1px solid #86EFAC;border-radius:10px;padding:14px 16px;text-align:center;margin-top:12px}
+.fluency-complete p{font-size:14px;color:#166534;margin-bottom:10px}
+.fluency-complete .btn{background:#C98A00}
+.fluency-complete .btn:hover{background:#8F6300}
+
+
 /* analyzing */
 .ap-analyzing{display:flex;flex-direction:column;align-items:center;gap:10px;padding:24px 0}
 .ap-analyzing p{font-size:13.5px;color:var(--soft)}
@@ -177,17 +313,50 @@ td strong{font-family:var(--font-m)}
 </head>
 <body>
 
-<span class="kicker">Protocolo Ovídio · Inglês</span>
-<h1>🗣️ Day 1 - Hello!</h1>
+<span class="kicker" id="page-kicker">Protocolo Ovídio · Inglês</span>
+<h1 id="page-title">Day 1 – Hello!</h1>
 <p class="lead">Escolha uma estrutura LEGO abaixo e pratique em voz alta. São 3 perguntas em português e você responde falando em inglês.</p>
 
-<div class="selector" id="selector"></div>
-<div id="lego-area"></div>
+<!-- Menu de 3 partes -->
+<div class="section-tabs" id="section-tabs">
+  <button class="section-tab tab-lego active" data-section="lego">
+    <span class="tab-emoji">🧱</span>
+    Estruturas LEGO
+    <span class="tab-sub">Fundamentos da fala</span>
+  </button>
+  <button class="section-tab tab-boosts" data-section="boosts">
+    <span class="tab-emoji">⚡️</span>
+    Boosts de Vocabulário
+    <span class="tab-sub">Expansão de palavras</span>
+  </button>
+  <button class="section-tab tab-fluency" data-section="fluency">
+    <span class="tab-emoji">💪</span>
+    Fluency Training
+    <span class="tab-sub">Conversação real</span>
+  </button>
+</div>
+
+<!-- Aba LEGO (o conteúdo atual) -->
+<div class="section-body active" id="section-lego">
+  <div class="selector" id="selector"></div>
+  <div id="lego-area"></div>
+</div>
+
+<!-- Aba Boosts -->
+<div class="section-body" id="section-boosts">
+  <div class="selector" id="boost-selector"></div>
+  <div id="boost-area"></div>
+</div>
+
+<!-- Aba Fluency Training -->
+<div class="section-body" id="section-fluency">
+  <div id="fluency-area"></div>
+</div>
 
 <script>
 // ── dados do Day 1 (idênticos ao data.js) ──────────────
 const DAYS = {
-  1: {"day":1,"sprint":1,"kind":"lesson","title":"Hello! (Apresentação)","legos":[
+  1: {"day":1,"sprint":1,"kind":"lesson","title":"Hello!","legos":[
     {"stem":"I'm","stem_pr":"aim","stem_pt":"eu sou / eu estou","note":"I'm + nome ou estado","blocks":[
       {"en":"Paulo","pr":"PAUlo","pt_stem":"eu sou","pt_tail":"Paulo"},
       {"en":"Brazilian","pr":"braZÍlian","pt_stem":"eu sou","pt_tail":"brasileiro"},
@@ -223,7 +392,18 @@ const DAYS = {
       {"en":"on Monday","pr":"ón MÃNdei","pt_stem":"te vejo","pt_tail":"na segunda"},
       {"en":"next week","pr":"nékst UÍK","pt_stem":"te vejo","pt_tail":"semana que vem"}
     ]}
-  ]}
+  ],
+  "boosts": [
+    {"pattern":"re- / re-","rule":"Prefixo de repetição ou volta","model":"I need to repeat this lesson.","lego_stem":"I need to","words":[{"en": "repeat", "pr": "riPÍT", "pt": "repetir"}, {"en": "return", "pr": "riTÃRN", "pt": "retornar/devolver"}, {"en": "remember", "pr": "riMÉMber", "pt": "lembrar"}, {"en": "relax", "pr": "riLÉKS", "pt": "relaxar"}, {"en": "receive", "pr": "riSSÍV", "pt": "receber"}, {"en": "remove", "pr": "riMÚV", "pt": "remover/tirar"}, {"en": "reduce", "pr": "riDIÚS", "pt": "reduzir"}, {"en": "respect", "pr": "risPÉKT", "pt": "respeitar/respeito"}, {"en": "result", "pr": "riZÃLT", "pt": "resultado"}, {"en": "review", "pr": "riVIÚ", "pt": "revisar/avaliação"}]},
+    {"pattern":"-ly / -mente","rule":"Advérbios: troque -mente por -ly","model":"I really like this!","lego_stem":"I need to","words":[{"en": "really", "pr": "RÍli", "pt": "realmente/mesmo"}, {"en": "normally", "pr": "NÓRmali", "pt": "normalmente"}, {"en": "exactly", "pr": "igZÉKtli", "pt": "exatamente"}, {"en": "finally", "pr": "FAInali", "pt": "finalmente"}, {"en": "usually", "pr": "IÚjuali", "pt": "geralmente"}, {"en": "probably", "pr": "PRÓbabli", "pt": "provavelmente"}, {"en": "completely", "pr": "comPLÍTli", "pt": "completamente"}, {"en": "especially", "pr": "isPÉshali", "pt": "especialmente"}, {"en": "quickly", "pr": "KUÍKli", "pt": "rapidamente"}, {"en": "absolutely", "pr": "ébsoLÚtli", "pt": "absolutamente"}]}
+  ],
+  "qa": [
+    {"q": "What's your name?", "qtr": "uóts iór neim", "pt": "Qual é o seu nome?", "answer": "My name is Ana. Nice to meet you!"},
+    {"q": "How are you?", "qtr": "rau ar iú", "pt": "Como você está?", "answer": "I'm fine, thanks! And you?"},
+    {"q": "Who is this?", "qtr": "rú is dis", "pt": "Quem é este(a)?", "answer": "This is my friend Carlos."}
+  ],
+  "roleplay": {"scenario": "Você encontra um estrangeiro num evento. Cumprimente, apresente-se e se despeça.", "lines": [{"speaker": "A", "en": "Hi! I'm Mark. What's your name?", "pt": "Oi! Sou o Mark. Qual seu nome?"}, {"speaker": "B", "en": "Hello! My name is Ana. Nice to meet you!", "pt": "Olá! Meu nome é Ana. Prazer!"}, {"speaker": "A", "en": "Nice to meet you too! How are you?", "pt": "Prazer também! Como você está?"}, {"speaker": "B", "en": "I'm fine, thanks! And you?", "pt": "Estou bem, obrigada! E você?"}, {"speaker": "A", "en": "I'm great! See you later!", "pt": "Estou ótimo! Até mais!"}, {"speaker": "B", "en": "See you! Have a nice day!", "pt": "Até! Tenha um bom dia!"}]}
+  }
 };
 
 // ── estado global ──────────────────────────────────────
@@ -238,6 +418,24 @@ let rec = null;
 const MAX_ATTEMPTS_PER_QUESTION = 2;
 const HAS_SPEECH = !!(window.SpeechRecognition || window.webkitSpeechRecognition);
 const HAS_TTS = 'speechSynthesis' in window;
+
+// ── SEÇÕES DA LIÇÃO (LEGO / Boosts / Fluency) ─────
+let currentSection = 'lego';
+function switchSection(name) {
+  currentSection = name;
+  document.querySelectorAll('.section-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.section === name);
+  });
+  document.querySelectorAll('.section-body').forEach(b => {
+    b.classList.toggle('active', b.id === 'section-' + name);
+  });
+  // inicialização lazy das abas
+  if (name === 'boosts' && !boostSelectorBuilt) initBoostsTab();
+  if (name === 'fluency' && !fluencyBuilt) initFluencyTab();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+let boostSelectorBuilt = false;
+let fluencyBuilt = false;
 
 // ── utils ──────────────────────────────────────────────
 function el(id) { return document.getElementById(id); }
@@ -276,6 +474,12 @@ function selectLego(lego, idx, btn) {
   renderLegoCard(lego, idx);
 }
 
+function updatePageTitle() {
+  const day = DAYS[1];
+  const titleEl = document.getElementById('page-title');
+  if (titleEl && day) titleEl.textContent = `Day ${day.day} – ${day.title}`;
+}
+
 function renderLegoCard(l, idx) {
   const rows = l.blocks.map(b =>
     `<tr>
@@ -308,7 +512,7 @@ function renderLegoCard(l, idx) {
 
     <div class="ai-practice">
       <button class="ap-trigger" id="ap-trig">
-        <span>🗣️ PRATICAR FALA — ${l.stem}</span>
+        <span>🗣️ PRATICAR FALA <span style="font-weight:400;font-size:12px;opacity:.7">— ${l.stem}</span></span>
         <span class="ap-chev" id="ap-chev">›</span>
       </button>
       <div id="ap-body" style="display:none">
@@ -502,30 +706,75 @@ function toggleRecord() {
   const mic = el('ap-mic'), lbl = el('ap-mic-lbl'), ind = el('ap-rec-ind');
 
   if (rec) {
-    rec.stop(); rec = null;
+    // parar manualmente: processar o que foi coletado até agora
+    const toProcess = typeof collected !== 'undefined' && collected.trim() ? collected.trim() : null;
+    try { rec.stop(); } catch(e) {}
+    rec = null;
+    if (typeof silenceTimer !== 'undefined') clearTimeout(silenceTimer);
     mic.classList.remove('rec');
     lbl.textContent = 'Falar';
     ind.style.display = 'none';
+    if (toProcess) processTranscript(toProcess);
     return;
   }
 
   rec = new SR();
   rec.lang = 'en-US';
-  rec.continuous = false;
+  // continuous=true + coleta manual + timeout de silêncio:
+  // garante que o aluno tenha ~1.5s extras após parar de falar antes do encerramento.
+  rec.continuous = true;
   rec.interimResults = false;
   mic.classList.add('rec');
   lbl.textContent = 'Parar';
   ind.style.display = 'flex';
 
-  rec.onresult = async (e) => {
-    const transcript = e.results[0][0].transcript;
+  let collected = '';
+  let silenceTimer = null;
+
+  function stopAndProcess() {
+    if (!rec) return;
+    clearTimeout(silenceTimer);
+    silenceTimer = null;
+    try { rec.stop(); } catch(e) {}
     rec = null;
     mic.classList.remove('rec');
     lbl.textContent = 'Falar';
     ind.style.display = 'none';
-    await processTranscript(transcript);
+    if (collected.trim()) processTranscript(collected.trim());
+  }
+
+  rec.onresult = (e) => {
+    // acumula todos os resultados finais
+    let partial = '';
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      if (e.results[i].isFinal) partial += e.results[i][0].transcript + ' ';
+    }
+    if (partial) {
+      collected += partial;
+      // reinicia o timer de silêncio a cada nova fala reconhecida
+      clearTimeout(silenceTimer);
+      silenceTimer = setTimeout(stopAndProcess, 1500);
+    }
   };
+
+  // onspeechend: fala parou — aguarda o timer antes de encerrar
+  rec.onspeechend = () => {
+    if (!silenceTimer) silenceTimer = setTimeout(stopAndProcess, 1500);
+  };
+
+  rec.onend = () => {
+    // SR encerrou por conta própria (ex: timeout do browser)
+    if (rec) {
+      rec = null;
+      mic.classList.remove('rec');
+      lbl.textContent = 'Falar';
+      ind.style.display = 'none';
+      if (collected.trim()) processTranscript(collected.trim());
+    }
+  };
+
   rec.onerror = (e) => {
+    clearTimeout(silenceTimer);
     rec = null;
     mic.classList.remove('rec');
     lbl.textContent = 'Falar';
@@ -534,7 +783,10 @@ function toggleRecord() {
     setInner(el('ap-inner').innerHTML +
       `<div class="ap-warn">⚠️ ${msg}</div>`);
   };
+
   rec.start();
+  // timer de segurança: encerra gravação após 30s máximo
+  setTimeout(() => { if (rec) stopAndProcess(); }, 30000);
 }
 
 // ── análise + feedback ─────────────────────────────────
@@ -721,8 +973,543 @@ document.body.addEventListener('click', (e) => {
   }
 });
 
+
+// ── ABA BOOSTS DE VOCABULÁRIO ───────────────────────────
+let currentBoost = null;
+let currentBoostIdx = 0;
+
+function initBoostsTab() {
+  boostSelectorBuilt = true;
+  const day = DAYS[1];
+  const sel = document.getElementById('boost-selector');
+  sel.innerHTML = '';
+  day.boosts.forEach((b, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'sel-btn';
+    btn.innerHTML = `${b.pattern}<span class="sub">${b.rule}</span>`;
+    btn.onclick = () => selectBoost(b, i, btn);
+    sel.appendChild(btn);
+  });
+  // auto-selecionar primeiro
+  const firstBtn = sel.querySelector('.sel-btn');
+  if (firstBtn) firstBtn.click();
+}
+
+function selectBoost(boost, idx, btn) {
+  document.querySelectorAll('#boost-selector .sel-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentBoost = boost;
+  currentBoostIdx = idx;
+  renderBoostCard(boost, idx);
+}
+
+function renderBoostCard(b, idx) {
+  // tabela com padrão idêntico ao LEGO (3 colunas)
+  const rows = b.words.map(w =>
+    `<tr>
+       <td><strong>${w.en}</strong></td>
+       <td class="mono">${w.pr}</td>
+       <td>${w.pt}</td>
+     </tr>`
+  ).join('');
+
+  document.getElementById('boost-area').innerHTML = `
+    <div class="boost-card">
+      <div class="boost-head">
+        <span class="boost-num">BOOST ${idx+1}</span>
+        <span class="boost-pattern">${b.pattern}</span>
+        <span class="boost-rule">${b.rule}</span>
+      </div>
+      <div class="boost-model">
+        <span class="lbl">Exemplo do padrão</span>
+        <span class="txt">${b.model}</span>
+      </div>
+      <table>
+        <tr><th>🇺🇸 English</th><th>🗣️ Pronounce</th><th>🇧🇷 Portuguese</th></tr>
+        ${rows}
+      </table>
+    </div>
+    <div id="boost-exercise-${idx}"></div>`;
+  renderBoostExercise(b, idx);
+}
+
+// ── Exercício de tradução escrita ───────────────────────
+// Gera 3 perguntas usando o LEGO base + palavras variadas do Boost.
+// Persiste respostas e auto-avaliação em localStorage.
+
+async function renderBoostExercise(boost, boostIdx) {
+  const container = document.getElementById(`boost-exercise-${boostIdx}`);
+  const cacheKey = `boostQuestions:day1:boost${boostIdx}`;
+  let questions = null;
+  try {
+    const cached = localStorage.getItem(cacheKey);
+    if (cached) questions = JSON.parse(cached);
+  } catch(e) {}
+
+  // se não estiver em cache, gerar via IA
+  if (!questions) {
+    container.innerHTML = `
+      <div class="exercise-card">
+        <div class="boost-gen-loading">
+          <div class="spinner"></div>
+          <p>Preparando exercício…</p>
+        </div>
+      </div>`;
+    try {
+      questions = await genBoostQuestions(boost);
+      try { localStorage.setItem(cacheKey, JSON.stringify(questions)); } catch(e) {}
+    } catch(e) {
+      // fallback: gerar deterministicamente
+      questions = fallbackBoostQuestions(boost);
+    }
+  }
+
+  // renderizar
+  const wordEx = boost.words[0]; // primeira palavra é usada no exemplo
+  const exampleEn = boost.model;
+  const examplePr = wordEx ? boost.model.replace(wordEx.en, wordEx.pr) : boost.model;
+
+  const questionsHtml = questions.map((q, i) => {
+    const ansKey = `boostAns:day1:boost${boostIdx}:q${i}`;
+    const evalKey = `boostEval:day1:boost${boostIdx}:q${i}`;
+    return `
+      <div class="exq-item" data-idx="${i}">
+        <span class="exq-counter">Pergunta ${i+1} de ${questions.length}</span>
+        <div class="exq-prompt">${q.prompt}</div>
+        <div class="exq-hint">
+          <span class="hint-w">${q.hint_word.en}</span>
+          <span class="hint-pr">(${q.hint_word.pr})</span>
+          <span>=</span>
+          <span class="hint-pt">${q.hint_word.pt}</span>
+        </div>
+        <input type="text" class="exq-input" id="exq-input-${boostIdx}-${i}"
+               placeholder="Escreva sua resposta em inglês…"
+               data-anskey="${ansKey}">
+        <button class="exq-check-btn" id="exq-check-${boostIdx}-${i}"
+                onclick="revealAnswer(${boostIdx}, ${i})">Ver resposta</button>
+        <div class="exq-reveal" id="exq-reveal-${boostIdx}-${i}">
+          <span class="rev-lbl">Resposta correta</span>
+          <span class="rev-en">${q.expected}</span>
+          <span class="rev-pr">${q.expected_pr}</span>
+          <div class="rev-user" id="exq-user-${boostIdx}-${i}"></div>
+          <div class="self-eval">
+            <button class="self-eval-btn acertei" data-eval="acertei" data-key="${evalKey}">✅ Acertei</button>
+            <button class="self-eval-btn quase" data-eval="quase" data-key="${evalKey}">🟡 Quase</button>
+            <button class="self-eval-btn errei" data-eval="errei" data-key="${evalKey}">❌ Errei</button>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+
+  container.innerHTML = `
+    <div class="exercise-card">
+      <div class="exercise-title">✍️ Exercício: tradução por escrito</div>
+      <div class="exercise-desc">Traduza cada frase usando a estrutura vista e uma palavra do Boost.</div>
+      <div class="exercise-example">
+        <span class="ex-lbl">Exemplo</span>
+        <span class="ex-en">${exampleEn}</span>
+        <span class="ex-pr">(${examplePr})</span>
+      </div>
+      ${questionsHtml}
+    </div>`;
+
+  // restaurar estado salvo
+  questions.forEach((q, i) => {
+    const input = document.getElementById(`exq-input-${boostIdx}-${i}`);
+    const ansKey = input.dataset.anskey;
+    try {
+      const saved = localStorage.getItem(ansKey);
+      if (saved) input.value = saved;
+    } catch(e) {}
+    input.addEventListener('input', () => {
+      try { localStorage.setItem(ansKey, input.value); } catch(e) {}
+    });
+
+    // botões de auto-avaliação
+    const btns = document.querySelectorAll(`#exq-reveal-${boostIdx}-${i} .self-eval-btn`);
+    btns.forEach(b => {
+      const key = b.dataset.key;
+      try {
+        const savedEval = localStorage.getItem(key);
+        if (savedEval === b.dataset.eval) b.classList.add('selected');
+      } catch(e) {}
+      b.addEventListener('click', () => {
+        btns.forEach(x => x.classList.remove('selected'));
+        b.classList.add('selected');
+        try { localStorage.setItem(key, b.dataset.eval); } catch(e) {}
+      });
+    });
+  });
+}
+
+// mostra a resposta correta (chamado pelo botão)
+function revealAnswer(boostIdx, qIdx) {
+  const input = document.getElementById(`exq-input-${boostIdx}-${qIdx}`);
+  const reveal = document.getElementById(`exq-reveal-${boostIdx}-${qIdx}`);
+  const userDiv = document.getElementById(`exq-user-${boostIdx}-${qIdx}`);
+  const btn = document.getElementById(`exq-check-${boostIdx}-${qIdx}`);
+  if (!reveal.classList.contains('show')) {
+    reveal.classList.add('show');
+    const userTxt = input.value.trim();
+    userDiv.innerHTML = userTxt
+      ? `Sua resposta: <b>${userTxt.replace(/</g,'&lt;')}</b>`
+      : `<em>(você não digitou nada — tente escrever antes de ver a resposta)</em>`;
+    btn.textContent = 'Ocultar resposta';
+  } else {
+    reveal.classList.remove('show');
+    btn.textContent = 'Ver resposta';
+  }
+}
+
+async function genBoostQuestions(boost) {
+  // usa Claude para gerar 3 perguntas naturais em PT
+  // com estrutura LEGO + palavras variadas do Boost
+  const wordsList = boost.words.slice(0, 6).map(w => `${w.en}=${w.pt}`).join('; ');
+  const system = 'Você é professor de inglês para brasileiros iniciantes. Responda APENAS em JSON válido, sem markdown.';
+  const user = `Boost de vocabulário: ${boost.pattern}
+Regra: ${boost.rule}
+Frase modelo: "${boost.model}"
+Palavras disponíveis: ${wordsList}
+
+Gere EXATAMENTE 3 perguntas de tradução escrita seguindo a estrutura da frase modelo.
+Cada pergunta usa uma palavra DIFERENTE do Boost. As frases em português devem soar naturais para um brasileiro.
+
+Formato JSON:
+{"questions":[
+  {"id":1,"prompt":"Como dizer \"frase em português natural\" em inglês?","expected":"resposta em inglês","expected_pr":"pronúncia figurada Ovídio","hint_word":{"en":"palavra","pr":"pronúncia","pt":"tradução"}},
+  {"id":2,...},
+  {"id":3,...}
+]}
+
+Regras absolutas:
+- Usar SOMENTE palavras da lista fornecida no expected.
+- expected_pr no sistema de pronúncia figurada brasileira do Protocolo Ovídio (nunca IPA).
+- hint_word é a palavra do Boost usada nessa pergunta específica.`;
+
+  const vocab = boost.words.map(w => w.en);
+  const json = await fetch('/api/claude', {
+    method: 'POST', headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({
+      system, vocabHint: vocab, max_tokens: 800,
+      messages: [{role:'user', content: user}]
+    })
+  }).then(r => r.json());
+  const raw = json.content[0].text.trim().replace(/```json|```/g, '').trim();
+  return JSON.parse(raw).questions;
+}
+
+function fallbackBoostQuestions(boost) {
+  // Gera perguntas deterministicamente se a IA falhar.
+  // Usa a estrutura da model + palavra do boost.
+  const model = boost.model; // ex: "I need to repeat this lesson."
+  return boost.words.slice(1, 4).map((w, i) => {
+    // substituir a palavra do boost no modelo pela nova palavra
+    const firstBoostWord = boost.words[0].en;
+    const expected = model.replace(firstBoostWord, w.en);
+    return {
+      id: i+1,
+      prompt: `Como dizer uma frase similar usando "${w.pt}"?`,
+      expected: expected,
+      expected_pr: expected.toLowerCase(), // pobre, mas funciona como fallback
+      hint_word: { en: w.en, pr: w.pr, pt: w.pt }
+    };
+  });
+}
+
+
+
+// ── ABA FLUENCY TRAINING ────────────────────────────────
+let chatMessages = [];       // [{role, content, en, pt, feedback?, suggested?}]
+let studentRole = 'B';       // aluno começa como B (responde ao A)
+let iaRole = 'A';
+let awaitingResponse = false;
+
+function initFluencyTab() {
+  fluencyBuilt = true;
+  renderFluencyIntro();
+}
+
+function renderFluencyIntro() {
+  const day = DAYS[1];
+  const rp = day.roleplay;
+  const you = studentRole;
+  const ia  = iaRole;
+
+  document.getElementById('fluency-area').innerHTML = `
+    <div class="fluency-card">
+      <div class="fluency-head">
+        <div class="fluency-title">💪 Treino de Fluência — ${day.title}</div>
+        <div class="fluency-scenario"><strong>Cenário:</strong> ${rp.scenario}</div>
+        <div class="fluency-roles">
+          <span class="role-badge">🤖 IA: Personagem ${ia}</span>
+          <span class="role-badge you">👤 Você: Personagem ${you}</span>
+          <button class="swap-roles-btn" onclick="swapRoles()">🔄 Trocar de papéis</button>
+        </div>
+      </div>
+      <div class="chat-window" id="chat-window"></div>
+      <div id="chat-suggested-slot"></div>
+      <div class="chat-input-row">
+        <div class="chat-input-wrap">
+          <textarea class="chat-input-txt" id="chat-input"
+            placeholder="Escreva sua resposta em inglês…"
+            onkeydown="if(event.key==='Enter' && !event.shiftKey){event.preventDefault();sendChatMessage()}"></textarea>
+        </div>
+        <button class="chat-suggest-btn" onclick="requestSuggestion()">💡 Sugestão</button>
+        <button class="chat-send-btn" id="chat-send-btn" onclick="sendChatMessage()">Enviar</button>
+      </div>
+    </div>`;
+
+  // resetar histórico
+  chatMessages = [];
+  awaitingResponse = false;
+  // IA (personagem A) começa a conversa
+  startChatWithIA();
+}
+
+async function startChatWithIA() {
+  awaitingResponse = true;
+  showChatThinking();
+  try {
+    const day = DAYS[1];
+    const rp = day.roleplay;
+    const system = `Você é um assistente que simula um diálogo em inglês para prática de fluência.
+CENÁRIO: ${rp.scenario}
+Você é o Personagem ${iaRole}. O aluno é o Personagem ${studentRole}.
+Fale APENAS em inglês, frases curtas (5-15 palavras), nível A1.
+Comece a conversa iniciando o diálogo de forma natural, como o Personagem ${iaRole} faria neste cenário.
+Não use aspas, apenas fale como o personagem.
+Retorne APENAS a fala inicial, sem explicações.`;
+
+    const response = await fetch('/api/claude', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        system,
+        max_tokens: 100,
+        messages: [{role: 'user', content: 'Comece o diálogo.'}]
+      })
+    }).then(r => r.json());
+
+    const iaTxt = (response.content?.[0]?.text || 'Hi!').trim().replace(/^["']|["']$/g,'');
+    hideChatThinking();
+    addChatMessage({ role: 'ia', speaker: iaRole, en: iaTxt });
+  } catch(e) {
+    hideChatThinking();
+    addChatMessage({ role: 'ia', speaker: iaRole, en: 'Hi! Sorry, connection failed. Try again.' });
+  }
+  awaitingResponse = false;
+}
+
+async function sendChatMessage() {
+  if (awaitingResponse) return;
+  const input = document.getElementById('chat-input');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  clearSuggestion();
+  addChatMessage({ role: 'student', speaker: studentRole, en: text });
+  // IA responde
+  awaitingResponse = true;
+  showChatThinking();
+  try {
+    const day = DAYS[1];
+    const rp = day.roleplay;
+    const history = chatMessages.map(m =>
+      `${m.speaker === iaRole ? 'IA' : 'Aluno'}: ${m.en}`
+    ).join('\n');
+    const system = `Você simula um diálogo em inglês para prática de fluência.
+CENÁRIO: ${rp.scenario}
+Você é o Personagem ${iaRole}. O aluno é o Personagem ${studentRole}.
+Fale APENAS em inglês, frases curtas (5-15 palavras), nível A1.
+Mantenha o cenário e o contexto. Não corrija o aluno.
+Se a conversa chegou a uma conclusão natural (despedida), responda com uma última fala curta.
+Retorne APENAS a próxima fala como Personagem ${iaRole}, sem explicações ou aspas.`;
+
+    const response = await fetch('/api/claude', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        system,
+        max_tokens: 100,
+        messages: [{role: 'user', content: `Diálogo até agora:\n${history}\n\nSua próxima fala como Personagem ${iaRole}:`}]
+      })
+    }).then(r => r.json());
+
+    const iaTxt = (response.content?.[0]?.text || '...').trim().replace(/^["']|["']$/g,'');
+    hideChatThinking();
+    addChatMessage({ role: 'ia', speaker: iaRole, en: iaTxt });
+  } catch(e) {
+    hideChatThinking();
+    addChatMessage({ role: 'ia', speaker: iaRole, en: '(erro na conexão)' });
+  }
+  awaitingResponse = false;
+}
+
+function addChatMessage(msg) {
+  chatMessages.push(msg);
+  const w = document.getElementById('chat-window');
+  const idx = chatMessages.length - 1;
+  const cls = msg.speaker === 'A' ? 'a' : 'b';
+  let actionsHtml = '';
+  if (msg.role === 'student') {
+    actionsHtml = `
+      <div class="msg-actions">
+        <button class="msg-action-btn" onclick="requestFeedback(${idx})">📊 Receber feedback</button>
+      </div>
+      <div id="msg-fb-${idx}"></div>`;
+  }
+  const div = document.createElement('div');
+  div.className = `chat-msg ${cls}`;
+  div.innerHTML = `
+    <span class="speaker">${msg.role === 'ia' ? '🤖 ' : '👤 '}Personagem ${msg.speaker}</span>
+    <div class="chat-bubble">${msg.en}</div>
+    ${actionsHtml}`;
+  w.appendChild(div);
+  w.scrollTop = w.scrollHeight;
+}
+
+function showChatThinking() {
+  const w = document.getElementById('chat-window');
+  const div = document.createElement('div');
+  div.id = 'chat-thinking-dots';
+  div.className = 'chat-thinking';
+  div.innerHTML = '<span></span><span></span><span></span>';
+  w.appendChild(div);
+  w.scrollTop = w.scrollHeight;
+}
+
+function hideChatThinking() {
+  const el = document.getElementById('chat-thinking-dots');
+  if (el) el.remove();
+}
+
+async function requestFeedback(msgIdx) {
+  const msg = chatMessages[msgIdx];
+  const fbSlot = document.getElementById(`msg-fb-${msgIdx}`);
+  if (!fbSlot) return;
+  if (msg.feedback) {
+    // já tem feedback, apenas mostrar/ocultar
+    fbSlot.style.display = fbSlot.style.display === 'none' ? 'block' : 'none';
+    return;
+  }
+  fbSlot.innerHTML = '<div class="msg-feedback"><em>Analisando…</em></div>';
+  try {
+    const day = DAYS[1];
+    const rp = day.roleplay;
+    // contexto = últimas 4 falas antes desta
+    const context = chatMessages.slice(Math.max(0, msgIdx-3), msgIdx).map(m =>
+      `${m.speaker === iaRole ? 'IA' : 'Aluno'}: ${m.en}`
+    ).join('\n');
+    const system = 'Você é um avaliador de inglês para brasileiros. Responda APENAS em JSON válido, sem markdown.';
+    const user = `Cenário: ${rp.scenario}
+Aluno é Personagem ${studentRole}. Deve falar em inglês simples nível A1.
+Contexto anterior:
+${context || '(início da conversa)'}
+Fala do aluno para avaliar: "${msg.en}"
+
+Avalie apenas GRAMÁTICA e VOCABULÁRIO da fala do aluno (não pronúncia).
+Retorne JSON:
+{
+  "ok": true/false,
+  "issue": "descrição curta do erro em português ou null",
+  "correct": "versão corrigida em inglês ou null",
+  "feedback_pt": "feedback curto e encorajador em português (1-2 linhas)"
+}`;
+
+    const response = await fetch('/api/claude', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        system, max_tokens: 300,
+        messages: [{role: 'user', content: user}]
+      })
+    }).then(r => r.json());
+
+    const raw = response.content[0].text.trim().replace(/```json|```/g, '').trim();
+    const fb = JSON.parse(raw);
+    msg.feedback = fb;
+    renderFeedbackInMsg(msgIdx, fb);
+  } catch(e) {
+    fbSlot.innerHTML = `<div class="msg-feedback err">Não foi possível avaliar: ${e.message}</div>`;
+  }
+}
+
+function renderFeedbackInMsg(msgIdx, fb) {
+  const fbSlot = document.getElementById(`msg-fb-${msgIdx}`);
+  if (!fbSlot) return;
+  if (fb.ok) {
+    fbSlot.innerHTML = `
+      <div class="msg-feedback ok">
+        <div class="fb-title">✅ Ótimo!</div>
+        ${fb.feedback_pt || 'Sua frase está correta.'}
+      </div>`;
+  } else {
+    fbSlot.innerHTML = `
+      <div class="msg-feedback err">
+        <div class="fb-title">💡 Sugestão</div>
+        ${fb.feedback_pt || ''}
+        ${fb.correct ? `<div style="margin-top:5px"><strong>Versão correta:</strong> <span style="font-family:var(--font-m)">${fb.correct}</span></div>` : ''}
+      </div>`;
+  }
+}
+
+async function requestSuggestion() {
+  clearSuggestion();
+  const slot = document.getElementById('chat-suggested-slot');
+  slot.innerHTML = `<div class="chat-suggested"><span class="lbl">Sugestão</span><em>Gerando…</em></div>`;
+  try {
+    const day = DAYS[1];
+    const rp = day.roleplay;
+    const lastIA = [...chatMessages].reverse().find(m => m.speaker === iaRole);
+    const system = 'Você sugere respostas curtas em inglês nível A1 para prática de fluência. Responda APENAS com a frase sugerida, sem explicações, sem aspas.';
+    const user = `Cenário: ${rp.scenario}
+Você está no papel do Personagem ${studentRole}.
+Última fala do outro personagem: "${lastIA ? lastIA.en : '(início)'}"
+Sugira UMA resposta curta e natural em inglês (5-12 palavras) que faça sentido no cenário.`;
+
+    const response = await fetch('/api/claude', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        system, max_tokens: 60,
+        messages: [{role: 'user', content: user}]
+      })
+    }).then(r => r.json());
+
+    const sugg = response.content[0].text.trim().replace(/^["']|["']$/g, '');
+    slot.innerHTML = `
+      <div class="chat-suggested">
+        <span class="lbl">💡 Sugestão de resposta</span>
+        <span class="txt">${sugg}</span>
+        <button class="use-btn" onclick="useSuggestion('${sugg.replace(/'/g,"\\'")}')">Usar</button>
+      </div>`;
+  } catch(e) {
+    slot.innerHTML = `<div class="chat-suggested">Não foi possível gerar sugestão.</div>`;
+  }
+}
+
+function useSuggestion(txt) {
+  document.getElementById('chat-input').value = txt;
+  clearSuggestion();
+  document.getElementById('chat-input').focus();
+}
+
+function clearSuggestion() {
+  const slot = document.getElementById('chat-suggested-slot');
+  if (slot) slot.innerHTML = '';
+}
+
+function swapRoles() {
+  // trocar papéis: aluno vira A, IA vira B (ou vice-versa)
+  studentRole = studentRole === 'A' ? 'B' : 'A';
+  iaRole = iaRole === 'A' ? 'B' : 'A';
+  renderFluencyIntro();
+}
+
+
 // ── init ───────────────────────────────────────────────
 buildSelector();
+updatePageTitle();
+// conectar cliques das tabs de seção
+document.querySelectorAll('.section-tab').forEach(t => {
+  t.addEventListener('click', () => switchSection(t.dataset.section));
+});
 const firstBtn = document.querySelector('.sel-btn');
 if (firstBtn) firstBtn.click();
 </script>
