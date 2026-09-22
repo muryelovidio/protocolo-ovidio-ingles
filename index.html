@@ -569,40 +569,44 @@ function speakEnToggle(text, btn) {
 }
 
 function _playGoogleTTS(text, btn) {
-  const audio = new Audio(_gttsUrl(text));
-  audio.crossOrigin = 'anonymous';
-  if (btn) {
-    btn.classList.add('playing');
-    btn.setAttribute('aria-pressed', 'true');
-    activeSpeakBtn = btn;
-    activeAudio = audio;
-  }
-  const done = () => {
+  // Chama o backend proxy (/api/claude action=tts) que busca o MP3 do Google
+  // e devolve como base64 — evita qualquer bloqueio de CORS no browser.
+  fetch('/api/claude', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action: 'tts', text })
+  })
+  .then(r => r.json())
+  .then(data => {
+    if (!data.audio) throw new Error('sem audio');
+    const audio = new Audio(`data:${data.mime};base64,${data.audio}`);
+    if (btn) { activeAudio = audio; }
+    const done = () => {
+      if (btn) {
+        btn.classList.remove('playing');
+        btn.setAttribute('aria-pressed', 'false');
+        if (activeSpeakBtn === btn) activeSpeakBtn = null;
+        if (activeAudio === audio) activeAudio = null;
+      }
+    };
+    audio.onended = done;
+    audio.onerror = done;
+    audio.play().catch(done);
+  })
+  .catch(() => {
+    // fallback: Web Speech API
     if (btn) {
       btn.classList.remove('playing');
       btn.setAttribute('aria-pressed', 'false');
+      if (activeSpeakBtn === btn) activeSpeakBtn = null;
     }
-    if (activeSpeakBtn === btn) activeSpeakBtn = null;
-    if (activeAudio === audio) activeAudio = null;
-  };
-  audio.onended = done;
-  audio.onerror = () => {
-    done();
-    // fallback: Web Speech API caso Google TTS falhe
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel();
       const u = new SpeechSynthesisUtterance(text);
       u.lang = 'en-US'; u.rate = 0.9;
-      if (btn) {
-        u.onend = () => {
-          btn.classList.remove('playing');
-          btn.setAttribute('aria-pressed', 'false');
-        };
-      }
       window.speechSynthesis.speak(u);
     }
-  };
-  audio.play().catch(() => audio.onerror());
+  });
 }
 
 
