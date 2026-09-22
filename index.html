@@ -314,33 +314,48 @@ td strong{font-family:var(--font-m)}
 @keyframes ftdot{0%,60%,100%{opacity:.25;transform:scale(.8)}30%{opacity:1;transform:scale(1)}}
 
 /* área de input */
-.ft-input-area{background:#FFF8E0;border-top:1px solid #F0E4B0;padding:12px 16px}
-.ft-mode-row{display:flex;gap:6px;margin-bottom:10px}
-.ft-mode-btn{flex:1;background:#fff;border:1.5px solid #e0d8c8;border-radius:8px;padding:8px 12px;font-family:var(--font-d);font-size:12.5px;font-weight:600;cursor:pointer;transition:all .15s;color:var(--soft)}
-.ft-mode-btn.active{background:#C98A00;color:#fff;border-color:#C98A00}
+/* input area — layout Gliglish */
+.ft-input-area{background:#FFF8E0;border-top:1px solid #F0E4B0;padding:14px 16px 12px}
 
-/* modo áudio */
-.ft-audio-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.ft-mic-main{display:inline-flex;align-items:center;gap:10px;background:#1a1a2e;color:#fff;border:none;border-radius:50px;padding:13px 28px;font-size:14px;font-weight:700;cursor:pointer;transition:all .15s;font-family:var(--font-b)}
+/* --- MODO ÁUDIO (padrão) --- */
+/* faixa de controles laterais esquerda: sugestões + teclado */
+.ft-side-btns{display:flex;flex-direction:column;align-items:center;gap:10px}
+.ft-side-btn{background:transparent;border:none;cursor:pointer;color:var(--soft);font-size:11px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px;font-family:var(--font-b);transition:color .15s}
+.ft-side-btn:hover{color:var(--dark)}
+.ft-side-btn .ft-sb-icon{font-size:20px}
+/* mic central */
+.ft-audio-wrap{display:flex;align-items:center;gap:20px}
+.ft-mic-center{display:flex;flex-direction:column;align-items:center;flex:1}
+.ft-mic-main{display:inline-flex;align-items:center;gap:10px;background:#1a1a2e;color:#fff;border:none;border-radius:50px;padding:14px 32px;font-size:14.5px;font-weight:700;cursor:pointer;transition:all .15s;font-family:var(--font-b)}
 .ft-mic-main:hover{background:#2d2d4e}
 .ft-mic-main:active{transform:scale(.96)}
 .ft-mic-main.rec{background:#e11b22;animation:micpulse 1.4s ease-in-out infinite}
 @keyframes micpulse{0%,100%{box-shadow:0 0 0 0 rgba(225,27,34,.35)}50%{box-shadow:0 0 0 8px rgba(225,27,34,0)}}
-.ft-mic-timer{font-family:var(--font-m);font-size:12px;color:var(--soft)}
-.ft-transcript-live{margin-top:8px;padding:8px 10px;background:#fff;border-radius:7px;font-size:13px;color:var(--text);min-height:18px;border:1px solid #e0d8c8;font-style:italic;display:none}
+.ft-mic-timer{font-family:var(--font-m);font-size:11px;color:var(--soft);margin-top:5px}
+.ft-transcript-live{margin-top:8px;padding:8px 10px;background:#fff;border-radius:7px;font-size:13px;color:var(--text);min-height:18px;border:1px solid #e0d8c8;font-style:italic;display:none;width:100%;box-sizing:border-box}
 .ft-transcript-live.show{display:block}
 
-/* modo texto */
-.ft-text-row{display:flex;gap:8px;align-items:flex-end}
-.ft-text-inp{flex:1;font-family:var(--font-b);font-size:14px;padding:10px 12px;border:1.5px solid #e0d8c8;border-radius:9px;background:#fff;resize:none;min-height:42px;max-height:120px}
+/* --- MODO TEXTO (igual ao Gliglish print 2) --- */
+/* linha: [💡✨] [input grande] [➤] */
+.ft-text-wrap{display:flex;align-items:center;gap:10px}
+.ft-text-side{display:flex;flex-direction:column;align-items:center;gap:8px}
+.ft-text-inp{flex:1;font-family:var(--font-b);font-size:14px;padding:12px 14px;border:1.5px solid #e0d8c8;border-radius:10px;background:#fff;resize:none;min-height:48px;max-height:140px;line-height:1.5}
 .ft-text-inp:focus{outline:none;border-color:#C98A00}
-.ft-send-btn{background:#C98A00;color:#fff;border:none;border-radius:9px;padding:10px 18px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--font-b)}
+.ft-send-btn{width:40px;height:40px;background:#C98A00;color:#fff;border:none;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s}
 .ft-send-btn:hover{background:#8F6300}
 
-/* sugestões */
-.ft-sugg-row{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
-.ft-sugg-btn{background:transparent;border:1px dashed #C98A00;color:#8F6300;border-radius:16px;padding:4px 12px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-b)}
-.ft-sugg-btn:hover{background:#FFF0C0}
+/* sugestões (painel — igual nos dois modos) */
+.ft-sugg-panel{background:#fff;border:1px solid #e0d8c8;border-radius:10px;padding:10px 12px;margin-top:8px;display:none}
+.ft-sugg-panel.show{display:block}
+.ft-sugg-line{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px dashed #f0ece4;gap:8px;font-size:13.5px;cursor:pointer}
+.ft-sugg-line:last-of-type{border-bottom:none}
+.ft-sugg-line:hover .ft-sugg-text{text-decoration:underline}
+.ft-sugg-text{flex:1;font-family:var(--font-m);color:var(--dark)}
+.ft-sugg-use{background:#C98A00;color:#fff;border:none;border-radius:10px;padding:2px 9px;font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap}
+.ft-translate-row{display:flex;gap:6px;margin-top:8px}
+.ft-translate-inp{flex:1;font-size:13px;padding:7px 10px;border:1px solid #e0d8c8;border-radius:7px;background:#FFFEF9;font-family:var(--font-b)}
+.ft-translate-inp:focus{outline:none;border-color:#C98A00}
+.ft-translate-go{background:#1a1a2e;color:#fff;border:none;border-radius:7px;padding:7px 14px;font-size:12px;font-weight:600;cursor:pointer}
 .ft-sugg-panel{background:#fff;border:1px solid #e0d8c8;border-radius:10px;padding:10px 12px;margin-top:8px;display:none}
 .ft-sugg-panel.show{display:block}
 .ft-sugg-line{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px dashed #f0ece4;gap:8px;font-size:13.5px;cursor:pointer}
@@ -1514,8 +1529,8 @@ function ftAddIaBubble(q, qIdx) {
   body.appendChild(div);
   body.scrollTop = body.scrollHeight;
   ftChat.msgs.push({ role:'ia', text:q.pergunta_en, qIdx });
-  // tocando automaticamente a pergunta da IA
-  ftPlayTTS(q.pergunta_en, null);
+  // tocar automaticamente — pequeno delay para DOM estabilizar e áudio anterior terminar
+  setTimeout(() => ftPlayTTS(q.pergunta_en, null), 300);
 }
 
 function ftTogglePr(qIdx) {
@@ -1698,16 +1713,8 @@ function ftEditAnswer(msgIdx) {
 function renderFtInput(keepMode) {
   const area = document.getElementById('ft-input-area');
   if (!area) return;
-  const mode = ftChat.mode;
   area.innerHTML = `
-    <div class="ft-mode-row">
-      <button class="ft-mode-btn ${mode==='audio'?'active':''}" onclick="ftSetMode('audio')">🎤 Áudio</button>
-      <button class="ft-mode-btn ${mode==='text'?'active':''}" onclick="ftSetMode('text')">⌨️ Texto</button>
-    </div>
     <div id="ft-input-inner"></div>
-    <div class="ft-sugg-row">
-      <button class="ft-sugg-btn" onclick="ftToggleSugg()">💡 Sugestões</button>
-    </div>
     <div class="ft-sugg-panel" id="ft-sugg-panel"></div>`;
   renderFtInputInner();
 }
@@ -1715,33 +1722,56 @@ function renderFtInput(keepMode) {
 function ftSetMode(m) {
   ftChat.mode = m;
   if (ftChat.rec) { try { ftChat.rec.stop(); } catch(e){} ftChat.rec = null; clearInterval(ftChat.recTimer); }
-  // re-renderizar só o inner e os tabs
-  const area = document.getElementById('ft-input-area');
-  if (!area) return renderFtInput();
-  const tabs = area.querySelectorAll('.ft-mode-btn');
-  tabs.forEach(t => t.classList.toggle('active', t.textContent.includes(m==='audio'?'Áudio':'Texto')));
-  renderFtInputInner();
+  renderFtInputInner(); // sem abas: apenas troca o inner
 }
 
 function renderFtInputInner() {
   const inner = document.getElementById('ft-input-inner');
   if (!inner) return;
+  const hasSR = !!(window.SpeechRecognition || window.webkitSpeechRecognition);
+
   if (ftChat.mode === 'audio') {
-    const hasSR = !!(window.SpeechRecognition || window.webkitSpeechRecognition);
+    // MODO ÁUDIO — estilo Gliglish:
+    // esquerda: [💡 Sugestões] + [⌨️ Escreva] | centro: [🎤 Clique para falar]
     inner.innerHTML = hasSR ? `
-      <div class="ft-audio-row">
-        <button class="ft-mic-main" id="ft-mic-btn" onclick="ftToggleMic()">
-          🎤 <span id="ft-mic-lbl">Clique para falar</span>
-        </button>
-        <span class="ft-mic-timer" id="ft-mic-timer" style="display:none"></span>
+      <div class="ft-audio-wrap">
+        <div class="ft-side-btns">
+          <button class="ft-side-btn" onclick="ftToggleSugg()" title="Sugestões">
+            <span class="ft-sb-icon">💡</span>
+            <span>Sugestões</span>
+          </button>
+          <button class="ft-side-btn" onclick="ftSetMode('text')" title="Escreva sua resposta">
+            <span class="ft-sb-icon">⌨️</span>
+            <span>Escreva</span>
+          </button>
+        </div>
+        <div class="ft-mic-center">
+          <button class="ft-mic-main" id="ft-mic-btn" onclick="ftToggleMic()">
+            🎤 <span id="ft-mic-lbl">Clique para falar</span>
+          </button>
+          <span class="ft-mic-timer" id="ft-mic-timer"></span>
+        </div>
       </div>
       <div class="ft-transcript-live" id="ft-transcript-live"></div>`
     : `<div class="ap-warn">⚠️ Áudio não disponível. Use Chrome.</div>`;
+
   } else {
+    // MODO TEXTO — estilo Gliglish print 2:
+    // esquerda: [💡 Sugestões] + [🎤 Fale] | centro: input grande | direita: ➤
     inner.innerHTML = `
-      <div class="ft-text-row">
+      <div class="ft-text-wrap">
+        <div class="ft-text-side">
+          <button class="ft-side-btn" onclick="ftToggleSugg()" title="Sugestões">
+            <span class="ft-sb-icon">💡</span>
+            <span>Sugestões</span>
+          </button>
+          <button class="ft-side-btn" onclick="ftSetMode('audio')" title="Fale sua resposta">
+            <span class="ft-sb-icon">🎤</span>
+            <span>Fale</span>
+          </button>
+        </div>
         <textarea class="ft-text-inp" id="ft-text-inp" rows="2"
-          placeholder="Escreva sua resposta em inglês…"
+          placeholder="Type your answer…"
           onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();ftSendText()}"></textarea>
         <button class="ft-send-btn" onclick="ftSendText()">➤</button>
       </div>`;
