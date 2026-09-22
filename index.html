@@ -250,10 +250,10 @@ td strong{font-family:var(--font-m)}
 
 .boost-gen-loading{display:flex;flex-direction:column;align-items:center;gap:10px;padding:26px 0;color:var(--soft);font-size:13.5px}
 
-/* Fluency Training — quiz estruturado */
+/* Fluency Training — chat de bolhas */
 .fluency-card{background:#FFF8E0;border:1px solid #F0E4B0;border-radius:14px;padding:18px 20px;margin-bottom:16px}
 
-/* Fase 1: intro */
+/* intro */
 .ft-intro-title{font-family:var(--font-d);font-size:18px;font-weight:700;color:#8F6300;margin-bottom:16px}
 .ft-lbl{display:block;font-family:var(--font-m);font-size:11px;color:#8F6300;text-transform:uppercase;letter-spacing:.06em;font-weight:600;margin-bottom:8px}
 .ft-intro-objective,.ft-intro-legos,.ft-intro-vocab,.ft-intro-scenario{background:#fff;border-radius:10px;padding:12px 14px;margin-bottom:12px;border:1px solid #F0E4B0}
@@ -266,95 +266,99 @@ td strong{font-family:var(--font-m)}
 .ft-vocab-item{padding:5px 0;font-size:13px;display:flex;align-items:baseline;gap:6px;flex-wrap:wrap}
 .ft-vocab-en{font-family:var(--font-m);color:var(--dark)}
 .ft-vocab-pr{font-family:var(--font-m);font-size:11.5px;color:var(--soft);font-style:italic}
-.ft-vocab-pt{font-size:12.5px;color:var(--text-soft, #6B6A63)}
+.ft-vocab-pt{font-size:12.5px;color:#6B6A63}
 .ft-intro-actions{margin-top:16px;text-align:center}
-.ft-start-btn{background:#C98A00}
-.ft-start-btn:hover{background:#8F6300}
+.ft-start-btn{background:#C98A00}.ft-start-btn:hover{background:#8F6300}
 
-/* Fase 2: pergunta */
-.ft-qhead{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-.ft-counter{font-family:var(--font-m);font-size:11px;font-weight:600;color:var(--faint);white-space:nowrap}
-.ft-pbar{flex:1;height:5px;background:#F0E4B0;border-radius:3px;overflow:hidden}
-.ft-pfill{height:100%;background:#C98A00;transition:width .3s ease}
-.ft-context{font-size:12.5px;color:var(--soft);font-style:italic;margin-bottom:10px;padding-left:8px;border-left:2px solid #C98A00}
+/* chat container */
+.ft-chat-wrap{background:#FFF8E0;border:1px solid #F0E4B0;border-radius:14px;overflow:hidden;margin-bottom:0}
+.ft-chat-header{padding:12px 16px;border-bottom:1px solid #F0E4B0;display:flex;align-items:center;gap:10px;background:#FFF8E0}
+.ft-chat-title{font-family:var(--font-d);font-size:14px;font-weight:600;color:#8F6300}
+.ft-chat-scenario{font-size:12px;color:var(--soft)}
+.ft-chat-body{padding:16px;display:flex;flex-direction:column;gap:12px;min-height:200px;background:#f7f5f0}
+.ft-chat-body:empty::before{content:'';display:block}
 
-.ft-ia-bubble{background:#fff;border:1px solid #F0E4B0;border-radius:14px;border-bottom-left-radius:4px;padding:12px 14px;margin-bottom:14px;max-width:88%}
-.ft-ia-speaker{font-family:var(--font-m);font-size:10.5px;color:var(--faint);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
-.ft-ia-text{font-family:var(--font-m);font-size:15px;line-height:1.4;color:var(--dark);margin-bottom:8px}
-.ft-ia-actions{display:flex;gap:6px;flex-wrap:wrap}
-.ft-icon-btn{background:#fff;border:1px solid var(--border-strong);border-radius:16px;width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;padding:0;transition:all .15s}
-.ft-icon-btn:hover{background:var(--bg);border-color:var(--dark)}
-.ft-icon-btn.playing{background:var(--red);border-color:var(--red);color:#fff}
-.ft-ia-transcription,.ft-ia-translation{display:none;margin-top:8px;padding:7px 10px;background:#F5F5F2;border-radius:6px;font-size:12.5px;line-height:1.4;color:var(--text)}
-.ft-ia-transcription.show,.ft-ia-translation.show{display:block}
-.ft-ia-transcription{font-family:var(--font-m);color:var(--soft);font-style:italic}
+/* bolha IA */
+.ft-bubble-ia{align-self:flex-start;max-width:82%;background:#fff;border:1px solid #e8e3d8;border-radius:18px;border-bottom-left-radius:4px;padding:12px 14px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.ft-bubble-ia .ft-b-speaker{font-family:var(--font-m);font-size:10.5px;color:var(--faint);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
+.ft-bubble-ia .ft-b-text{font-size:14.5px;line-height:1.5;color:#1a1a2e}
+.ft-bubble-ia .ft-b-pr{font-family:var(--font-m);font-size:12px;color:var(--soft);font-style:italic;margin-top:5px;display:none}
+.ft-bubble-ia .ft-b-pr.show{display:block}
+.ft-bubble-ia .ft-b-tr{font-size:12.5px;color:var(--soft);margin-top:5px;border-top:1px dashed #eee;padding-top:5px;display:none}
+.ft-bubble-ia .ft-b-tr.show{display:block}
+.ft-bubble-ia .ft-b-actions{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
 
-/* área de resposta */
-.ft-answer-area{margin-bottom:12px}
-.ft-mode-tabs{display:flex;gap:6px;margin-bottom:10px}
-.ft-mode-btn{flex:1;background:#fff;border:1.5px solid var(--border-strong);border-radius:8px;padding:8px 12px;font-family:var(--font-d);font-size:12.5px;font-weight:600;cursor:pointer;transition:all .15s;color:var(--soft)}
+/* bolha usuário */
+.ft-bubble-user{align-self:flex-end;max-width:82%;background:#4040c0;border-radius:18px;border-bottom-right-radius:4px;padding:12px 14px;color:#fff;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.ft-bubble-user .ft-b-speaker{font-family:var(--font-m);font-size:10.5px;color:rgba(255,255,255,.65);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px;text-align:right}
+.ft-bubble-user .ft-b-text{font-size:14.5px;line-height:1.5}
+.ft-bubble-user .ft-b-actions{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;justify-content:flex-end}
+.ft-bubble-user .ft-b-fb{margin-top:8px;padding:8px 10px;border-radius:8px;font-size:12.5px;line-height:1.45}
+.ft-bubble-user .ft-b-fb.ok{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3)}
+.ft-bubble-user .ft-b-fb.err{background:#fff;color:#991B1B;border:none}
+.ft-bubble-user .ft-b-fb-actions{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+
+/* botões de ação nas bolhas */
+.ft-bact{display:inline-flex;align-items:center;gap:4px;background:transparent;border:1px solid rgba(0,0,0,.12);border-radius:20px;padding:3px 10px;font-size:12px;font-weight:500;cursor:pointer;transition:all .15s;color:var(--text);font-family:var(--font-b)}
+.ft-bubble-user .ft-bact{border-color:rgba(255,255,255,.3);color:#fff}
+.ft-bact:hover{background:rgba(0,0,0,.06)}
+.ft-bubble-user .ft-bact:hover{background:rgba(255,255,255,.15)}
+.ft-bact.active{background:rgba(0,0,0,.08)}
+.ft-bubble-user .ft-bact.active{background:rgba(255,255,255,.2)}
+
+/* dots de loading da IA */
+.ft-thinking{align-self:flex-start;padding:10px 14px;background:#fff;border:1px solid #e8e3d8;border-radius:18px;border-bottom-left-radius:4px;display:flex;gap:4px;align-items:center}
+.ft-thinking span{width:7px;height:7px;background:#c8c3b8;border-radius:50%;animation:ftdot 1.2s ease-in-out infinite}
+.ft-thinking span:nth-child(2){animation-delay:.2s}
+.ft-thinking span:nth-child(3){animation-delay:.4s}
+@keyframes ftdot{0%,60%,100%{opacity:.25;transform:scale(.8)}30%{opacity:1;transform:scale(1)}}
+
+/* área de input */
+.ft-input-area{background:#FFF8E0;border-top:1px solid #F0E4B0;padding:12px 16px}
+.ft-mode-row{display:flex;gap:6px;margin-bottom:10px}
+.ft-mode-btn{flex:1;background:#fff;border:1.5px solid #e0d8c8;border-radius:8px;padding:8px 12px;font-family:var(--font-d);font-size:12.5px;font-weight:600;cursor:pointer;transition:all .15s;color:var(--soft)}
 .ft-mode-btn.active{background:#C98A00;color:#fff;border-color:#C98A00}
-.ft-text-input{width:100%;min-height:70px;max-height:200px;resize:vertical;font-family:var(--font-b);font-size:14px;padding:10px 12px;border:1.5px solid var(--border-strong);border-radius:8px;background:#fff}
-.ft-text-input:focus{outline:none;border-color:#C98A00}
-.ft-input-actions{text-align:right;margin-top:8px}
-.ft-send-btn{background:#C98A00}
+
+/* modo áudio */
+.ft-audio-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.ft-mic-main{display:inline-flex;align-items:center;gap:10px;background:#1a1a2e;color:#fff;border:none;border-radius:50px;padding:13px 28px;font-size:14px;font-weight:700;cursor:pointer;transition:all .15s;font-family:var(--font-b)}
+.ft-mic-main:hover{background:#2d2d4e}
+.ft-mic-main:active{transform:scale(.96)}
+.ft-mic-main.rec{background:#e11b22;animation:micpulse 1.4s ease-in-out infinite}
+@keyframes micpulse{0%,100%{box-shadow:0 0 0 0 rgba(225,27,34,.35)}50%{box-shadow:0 0 0 8px rgba(225,27,34,0)}}
+.ft-mic-timer{font-family:var(--font-m);font-size:12px;color:var(--soft)}
+.ft-transcript-live{margin-top:8px;padding:8px 10px;background:#fff;border-radius:7px;font-size:13px;color:var(--text);min-height:18px;border:1px solid #e0d8c8;font-style:italic;display:none}
+.ft-transcript-live.show{display:block}
+
+/* modo texto */
+.ft-text-row{display:flex;gap:8px;align-items:flex-end}
+.ft-text-inp{flex:1;font-family:var(--font-b);font-size:14px;padding:10px 12px;border:1.5px solid #e0d8c8;border-radius:9px;background:#fff;resize:none;min-height:42px;max-height:120px}
+.ft-text-inp:focus{outline:none;border-color:#C98A00}
+.ft-send-btn{background:#C98A00;color:#fff;border:none;border-radius:9px;padding:10px 18px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--font-b)}
 .ft-send-btn:hover{background:#8F6300}
 
-/* áudio */
-.ft-audio-area{background:#fff;border:1.5px solid var(--border-strong);border-radius:10px;padding:16px;text-align:center}
-.ft-mic-btn{display:inline-flex;align-items:center;gap:10px;background:var(--dark);color:#fff;border:none;border-radius:50px;padding:12px 24px;font-size:14px;font-weight:700;cursor:pointer;transition:background .15s,transform .1s;font-family:var(--font-b)}
-.ft-mic-btn:hover{background:#3a3a3a}
-.ft-mic-btn:active{transform:scale(.96)}
-.ft-mic-btn.rec{background:var(--red);animation:mic-pulse 1.4s ease-in-out infinite}
-@keyframes mic-pulse{0%,100%{box-shadow:0 0 0 0 rgba(225,27,34,.35)}50%{box-shadow:0 0 0 8px rgba(225,27,34,0)}}
-.ft-mic-icon{font-size:16px}
-.ft-mic-status{display:none;align-items:center;justify-content:center;gap:10px;margin-top:10px;font-family:var(--font-m);font-size:12px;color:var(--red)}
-.ft-mic-wave{display:inline-block;width:8px;height:8px;background:var(--red);border-radius:50%;animation:mic-pulse 1s ease-in-out infinite}
-.ft-transcript-preview{margin-top:12px;padding:8px 10px;background:#F5F5F2;border-radius:6px;font-size:13px;color:var(--text);min-height:20px;text-align:left}
-.ft-transcript-preview:empty{display:none}
-
-/* linha auxiliar (sugestões) */
-.ft-actions-row{display:flex;gap:8px;margin-top:10px}
-.ft-link-btn{background:transparent;border:1px dashed #C98A00;color:#8F6300;border-radius:16px;padding:5px 12px;font-size:12px;font-weight:600;cursor:pointer}
-.ft-link-btn:hover{background:#FFF8E0}
-
-/* bubble do aluno + feedback */
-.ft-user-bubble{background:#2C6FD1;color:#fff;border-radius:14px;border-bottom-right-radius:4px;padding:10px 13px;margin:14px 0 10px auto;max-width:88%}
-.ft-user-speaker{font-family:var(--font-m);font-size:10.5px;color:rgba(255,255,255,.75);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;text-align:right}
-.ft-user-text{font-size:14px;line-height:1.4}
-.ft-user-actions{display:flex;gap:6px;justify-content:flex-end;margin-top:6px}
-.ft-user-actions .ft-icon-btn{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.3);color:#fff;width:28px;height:28px;font-size:12px}
-.ft-user-actions .ft-icon-btn:hover{background:rgba(255,255,255,.28)}
-
-.ft-evaluating{display:flex;align-items:center;justify-content:center;gap:10px;padding:14px 0;color:var(--soft);font-size:13px}
-.ft-feedback{margin-top:10px;padding:12px 14px;border-radius:10px;border:1px solid}
-.ft-feedback.ok{background:#F6FBF7;border-color:#BFE6C9}
-.ft-feedback.err{background:#FFF8F8;border-color:#F5D0D0}
-.ft-verdict{font-family:var(--font-d);font-size:15px;font-weight:700;margin-bottom:8px}
-.ft-verdict.ok{color:#166534}
-.ft-verdict.err{color:#991B1B}
-.ft-feedback-explain{margin-top:8px;padding-top:10px;border-top:1px dashed #F5D0D0}
-.ft-fb-lbl{font-family:var(--font-m);font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--faint);margin-bottom:5px;font-weight:600}
-.ft-fb-model{display:flex;align-items:center;gap:8px;padding:8px 10px;background:#fff;border-radius:6px;font-family:var(--font-m);font-size:14px;font-weight:600;color:var(--dark);margin-bottom:8px}
-.ft-fb-lego{font-size:12.5px;color:var(--text-soft);margin-bottom:6px}
-.ft-fb-lego strong{font-family:var(--font-m);color:var(--red)}
-.ft-fb-tip{font-size:12.5px;color:var(--soft);line-height:1.45;font-style:italic}
-.ft-fb-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
-.ft-next-btn{background:#C98A00}
-.ft-next-btn:hover{background:#8F6300}
-.btn-outline{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--soft);border:1.5px solid var(--border-strong);border-radius:8px;padding:10px 20px;font-size:13.5px;font-weight:600;cursor:pointer;font-family:var(--font-b)}
-.btn-outline:hover{border-color:var(--dark);color:var(--text)}
-
 /* sugestões */
-.ft-suggestions-box{background:#FFF8E0;border:1px dashed #C98A00;border-radius:8px;padding:10px 12px;margin-top:10px}
-.ft-sugg-line{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 0;font-family:var(--font-m);font-size:13px;border-bottom:1px dashed #F0E4B0}
-.ft-sugg-line:last-child{border-bottom:none}
+.ft-sugg-row{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
+.ft-sugg-btn{background:transparent;border:1px dashed #C98A00;color:#8F6300;border-radius:16px;padding:4px 12px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-b)}
+.ft-sugg-btn:hover{background:#FFF0C0}
+.ft-sugg-panel{background:#fff;border:1px solid #e0d8c8;border-radius:10px;padding:10px 12px;margin-top:8px;display:none}
+.ft-sugg-panel.show{display:block}
+.ft-sugg-line{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px dashed #f0ece4;gap:8px;font-size:13.5px;cursor:pointer}
+.ft-sugg-line:last-of-type{border-bottom:none}
+.ft-sugg-line:hover .ft-sugg-text{text-decoration:underline}
+.ft-sugg-text{flex:1;font-family:var(--font-m);color:var(--dark)}
+.ft-sugg-use{background:#C98A00;color:#fff;border:none;border-radius:10px;padding:2px 9px;font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap}
+.ft-translate-row{display:flex;gap:6px;margin-top:8px}
+.ft-translate-inp{flex:1;font-size:13px;padding:7px 10px;border:1px solid #e0d8c8;border-radius:7px;background:#FFFEF9;font-family:var(--font-b)}
+.ft-translate-inp:focus{outline:none;border-color:#C98A00}
+.ft-translate-go{background:#1a1a2e;color:#fff;border:none;border-radius:7px;padding:7px 14px;font-size:12px;font-weight:600;cursor:pointer}
 
-/* fase final: resultado */
+/* resultado final */
+.ft-finish-card{background:#FFF8E0;border:1px solid #F0E4B0;border-radius:14px;padding:20px}
 .ft-finish-title{font-family:var(--font-d);font-size:20px;font-weight:700;color:#8F6300;text-align:center;margin-bottom:8px}
 .ft-finish-score{font-family:var(--font-d);font-size:48px;font-weight:700;color:#C98A00;text-align:center;line-height:1;margin-bottom:4px}
 .ft-finish-total{font-size:24px;color:var(--faint);font-weight:400}
-.ft-finish-msg{font-size:14px;color:var(--text);text-align:center;margin-bottom:20px;line-height:1.5}
+.ft-finish-msg{font-size:14px;color:var(--text);text-align:center;margin-bottom:20px}
 .ft-finish-section{background:#fff;border-radius:10px;padding:12px 14px;margin-bottom:10px;border:1px solid #F0E4B0}
 .ft-finish-chips{display:flex;gap:6px;flex-wrap:wrap}
 .ft-chip{display:inline-flex;align-items:center;padding:4px 10px;border-radius:14px;font-family:var(--font-m);font-size:12px;font-weight:600}
@@ -363,9 +367,7 @@ td strong{font-family:var(--font-m)}
 .ft-finish-empty{color:var(--soft);font-size:13px;font-style:italic}
 .ft-finish-vocab{font-family:var(--font-m);font-size:13px;color:var(--text)}
 .ft-finish-actions{margin-top:16px;text-align:center}
-.ft-finish-actions .btn{background:#C98A00}
-.ft-finish-actions .btn:hover{background:#8F6300}
-
+.ft-finish-actions .btn{background:#C98A00}.ft-finish-actions .btn:hover{background:#8F6300}
 
 /* analyzing */
 .ap-analyzing{display:flex;flex-direction:column;align-items:center;gap:10px;padding:24px 0}
@@ -535,6 +537,12 @@ function normalize(s) {
     .replace(/[.,?!;:"'()]/g, '')
     .replace(/\s+/g, ' ')
     .trim();
+}
+function escHtml(s) {
+  return String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function normalizeAns(s) {
+  return String(s||'').toLowerCase().replace(/[.,!?;:"'()]/g,'').replace(/\s+/g,' ').trim();
 }
 // ── TTS via Google Translate (mesma voz do Google Tradutor) ──────────
 // Usa a URL pública do Google TTS — natural, clara, sem chave de API.
@@ -1406,25 +1414,23 @@ function fallbackBoostQuestions(boost) {
 
 
 
-// ── ABA FLUENCY TRAINING (roleplay guiado — quiz de conversação) ─────
-// Fluxo em 3 fases:
-//   1. Intro: objetivo + 5 estruturas LEGO + vocabulário-chave
-//   2. Perguntas: bubble da IA + área de resposta + avaliação
-//   3. Resumo: pontuação + estruturas dominadas
-// Otimização de tokens:
-//   - Fast path: comparação textual (resposta bate com modelo/variação → sem IA)
-//   - Cache: (pergunta+resposta) já avaliadas ficam em localStorage
-//   - Prompt mínimo, max_tokens=300, modelo Haiku
+// ── ABA FLUENCY TRAINING — chat de bolhas ─────────────────────────────
+// Redesign completo: fluxo de chat contínuo (estilo Gliglish).
+// IA abre com a pergunta. Aluno responde por áudio ou texto.
+// Cada bolha tem seus próprios controles (Ouvir/Traduzir/Pronúncia na IA,
+// Ouvir/Checar/Editar no usuário). Sugestões + campo de tradução sempre acessíveis.
+// Otimização: fast path textual antes de chamar a IA para checar.
 
-let ftState = {
-  currentQ: 0,           // índice da pergunta atual (0-based)
-  attempts: 0,           // tentativas na pergunta atual (0 ou 1)
-  results: [],           // [{correct: bool, attempts: number, usedLegos: [...]}]
-  inputMode: 'text',     // 'text' | 'audio'
-  lastAnswer: '',        // última resposta enviada (para o botão Play)
-  suggestionsShown: {},  // cache: { [qIdx]: [str, str, str] }
-  rec: null,             // SpeechRecognition instance
-  recTimer: null,        // timer de 60s
+let ftChat = {
+  qIdx: 0,          // pergunta atual (0-based)
+  msgs: [],         // [{role:'ia'|'user', text, qIdx, checked?, feedback?}]
+  mode: 'audio',    // 'audio' | 'text'
+  rec: null,        // SpeechRecognition em andamento
+  recTimer: null,
+  recFinal: '',
+  iaTyping: false,
+  score: { correct:0, total:0 },
+  suggOpen: false,
 };
 
 function initFluencyTab() {
@@ -1432,496 +1438,474 @@ function initFluencyTab() {
   renderFluencyIntro();
 }
 
-// ─────────────────── FASE 1: INTRO ────────────────────
+// ──────────────── INTRO ────────────────────────────────────────────
 function renderFluencyIntro() {
-  const day = DAYS[1];
-  const ft = day.fluency;
-
-  const legosHtml = day.legos.map((l, i) =>
+  const day = DAYS[1], ft = day.fluency;
+  const legosHtml = day.legos.map(l =>
     `<div class="ft-lego-item">
        <span class="ft-lego-name"><strong>${l.stem}</strong></span>
        <span class="ft-lego-desc">${l.note}</span>
        <span class="ft-lego-ex">ex: ${l.stem} ${l.blocks[0].en}</span>
-     </div>`
-  ).join('');
-
+     </div>`).join('');
   const vocabHtml = ft.vocabulario_chave.map(v =>
     `<div class="ft-vocab-item">
        <span class="ft-vocab-en"><strong>${v.en}</strong></span>
        <span class="ft-vocab-pr">/${v.pr}/</span>
        <span class="ft-vocab-pt">→ ${v.pt}</span>
-     </div>`
-  ).join('');
-
+     </div>`).join('');
   document.getElementById('fluency-area').innerHTML = `
     <div class="fluency-card ft-intro">
       <div class="ft-intro-title">💪 Fluency Training — ${day.title}</div>
       <div class="ft-intro-objective">
-        <span class="ft-lbl">🎯 Objetivo do dia</span>
-        <p>${ft.objetivo}</p>
+        <span class="ft-lbl">🎯 Objetivo</span><p>${ft.objetivo}</p>
       </div>
       <div class="ft-intro-legos">
-        <span class="ft-lbl">🧱 5 Estruturas LEGO que você vai dominar</span>
-        ${legosHtml}
+        <span class="ft-lbl">🧱 5 Estruturas LEGO</span>${legosHtml}
       </div>
       <div class="ft-intro-vocab">
-        <span class="ft-lbl">⚡️ Vocabulário-chave</span>
-        ${vocabHtml}
+        <span class="ft-lbl">⚡️ Vocabulário-chave</span>${vocabHtml}
       </div>
       <div class="ft-intro-scenario">
-        <span class="ft-lbl">🎭 Cenário</span>
-        <p>${ft.cenario}</p>
+        <span class="ft-lbl">🎭 Cenário</span><p>${ft.cenario}</p>
       </div>
       <div class="ft-intro-actions">
-        <button class="btn ft-start-btn" onclick="ftStartQuiz()">Entendi, vamos começar →</button>
+        <button class="btn ft-start-btn" onclick="ftBeginChat()">Entendi, vamos começar →</button>
       </div>
     </div>`;
 }
 
-function ftStartQuiz() {
-  ftState.currentQ = 0;
-  ftState.attempts = 0;
-  ftState.results = [];
-  ftState.lastAnswer = '';
-  renderFluencyQuestion();
-}
-
-// ─────────────────── FASE 2: PERGUNTA ────────────────────
-function renderFluencyQuestion() {
-  const ft = DAYS[1].fluency;
-  const q = ft.perguntas[ftState.currentQ];
-  const total = ft.perguntas.length;
-  const num = ftState.currentQ + 1;
-  const pct = Math.round((ftState.currentQ / total) * 100);
-
+// ──────────────── CHAT ─────────────────────────────────────────────
+function ftBeginChat() {
+  ftChat = { qIdx:0, msgs:[], mode:'audio', rec:null, recTimer:null, recFinal:'', iaTyping:false, score:{correct:0,total:0}, suggOpen:false };
+  const day = DAYS[1], ft = day.fluency;
   document.getElementById('fluency-area').innerHTML = `
-    <div class="fluency-card ft-question-card">
-      <div class="ft-qhead">
-        <span class="ft-counter">Pergunta ${num} de ${total}</span>
-        <div class="ft-pbar"><div class="ft-pfill" style="width:${pct}%"></div></div>
-      </div>
-
-      ${q.contexto ? `<div class="ft-context">${q.contexto}</div>` : ''}
-
-      <div class="ft-ia-bubble" id="ft-ia-bubble">
-        <div class="ft-ia-speaker">🤖 Mark</div>
-        <div class="ft-ia-text">${q.pergunta_en}</div>
-        <div class="ft-ia-actions">
-          <button class="ft-icon-btn" data-rowspeak="${q.pergunta_en.replace(/"/g,'&quot;')}"
-            aria-label="Ouvir pergunta" title="Ouvir pergunta">🔊</button>
-          <button class="ft-icon-btn" onclick="ftToggleTranscription()"
-            aria-label="Ver pronúncia" title="Ver pronúncia">📢</button>
-          <button class="ft-icon-btn" onclick="ftToggleTranslation()"
-            aria-label="Ver tradução" title="Ver tradução">🌐</button>
+    <div class="ft-chat-wrap">
+      <div class="ft-chat-header">
+        <span style="font-size:20px">💪</span>
+        <div>
+          <div class="ft-chat-title">Fluency Training — ${day.title}</div>
+          <div class="ft-chat-scenario">${ft.cenario}</div>
         </div>
-        <div class="ft-ia-transcription" id="ft-transcription">/${q.transcricao}/</div>
-        <div class="ft-ia-translation" id="ft-translation">${q.pergunta_pt}</div>
       </div>
-
-      <div class="ft-answer-area" id="ft-answer-area">
-        <div class="ft-mode-tabs">
-          <button class="ft-mode-btn ${ftState.inputMode === 'text' ? 'active' : ''}"
-            onclick="ftSetMode('text')">⌨️ Texto</button>
-          <button class="ft-mode-btn ${ftState.inputMode === 'audio' ? 'active' : ''}"
-            onclick="ftSetMode('audio')">🎤 Áudio</button>
-        </div>
-        <div id="ft-input-container"></div>
-      </div>
-
-      <div class="ft-actions-row">
-        <button class="ft-link-btn" onclick="ftShowSuggestions()">💡 Sugestões</button>
-      </div>
-      <div id="ft-suggestions-slot"></div>
-      <div id="ft-feedback-slot"></div>
+      <div class="ft-chat-body" id="ft-chat-body"></div>
+      <div class="ft-input-area" id="ft-input-area"></div>
     </div>`;
-
-  renderFluencyInput();
+  renderFtInput();
+  ftIaSpeak(0); // IA inicia com a primeira pergunta
 }
 
-function ftToggleTranscription() {
-  const el = document.getElementById('ft-transcription');
+// ──────────────── BOLHA DA IA ──────────────────────────────────────
+function ftAddIaBubble(q, qIdx) {
+  const body = document.getElementById('ft-chat-body');
+  const id = `ft-ia-${qIdx}`;
+  const div = document.createElement('div');
+  div.className = 'ft-bubble-ia';
+  div.id = id;
+  div.innerHTML = `
+    <div class="ft-b-speaker">🤖 Mark</div>
+    <div class="ft-b-text">${escHtml(q.pergunta_en)}</div>
+    <div class="ft-b-pr" id="ft-ia-pr-${qIdx}">/${q.transcricao}/</div>
+    <div class="ft-b-tr" id="ft-ia-tr-${qIdx}">${escHtml(q.pergunta_pt)}</div>
+    <div class="ft-b-actions">
+      <button class="ft-bact" onclick="ftPlayTTS(${JSON.stringify(q.pergunta_en)},this)" title="Ouvir">▶ Ouvir</button>
+      <button class="ft-bact" onclick="ftTogglePr(${qIdx})" title="Pronúncia figurada">📢 Pronúncia</button>
+      <button class="ft-bact" onclick="ftToggleTr(${qIdx})" title="Tradução">🌐 Traduzir</button>
+    </div>`;
+  body.appendChild(div);
+  body.scrollTop = body.scrollHeight;
+  ftChat.msgs.push({ role:'ia', text:q.pergunta_en, qIdx });
+  // tocando automaticamente a pergunta da IA
+  ftPlayTTS(q.pergunta_en, null);
+}
+
+function ftTogglePr(qIdx) {
+  const el = document.getElementById(`ft-ia-pr-${qIdx}`);
   if (el) el.classList.toggle('show');
 }
-function ftToggleTranslation() {
-  const el = document.getElementById('ft-translation');
+function ftToggleTr(qIdx) {
+  const el = document.getElementById(`ft-ia-tr-${qIdx}`);
   if (el) el.classList.toggle('show');
 }
 
-function ftSetMode(mode) {
-  ftState.inputMode = mode;
-  // reset UI de modo
-  const container = document.getElementById('ft-input-container');
-  if (!container) return;
-  renderFluencyQuestion();
+async function ftIaSpeak(qIdx) {
+  const ft = DAYS[1].fluency;
+  if (qIdx >= ft.perguntas.length) { ftFinishChat(); return; }
+  ftShowThinking();
+  await new Promise(r => setTimeout(r, 700)); // pequena pausa dramática
+  ftHideThinking();
+  ftAddIaBubble(ft.perguntas[qIdx], qIdx);
+  ftChat.qIdx = qIdx;
 }
 
-function renderFluencyInput() {
-  const container = document.getElementById('ft-input-container');
-  if (!container) return;
-  if (ftState.inputMode === 'text') {
-    container.innerHTML = `
-      <textarea class="ft-text-input" id="ft-text-input"
-        placeholder="Escreva sua resposta em inglês..."
-        onkeydown="if(event.key==='Enter' && !event.shiftKey){event.preventDefault();ftSubmitText()}"></textarea>
-      <div class="ft-input-actions">
-        <button class="btn ft-send-btn" onclick="ftSubmitText()">Enviar resposta →</button>
-      </div>`;
-  } else {
-    const hasSpeech = !!(window.SpeechRecognition || window.webkitSpeechRecognition);
-    if (!hasSpeech) {
-      container.innerHTML = `<div class="ap-warn">⚠️ Seu navegador não suporta gravação por voz. Use Chrome ou Edge.</div>`;
-      return;
-    }
-    container.innerHTML = `
-      <div class="ft-audio-area">
-        <button class="ft-mic-btn" id="ft-mic-btn" onclick="ftToggleMic()">
-          <span class="ft-mic-icon">🎤</span>
-          <span class="ft-mic-label" id="ft-mic-label">Clique para falar</span>
-        </button>
-        <div class="ft-mic-status" id="ft-mic-status" style="display:none">
-          <span class="ft-mic-wave"></span>
-          <span id="ft-mic-timer">60s</span>
-        </div>
-        <div class="ft-transcript-preview" id="ft-transcript-preview"></div>
-      </div>`;
-  }
+function ftShowThinking() {
+  const body = document.getElementById('ft-chat-body');
+  if (!body) return;
+  const d = document.createElement('div');
+  d.id = 'ft-thinking'; d.className = 'ft-thinking';
+  d.innerHTML = '<span></span><span></span><span></span>';
+  body.appendChild(d);
+  body.scrollTop = body.scrollHeight;
+}
+function ftHideThinking() {
+  const d = document.getElementById('ft-thinking');
+  if (d) d.remove();
 }
 
-// ─────────────────── GRAVAÇÃO ────────────────────
-function ftToggleMic() {
-  if (ftState.rec) { ftStopMic(); return; }
-  ftStartMic();
-}
-
-function ftStartMic() {
-  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SR) return;
-  const rec = new SR();
-  rec.lang = 'en-US';
-  rec.continuous = true;
-  rec.interimResults = true;
-  ftState.rec = rec;
-
-  const btn = document.getElementById('ft-mic-btn');
-  const label = document.getElementById('ft-mic-label');
-  const status = document.getElementById('ft-mic-status');
-  const preview = document.getElementById('ft-transcript-preview');
-  const timerEl = document.getElementById('ft-mic-timer');
-  btn.classList.add('rec');
-  label.textContent = 'Parar gravação';
-  status.style.display = 'flex';
-
-  let finalTranscript = '';
-  let interimTranscript = '';
-
-  rec.onresult = (e) => {
-    interimTranscript = '';
-    for (let i = e.resultIndex; i < e.results.length; i++) {
-      if (e.results[i].isFinal) finalTranscript += e.results[i][0].transcript + ' ';
-      else interimTranscript += e.results[i][0].transcript;
-    }
-    if (preview) {
-      preview.textContent = (finalTranscript + interimTranscript).trim();
-      preview.dataset.final = finalTranscript.trim();
-    }
-  };
-  rec.onerror = () => ftStopMic();
-
-  // timer de 60s
-  let secondsLeft = 60;
-  ftState.recTimer = setInterval(() => {
-    secondsLeft--;
-    if (timerEl) timerEl.textContent = `${secondsLeft}s`;
-    if (secondsLeft <= 0) ftStopMic();
-  }, 1000);
-
-  try { rec.start(); } catch(e) {}
-}
-
-function ftStopMic() {
-  if (!ftState.rec) return;
-  try { ftState.rec.stop(); } catch(e) {}
-  ftState.rec = null;
-  clearInterval(ftState.recTimer);
-  ftState.recTimer = null;
-  const btn = document.getElementById('ft-mic-btn');
-  const label = document.getElementById('ft-mic-label');
-  const status = document.getElementById('ft-mic-status');
-  const preview = document.getElementById('ft-transcript-preview');
-  if (btn) btn.classList.remove('rec');
-  if (label) label.textContent = 'Clique para falar';
-  if (status) status.style.display = 'none';
-  const text = (preview && preview.dataset.final) ? preview.dataset.final : (preview ? preview.textContent : '');
-  if (text && text.trim()) ftSubmitAnswer(text.trim());
-}
-
-function ftSubmitText() {
-  const input = document.getElementById('ft-text-input');
-  if (!input) return;
-  const text = input.value.trim();
-  if (!text) return;
-  ftSubmitAnswer(text);
-}
-
-// ─────────────────── FASE 3: AVALIAÇÃO ────────────────────
-async function ftSubmitAnswer(answer) {
-  ftState.lastAnswer = answer;
-  const q = DAYS[1].fluency.perguntas[ftState.currentQ];
-
-  // renderizar bubble do aluno
-  const answerHtml = `
-    <div class="ft-user-bubble">
-      <div class="ft-user-speaker">👤 Você</div>
-      <div class="ft-user-text">${escHtml(answer)}</div>
-      <div class="ft-user-actions">
-        <button class="ft-icon-btn" data-rowspeak="${answer.replace(/"/g,'&quot;')}"
-          aria-label="Ouvir sua resposta" title="Ouvir sua resposta">🎵</button>
-      </div>
+// ──────────────── BOLHA DO USUÁRIO ────────────────────────────────
+function ftAddUserBubble(text, qIdx) {
+  const body = document.getElementById('ft-chat-body');
+  const msgIdx = ftChat.msgs.length;
+  const div = document.createElement('div');
+  div.className = 'ft-bubble-user';
+  div.id = `ft-user-${msgIdx}`;
+  div.innerHTML = `
+    <div class="ft-b-speaker">👤 Você</div>
+    <div class="ft-b-text">${escHtml(text)}</div>
+    <div class="ft-b-actions">
+      <button class="ft-bact" onclick="ftPlayTTS(${JSON.stringify(text)},this)" title="Ouvir">▶ Ouvir</button>
+      <button class="ft-bact" id="ft-check-btn-${msgIdx}" onclick="ftCheckAnswer(${msgIdx})" title="Verificar">✅ Checar</button>
+      <button class="ft-bact" onclick="ftEditAnswer(${msgIdx})" title="Editar">✏️ Editar</button>
     </div>
-    <div class="ft-evaluating" id="ft-evaluating">
-      <div class="spinner"></div>
-      <p>Avaliando…</p>
-    </div>`;
-  document.getElementById('ft-feedback-slot').innerHTML = answerHtml;
-  // esconder área de input enquanto avalia
-  const answerArea = document.getElementById('ft-answer-area');
-  if (answerArea) answerArea.style.display = 'none';
+    <div id="ft-fb-${msgIdx}"></div>`;
+  body.appendChild(div);
+  body.scrollTop = body.scrollHeight;
+  ftChat.msgs.push({ role:'user', text, qIdx, checked:false });
+  // avançar a IA após o usuário enviar (com delay para leitura)
+  setTimeout(() => ftIaReact(msgIdx), 1400);
+}
 
-  // FAST PATH: comparação textual — economiza tokens
-  const norm = normalizeAns(answer);
-  const modelNorm = normalizeAns(q.resposta_modelo);
-  const isDirectMatch = norm === modelNorm
-    || (q.variacoes_aceitas || []).some(v => normalizeAns(v) === norm);
+// reação da IA: ela avança para a próxima pergunta
+async function ftIaReact(userMsgIdx) {
+  const msg = ftChat.msgs[userMsgIdx];
+  if (!msg || msg.role !== 'user') return;
+  const nextQ = msg.qIdx + 1;
+  await ftIaSpeak(nextQ);
+}
 
-  let evaluation;
-  if (isDirectMatch) {
-    evaluation = { correct: true, source: 'fast_path' };
+// ──────────────── CHECAR RESPOSTA ─────────────────────────────────
+async function ftCheckAnswer(msgIdx) {
+  const msg = ftChat.msgs[msgIdx];
+  if (!msg || msg.checked) return;
+  msg.checked = true;
+  const btn = document.getElementById(`ft-check-btn-${msgIdx}`);
+  if (btn) { btn.disabled = true; btn.textContent = '…'; }
+
+  const ft = DAYS[1].fluency;
+  const q = ft.perguntas[msg.qIdx];
+  if (!q) return;
+
+  // fast path: comparação textual
+  const norm = s => String(s||'').toLowerCase().replace(/[.,!?;:"'()]/g,'').replace(/\s+/g,' ').trim();
+  const isOk = norm(msg.text) === norm(q.resposta_modelo)
+    || (q.variacoes_aceitas||[]).some(v => norm(v) === norm(msg.text));
+
+  let ev;
+  if (isOk) {
+    ev = { correct: true, feedback: 'Perfeito! ✓' };
   } else {
-    // CACHE: já avaliamos esta (pergunta+resposta) antes?
-    const cacheKey = `ftEval:day1:q${ftState.currentQ}:${btoa(unescape(encodeURIComponent(norm))).slice(0,40)}`;
-    try {
-      const cached = localStorage.getItem(cacheKey);
-      if (cached) evaluation = JSON.parse(cached);
-    } catch(e) {}
-    if (!evaluation) {
+    // cache
+    const ck = `ftEv:d1:q${msg.qIdx}:${btoa(unescape(encodeURIComponent(norm(msg.text)))).slice(0,32)}`;
+    try { const c = localStorage.getItem(ck); if (c) ev = JSON.parse(c); } catch(e){}
+    if (!ev) {
       try {
-        evaluation = await ftEvaluateWithIA(q, answer);
-        try { localStorage.setItem(cacheKey, JSON.stringify(evaluation)); } catch(e) {}
+        const res = await fetch('/api/claude', {
+          method:'POST', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({
+            system:'Avaliador de inglês para brasileiros. Responda APENAS em JSON válido.',
+            max_tokens: 200,
+            messages:[{role:'user',content:`Pergunta: "${q.pergunta_en}"
+Resposta modelo: "${q.resposta_modelo}"
+Variações aceitas: ${(q.variacoes_aceitas||[]).join(' | ')}
+Estrutura LEGO: ${q.estrutura_lego}
+Resposta do aluno: "${msg.text}"
+
+JSON: {"correct":true/false,"feedback":"1 frase em PT","correct_form":"forma correta em inglês se errado, senão null"}`}]
+          })
+        }).then(r=>r.json());
+        ev = JSON.parse(res.content[0].text.trim().replace(/```json|```/g,'').trim());
+        try { localStorage.setItem(ck, JSON.stringify(ev)); } catch(e){}
       } catch(e) {
-        evaluation = { correct: false, error: e.message, feedback: 'Erro na avaliação. Vamos considerar como resposta enviada.' };
+        ev = { correct: false, feedback: 'Não foi possível avaliar.', correct_form: q.resposta_modelo };
       }
     }
   }
 
-  ftState.attempts++;
-  renderFluencyEvaluation(evaluation, q);
-}
+  msg.feedback = ev;
+  if (ev.correct) ftChat.score.correct++;
+  ftChat.score.total++;
 
-function normalizeAns(s) {
-  return String(s || '')
-    .toLowerCase()
-    .replace(/[.,!?;:"'()]/g, '')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
-
-function escHtml(s) {
-  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-}
-
-async function ftEvaluateWithIA(q, answer) {
-  const system = 'Você é avaliador de inglês para brasileiros iniciantes. Responda APENAS em JSON válido, sem markdown, sem texto extra.';
-  const user = `Pergunta: "${q.pergunta_en}"
-Resposta modelo: "${q.resposta_modelo}"
-Estrutura LEGO esperada: ${q.estrutura_lego}
-Variações aceitas: ${(q.variacoes_aceitas || []).join(' | ')}
-Resposta do aluno: "${answer}"
-
-Avalie se a resposta do aluno usa corretamente a estrutura LEGO esperada e responde à pergunta. Aceite variações naturais e pequenas diferenças. Só marque como incorreto se realmente não usou a estrutura ou se a resposta não faz sentido para a pergunta.
-
-JSON:
-{
-  "correct": true/false,
-  "feedback": "1 frase curta em português. Se correto: encorajamento. Se incorreto: explique o que faltou usando a Estrutura LEGO.",
-  "usedLegoCorrectly": true/false
-}`;
-
-  const res = await fetch('/api/claude', {
-    method: 'POST', headers: {'Content-Type':'application/json'},
-    body: JSON.stringify({
-      system, max_tokens: 300,
-      messages: [{role:'user', content: user}]
-    })
-  }).then(r => r.json());
-  const raw = res.content[0].text.trim().replace(/```json|```/g, '').trim();
-  return JSON.parse(raw);
-}
-
-function renderFluencyEvaluation(ev, q) {
-  const slot = document.getElementById('ft-feedback-slot');
-  const isLast = ftState.currentQ === DAYS[1].fluency.perguntas.length - 1;
-  const canRetry = !ev.correct && ftState.attempts < 2;
-
-  // guardar resultado (só na primeira avaliação da pergunta ou quando avança)
-  const alreadyRegistered = ftState.results.length > ftState.currentQ;
-
-  let actionHtml;
+  const fbDiv = document.getElementById(`ft-fb-${msgIdx}`);
+  if (!fbDiv) return;
   if (ev.correct) {
-    if (!alreadyRegistered) ftState.results.push({ correct: true, attempts: ftState.attempts, usedLegos: q.lego_names });
+    fbDiv.innerHTML = `<div class="ft-b-fb ok">✅ ${escHtml(ev.feedback)}</div>`;
     playSound && playSound('success');
-    actionHtml = isLast
-      ? `<button class="btn ft-next-btn" onclick="ftFinish()">Ver resultado →</button>`
-      : `<button class="btn ft-next-btn" onclick="ftNextQuestion()">Próxima pergunta →</button>`;
-  } else if (canRetry) {
-    playSound && playSound('error');
-    actionHtml = `
-      <button class="ap-retry-btn" onclick="ftRetryQuestion()">🔄 Tentar novamente</button>
-      <button class="btn-outline ft-skip-btn" onclick="ftSkipQuestion()">➜ Próxima pergunta</button>`;
   } else {
-    if (!alreadyRegistered) ftState.results.push({ correct: false, attempts: ftState.attempts, usedLegos: [] });
+    fbDiv.innerHTML = `
+      <div class="ft-b-fb err">
+        <strong>✗ Quase lá.</strong> ${escHtml(ev.feedback)}
+        ${ev.correct_form ? `<div style="margin-top:6px;font-family:var(--font-m);font-weight:600;color:#1a1a2e">${escHtml(ev.correct_form)}</div>` : ''}
+        <div class="ft-b-fb-actions">
+          <button class="btn" style="font-size:12px;padding:6px 14px;background:#C98A00" onclick="ftRetryFromBubble(${msgIdx})">🔄 Tentar novamente</button>
+          <button class="btn-outline" style="font-size:12px;padding:6px 14px" onclick="ftContinueFromBubble(${msgIdx})">Continuar →</button>
+        </div>
+      </div>`;
     playSound && playSound('error');
-    actionHtml = isLast
-      ? `<button class="btn ft-next-btn" onclick="ftFinish()">Ver resultado →</button>`
-      : `<button class="btn ft-next-btn" onclick="ftNextQuestion()">Próxima pergunta →</button>`;
   }
+  const body = document.getElementById('ft-chat-body');
+  if (body) body.scrollTop = body.scrollHeight;
+  if (btn) { btn.textContent = '✅ Checar'; }
+}
 
-  const verdictHtml = ev.correct
-    ? `<div class="ft-verdict ok">✅ That's correct!</div>`
-    : `<div class="ft-verdict err">✗ That's not quite right</div>`;
+function ftRetryFromBubble(msgIdx) {
+  const fb = document.getElementById(`ft-fb-${msgIdx}`);
+  if (fb) fb.innerHTML = '';
+  ftChat.msgs[msgIdx].checked = false;
+  renderFtInput(true); // voltar o input
+  const body = document.getElementById('ft-chat-body');
+  if (body) body.scrollTop = body.scrollHeight;
+}
 
-  const explainHtml = ev.correct ? '' : `
-    <div class="ft-feedback-explain">
-      <div class="ft-fb-lbl">💡 Resposta modelo:</div>
-      <div class="ft-fb-model">
-        <span>${escHtml(q.resposta_modelo)}</span>
-        <button class="ft-icon-btn" data-rowspeak="${q.resposta_modelo.replace(/"/g,'&quot;')}"
-          aria-label="Ouvir resposta modelo" title="Ouvir">🔊</button>
-      </div>
-      <div class="ft-fb-lego">Estrutura LEGO: <strong>${q.estrutura_lego}</strong></div>
-      ${ev.feedback ? `<div class="ft-fb-tip">${escHtml(ev.feedback)}</div>` : ''}
-    </div>`;
+function ftContinueFromBubble(msgIdx) {
+  const msg = ftChat.msgs[msgIdx];
+  if (!msg) return;
+  ftIaReact(msgIdx);
+}
 
-  // atualizar slot: manter user-bubble, trocar spinner por verdict + feedback
-  const answerText = escHtml(ftState.lastAnswer);
-  slot.innerHTML = `
-    <div class="ft-user-bubble">
-      <div class="ft-user-speaker">👤 Você</div>
-      <div class="ft-user-text">${answerText}</div>
-      <div class="ft-user-actions">
-        <button class="ft-icon-btn" data-rowspeak="${ftState.lastAnswer.replace(/"/g,'&quot;')}"
-          aria-label="Ouvir sua resposta" title="Ouvir sua resposta">🎵</button>
-      </div>
+// ──────────────── EDITAR RESPOSTA ─────────────────────────────────
+function ftEditAnswer(msgIdx) {
+  const msg = ftChat.msgs[msgIdx];
+  if (!msg) return;
+  // preenche o input com o texto atual e dá foco
+  const inp = document.getElementById('ft-text-inp');
+  if (inp) {
+    inp.value = msg.text;
+    inp.focus();
+    ftSetMode('text');
+  } else {
+    ftSetMode('text');
+    setTimeout(() => {
+      const i2 = document.getElementById('ft-text-inp');
+      if (i2) { i2.value = msg.text; i2.focus(); }
+    }, 50);
+  }
+  // remover a bolha do usuário para ela ser reenviada
+  const bubbleEl = document.getElementById(`ft-user-${msgIdx}`);
+  if (bubbleEl) bubbleEl.remove();
+  ftChat.msgs.splice(msgIdx, 1);
+}
+
+// ──────────────── INPUT (áudio / texto) ────────────────────────────
+function renderFtInput(keepMode) {
+  const area = document.getElementById('ft-input-area');
+  if (!area) return;
+  const mode = ftChat.mode;
+  area.innerHTML = `
+    <div class="ft-mode-row">
+      <button class="ft-mode-btn ${mode==='audio'?'active':''}" onclick="ftSetMode('audio')">🎤 Áudio</button>
+      <button class="ft-mode-btn ${mode==='text'?'active':''}" onclick="ftSetMode('text')">⌨️ Texto</button>
     </div>
-    <div class="ft-feedback ${ev.correct ? 'ok' : 'err'}">
-      ${verdictHtml}
-      ${explainHtml}
-      <div class="ft-fb-actions">${actionHtml}</div>
-    </div>`;
+    <div id="ft-input-inner"></div>
+    <div class="ft-sugg-row">
+      <button class="ft-sugg-btn" onclick="ftToggleSugg()">💡 Sugestões</button>
+    </div>
+    <div class="ft-sugg-panel" id="ft-sugg-panel"></div>`;
+  renderFtInputInner();
 }
 
-function ftRetryQuestion() {
-  renderFluencyQuestion();
+function ftSetMode(m) {
+  ftChat.mode = m;
+  if (ftChat.rec) { try { ftChat.rec.stop(); } catch(e){} ftChat.rec = null; clearInterval(ftChat.recTimer); }
+  // re-renderizar só o inner e os tabs
+  const area = document.getElementById('ft-input-area');
+  if (!area) return renderFtInput();
+  const tabs = area.querySelectorAll('.ft-mode-btn');
+  tabs.forEach(t => t.classList.toggle('active', t.textContent.includes(m==='audio'?'Áudio':'Texto')));
+  renderFtInputInner();
 }
-function ftSkipQuestion() {
-  // registrar como não-acerto e avançar
-  if (ftState.results.length <= ftState.currentQ) {
-    ftState.results.push({ correct: false, attempts: ftState.attempts, usedLegos: [] });
+
+function renderFtInputInner() {
+  const inner = document.getElementById('ft-input-inner');
+  if (!inner) return;
+  if (ftChat.mode === 'audio') {
+    const hasSR = !!(window.SpeechRecognition || window.webkitSpeechRecognition);
+    inner.innerHTML = hasSR ? `
+      <div class="ft-audio-row">
+        <button class="ft-mic-main" id="ft-mic-btn" onclick="ftToggleMic()">
+          🎤 <span id="ft-mic-lbl">Clique para falar</span>
+        </button>
+        <span class="ft-mic-timer" id="ft-mic-timer" style="display:none"></span>
+      </div>
+      <div class="ft-transcript-live" id="ft-transcript-live"></div>`
+    : `<div class="ap-warn">⚠️ Áudio não disponível. Use Chrome.</div>`;
+  } else {
+    inner.innerHTML = `
+      <div class="ft-text-row">
+        <textarea class="ft-text-inp" id="ft-text-inp" rows="2"
+          placeholder="Escreva sua resposta em inglês…"
+          onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();ftSendText()}"></textarea>
+        <button class="ft-send-btn" onclick="ftSendText()">➤</button>
+      </div>`;
   }
-  ftNextQuestion();
-}
-function ftNextQuestion() {
-  ftState.currentQ++;
-  ftState.attempts = 0;
-  ftState.lastAnswer = '';
-  renderFluencyQuestion();
 }
 
-// ─────────────────── SUGESTÕES ────────────────────
-async function ftShowSuggestions() {
-  const qIdx = ftState.currentQ;
-  const slot = document.getElementById('ft-suggestions-slot');
-  if (!slot) return;
-  if (slot.dataset.shownFor === String(qIdx) && slot.innerHTML) {
-    slot.style.display = slot.style.display === 'none' ? 'block' : 'none';
-    return;
+// ──────────────── GRAVAÇÃO ─────────────────────────────────────────
+function ftToggleMic() {
+  if (ftChat.rec) { ftStopMic(); return; }
+  ftStartMic();
+}
+function ftStartMic() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) return;
+  const rec = new SR();
+  rec.lang = 'en-US'; rec.continuous = true; rec.interimResults = true;
+  ftChat.rec = rec; ftChat.recFinal = '';
+  const btn = document.getElementById('ft-mic-btn');
+  const lbl = document.getElementById('ft-mic-lbl');
+  const timer = document.getElementById('ft-mic-timer');
+  const live = document.getElementById('ft-transcript-live');
+  if (btn) btn.classList.add('rec');
+  if (lbl) lbl.textContent = 'Parar gravação';
+  if (timer) { timer.style.display='inline'; timer.textContent='60s'; }
+  if (live) live.classList.add('show');
+  let secs = 60;
+  ftChat.recTimer = setInterval(() => {
+    secs--;
+    if (timer) timer.textContent = secs+'s';
+    if (secs <= 0) ftStopMic();
+  }, 1000);
+  rec.onresult = e => {
+    let interim = '';
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      if (e.results[i].isFinal) ftChat.recFinal += e.results[i][0].transcript + ' ';
+      else interim += e.results[i][0].transcript;
+    }
+    if (live) live.textContent = (ftChat.recFinal + interim).trim();
+  };
+  rec.onerror = () => ftStopMic();
+  rec.onend = () => {
+    if (ftChat.rec === rec) ftStopMic();
+  };
+  try { rec.start(); } catch(e){}
+}
+function ftStopMic() {
+  if (ftChat.rec) { try { ftChat.rec.stop(); } catch(e){} ftChat.rec = null; }
+  clearInterval(ftChat.recTimer);
+  const btn = document.getElementById('ft-mic-btn');
+  const lbl = document.getElementById('ft-mic-lbl');
+  const timer = document.getElementById('ft-mic-timer');
+  if (btn) btn.classList.remove('rec');
+  if (lbl) lbl.textContent = 'Clique para falar';
+  if (timer) timer.style.display = 'none';
+  const text = ftChat.recFinal.trim();
+  const live = document.getElementById('ft-transcript-live');
+  if (live) { live.textContent = ''; live.classList.remove('show'); }
+  if (text) ftSendAnswer(text);
+}
+
+// ──────────────── ENVIO ────────────────────────────────────────────
+function ftSendText() {
+  const inp = document.getElementById('ft-text-inp');
+  if (!inp) return;
+  const text = inp.value.trim();
+  if (!text) return;
+  inp.value = '';
+  ftSendAnswer(text);
+}
+function ftSendAnswer(text) {
+  ftAddUserBubble(text, ftChat.qIdx);
+  renderFtInput(); // reset input
+}
+
+// ──────────────── SUGESTÕES ────────────────────────────────────────
+function ftToggleSugg() {
+  const panel = document.getElementById('ft-sugg-panel');
+  if (!panel) return;
+  ftChat.suggOpen = !ftChat.suggOpen;
+  panel.classList.toggle('show', ftChat.suggOpen);
+  if (ftChat.suggOpen) ftRenderSuggestions();
+}
+function ftRenderSuggestions() {
+  const panel = document.getElementById('ft-sugg-panel');
+  if (!panel) return;
+  const ft = DAYS[1].fluency;
+  const q = ft.perguntas[ftChat.qIdx];
+  if (!q) return;
+  const suggs = [q.resposta_modelo, ...(q.variacoes_aceitas||[])].slice(0,3);
+  panel.innerHTML = `
+    <div style="font-family:var(--font-m);font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">💡 Respostas possíveis</div>
+    ${suggs.map(s => `
+      <div class="ft-sugg-line" onclick="ftUseSugg(${JSON.stringify(s)})">
+        <span class="ft-sugg-text">${escHtml(s)}</span>
+        <button class="ft-sugg-use" onclick="event.stopPropagation();ftUseSugg(${JSON.stringify(s)})">Usar</button>
+      </div>`).join('')}
+    <div class="ft-translate-row">
+      <input class="ft-translate-inp" id="ft-tr-inp" placeholder="Digite em português para traduzir…"
+        onkeydown="if(event.key==='Enter') ftTranslate()">
+      <button class="ft-translate-go" onclick="ftTranslate()">↵ Traduzir</button>
+    </div>
+    <div id="ft-tr-result" style="font-family:var(--font-m);font-size:13px;margin-top:6px;color:var(--dark)"></div>`;
+}
+function ftUseSugg(text) {
+  ftSendAnswer(text);
+  ftChat.suggOpen = false;
+  const panel = document.getElementById('ft-sugg-panel');
+  if (panel) panel.classList.remove('show');
+}
+async function ftTranslate() {
+  const inp = document.getElementById('ft-tr-inp');
+  const out = document.getElementById('ft-tr-result');
+  if (!inp || !out) return;
+  const ptText = inp.value.trim();
+  if (!ptText) return;
+  out.textContent = 'Traduzindo…';
+  try {
+    const res = await fetch('/api/claude', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        system: 'Tradutor PT→EN para estudantes de inglês. Responda APENAS com a tradução em inglês, sem explicações.',
+        max_tokens: 60,
+        messages:[{role:'user', content:`Traduza para inglês natural: "${ptText}"`}]
+      })
+    }).then(r=>r.json());
+    const tr = res.content[0].text.trim().replace(/^[""""]|[""""]$/g,'');
+    out.textContent = tr;
+    inp.value = '';
+  } catch(e) {
+    out.textContent = '(erro na tradução)';
   }
-  slot.dataset.shownFor = String(qIdx);
-  slot.style.display = 'block';
-
-  // usar cache se já existir
-  let suggestions = ftState.suggestionsShown[qIdx];
-  if (!suggestions) {
-    const q = DAYS[1].fluency.perguntas[qIdx];
-    // usar diretamente as variações aceitas + resposta modelo — sem chamar IA!
-    suggestions = [q.resposta_modelo, ...(q.variacoes_aceitas || [])].slice(0, 3);
-    ftState.suggestionsShown[qIdx] = suggestions;
-  }
-
-  slot.innerHTML = `
-    <div class="ft-suggestions-box">
-      <div class="ft-fb-lbl">💡 Respostas possíveis (todas usam a Estrutura LEGO do dia)</div>
-      ${suggestions.map(s => `
-        <div class="ft-sugg-line">
-          <span>${escHtml(s)}</span>
-          <button class="ft-icon-btn" data-rowspeak="${s.replace(/"/g,'&quot;')}" aria-label="Ouvir" title="Ouvir">🔊</button>
-        </div>`).join('')}
-    </div>`;
 }
 
-// ─────────────────── FASE FINAL: RESULTADO ────────────────────
-function ftFinish() {
+// ──────────────── TTS das bolhas ───────────────────────────────────
+function ftPlayTTS(text, btn) {
+  speakEnToggle ? speakEnToggle(text, btn) : speakEn(text);
+}
+
+// ──────────────── RESULTADO FINAL ─────────────────────────────────
+function ftFinishChat() {
   const ft = DAYS[1].fluency;
   const total = ft.perguntas.length;
-  const correct = ftState.results.filter(r => r.correct).length;
-  const firstTry = ftState.results.filter(r => r.correct && r.attempts === 1).length;
-
-  // estruturas LEGO dominadas: usadas em respostas corretas
-  const dominatedSet = new Set();
-  ftState.results.forEach(r => { if (r.correct) r.usedLegos.forEach(l => dominatedSet.add(l)); });
-  const dominated = [...dominatedSet];
-
-  const missing = DAYS[1].legos
-    .map(l => l.stem)
-    .filter(name => !dominatedSet.has(name));
-
-  const vocabList = ft.vocabulario_chave.map(v => v.en).join(', ');
-
-  let msg;
-  if (correct === total && firstTry === total) msg = 'Perfeito de primeira em todas! 🎯';
-  else if (correct === total) msg = 'Todas corretas — bom trabalho!';
-  else if (correct >= Math.ceil(total * 0.6)) msg = 'Bom progresso — continue praticando!';
-  else msg = 'Vale revisar as estruturas LEGO e tentar de novo.';
-
+  const correct = ftChat.score.correct;
+  const dominated = [...new Set(
+    ftChat.msgs
+      .filter(m => m.role==='user' && m.feedback?.correct)
+      .flatMap(m => ft.perguntas[m.qIdx]?.lego_names || [])
+  )];
+  const missing = DAYS[1].legos.map(l=>l.stem).filter(s=>!dominated.includes(s));
+  const vocab = ft.vocabulario_chave.map(v=>v.en).join(', ');
+  let msg = correct===total ? 'Perfeito! 🎯' : correct>=Math.ceil(total*.6) ? 'Bom progresso — continue!' : 'Vale praticar mais.';
   document.getElementById('fluency-area').innerHTML = `
-    <div class="fluency-card ft-finish-card">
+    <div class="ft-finish-card">
       <div class="ft-finish-title">🎉 ${DAYS[1].title} completo!</div>
       <div class="ft-finish-score">${correct}<span class="ft-finish-total">/${total}</span></div>
       <div class="ft-finish-msg">${msg}</div>
-
-      <div class="ft-finish-section">
-        <div class="ft-fb-lbl">🧱 Estruturas LEGO dominadas</div>
-        ${dominated.length
-          ? `<div class="ft-finish-chips">${dominated.map(n => `<span class="ft-chip ok">${n}</span>`).join('')}</div>`
-          : `<div class="ft-finish-empty">Nenhuma ainda — vale revisar.</div>`}
-      </div>
-
-      ${missing.length ? `
-        <div class="ft-finish-section">
-          <div class="ft-fb-lbl">🔄 Ainda pode praticar</div>
-          <div class="ft-finish-chips">${missing.map(n => `<span class="ft-chip miss">${n}</span>`).join('')}</div>
-        </div>` : ''}
-
-      <div class="ft-finish-section">
-        <div class="ft-fb-lbl">⚡️ Vocabulário-chave desta sessão</div>
-        <div class="ft-finish-vocab">${vocabList}</div>
-      </div>
-
+      ${dominated.length ? `<div class="ft-finish-section"><span class="ft-lbl">🧱 Estruturas dominadas</span><div class="ft-finish-chips">${dominated.map(n=>`<span class="ft-chip ok">${n}</span>`).join('')}</div></div>` : ''}
+      ${missing.length ? `<div class="ft-finish-section"><span class="ft-lbl">🔄 Ainda pode praticar</span><div class="ft-finish-chips">${missing.map(n=>`<span class="ft-chip miss">${n}</span>`).join('')}</div></div>` : ''}
+      <div class="ft-finish-section"><span class="ft-lbl">⚡️ Vocabulário da sessão</span><div class="ft-finish-vocab">${vocab}</div></div>
       <div class="ft-finish-actions">
         <button class="btn" onclick="renderFluencyIntro()">🔄 Praticar novamente</button>
       </div>
     </div>`;
 }
-
 
 
 // ── init ───────────────────────────────────────────────
