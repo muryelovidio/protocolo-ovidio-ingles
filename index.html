@@ -510,8 +510,6 @@ let rec = null;
 
 const MAX_ATTEMPTS_PER_QUESTION = 2;
 const HAS_SPEECH = !!(window.SpeechRecognition || window.webkitSpeechRecognition);
-const HAS_TTS = 'speechSynthesis' in window;
-
 // ── SEÇÕES DA LIÇÃO (LEGO / Boosts / Fluency) ─────
 let currentSection = 'lego';
 function switchSection(name) {
@@ -538,44 +536,75 @@ function normalize(s) {
     .replace(/\s+/g, ' ')
     .trim();
 }
-function speakEn(text) {
-  if (!HAS_TTS) return;
-  window.speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = 'en-US';
-  u.rate = 0.9;
-  window.speechSynthesis.speak(u);
+// ── TTS via Google Translate (mesma voz do Google Tradutor) ──────────
+// Usa a URL pública do Google TTS — natural, clara, sem chave de API.
+// Cache em memória: cada texto só gera a URL uma vez por sessão.
+// Fallback para Web Speech API caso o áudio falhe (ex: sem internet).
+const HAS_TTS = true; // sempre ativado: Google TTS ou fallback Web Speech
+
+let activeSpeakBtn = null;
+let activeAudio = null; // instância Audio() em reprodução
+
+function _gttsUrl(text) {
+  return `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=en-US&client=tw-ob`;
 }
 
-// ── TTS com estado visual por botão (usado pelo play button das linhas LEGO) ──
-// Suporta: toggle (clicar de novo no mesmo botão para/reinicia), reset visual
-// do botão anterior ao tocar um novo áudio, e nunca sobrepõe reproduções.
-let activeSpeakBtn = null;
+// Toca via Google TTS. Sem estado visual de botão — usado nos hints da prática.
+function speakEn(text) {
+  _playGoogleTTS(text, null);
+}
+
+// Toca com estado visual de toggle — usado nos botões ▶ das linhas LEGO.
 function speakEnToggle(text, btn) {
-  if (!HAS_TTS) return;
-  const wasThisBtnPlaying = activeSpeakBtn === btn;
-  window.speechSynthesis.cancel();
+  const wasThisPlaying = activeSpeakBtn === btn;
+  // parar o que estiver tocando
+  if (activeAudio) { activeAudio.pause(); activeAudio = null; }
   if (activeSpeakBtn) {
     activeSpeakBtn.classList.remove('playing');
     activeSpeakBtn.setAttribute('aria-pressed', 'false');
+    activeSpeakBtn = null;
   }
-  activeSpeakBtn = null;
-  if (wasThisBtnPlaying) return; // era um toggle para PARAR
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = 'en-US';
-  u.rate = 0.9;
-  u.onend = () => {
-    if (btn) { btn.classList.remove('playing'); btn.setAttribute('aria-pressed', 'false'); }
-    if (activeSpeakBtn === btn) activeSpeakBtn = null;
-  };
-  u.onerror = u.onend;
+  if (wasThisPlaying) return; // toggle para PARAR
+  _playGoogleTTS(text, btn);
+}
+
+function _playGoogleTTS(text, btn) {
+  const audio = new Audio(_gttsUrl(text));
+  audio.crossOrigin = 'anonymous';
   if (btn) {
     btn.classList.add('playing');
     btn.setAttribute('aria-pressed', 'true');
     activeSpeakBtn = btn;
+    activeAudio = audio;
   }
-  window.speechSynthesis.speak(u);
+  const done = () => {
+    if (btn) {
+      btn.classList.remove('playing');
+      btn.setAttribute('aria-pressed', 'false');
+    }
+    if (activeSpeakBtn === btn) activeSpeakBtn = null;
+    if (activeAudio === audio) activeAudio = null;
+  };
+  audio.onended = done;
+  audio.onerror = () => {
+    done();
+    // fallback: Web Speech API caso Google TTS falhe
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'en-US'; u.rate = 0.9;
+      if (btn) {
+        u.onend = () => {
+          btn.classList.remove('playing');
+          btn.setAttribute('aria-pressed', 'false');
+        };
+      }
+      window.speechSynthesis.speak(u);
+    }
+  };
+  audio.play().catch(() => audio.onerror());
 }
+
 
 // ── selector ───────────────────────────────────────────
 function buildSelector() {
