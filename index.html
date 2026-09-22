@@ -73,6 +73,33 @@ tr:last-child td{border:none}
 td strong{font-family:var(--font-m)}
 .mono{font-family:var(--font-m);font-size:12px;color:var(--soft)}
 
+/* botão de play — linha LEGO (ouvir frase em inglês) */
+.lego-en-cell{display:flex;align-items:center;gap:8px}
+.row-play-btn{
+  flex-shrink:0;
+  display:inline-flex;align-items:center;justify-content:center;
+  width:26px;height:26px;min-width:26px;
+  padding:0;margin:0;
+  border:1.5px solid var(--border-strong);border-radius:50%;
+  background:var(--card);color:var(--dark);
+  cursor:pointer;transition:background .15s,border-color .15s,transform .1s;
+  position:relative;
+}
+/* área de toque confortável mesmo com botão visualmente pequeno (mobile) */
+.row-play-btn::after{content:'';position:absolute;inset:-8px}
+.row-play-btn:hover{border-color:var(--red);color:var(--red)}
+.row-play-btn:active{transform:scale(0.92)}
+.row-play-btn:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+.row-play-icon{font-size:10px;line-height:1;margin-left:1px}
+/* estado "tocando": ícone muda para pausa + anel pulsante — não depende só de cor */
+.row-play-btn.playing{border-color:var(--red);background:var(--red);color:#fff}
+.row-play-btn.playing .row-play-icon::before{content:'⏸';font-size:10px;margin:0}
+.row-play-btn.playing .row-play-icon{visibility:hidden;position:relative}
+.row-play-btn.playing .row-play-icon::before{visibility:visible;position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.row-play-btn.playing{animation:row-play-pulse 1.2s ease-in-out infinite}
+@keyframes row-play-pulse{0%,100%{box-shadow:0 0 0 0 rgba(225,27,34,.35)}50%{box-shadow:0 0 0 5px rgba(225,27,34,0)}}
+.lego-en-text{flex:1}
+
 /* notes card */
 .notes-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:16px}
 .notes-label{display:block;font-family:var(--font-d);font-size:13.5px;font-weight:600;margin-bottom:8px;color:var(--text)}
@@ -165,6 +192,11 @@ td strong{font-family:var(--font-m)}
 .boost-pattern{font-family:var(--font-m);font-size:16px;font-weight:700;color:#1A4A94}
 .boost-rule{font-size:13px;color:var(--soft);font-style:italic}
 .boost-model{font-size:13.5px;color:var(--text);margin-bottom:12px;padding:8px 12px;background:#fff;border-radius:8px;border-left:3px solid #2C6FD1}
+.boost-example{background:#fff;border-radius:10px;padding:12px 14px;margin-bottom:14px;border:1px solid #B8D4F0}
+.boost-example-en{font-family:var(--font-m);font-size:13px;line-height:1.45;color:var(--text);margin-bottom:5px;word-break:break-word}
+.boost-example-pr{font-family:var(--font-m);font-size:12px;color:var(--soft);font-style:italic;margin-bottom:5px;word-break:break-word;line-height:1.45}
+.boost-example-pt{font-size:13px;line-height:1.45;color:var(--text);word-break:break-word}
+.boost-highlight{color:var(--red);font-weight:700}
 .boost-model .lbl{font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.04em;display:block;margin-bottom:3px}
 .boost-model .txt{font-family:var(--font-m);font-weight:600}
 
@@ -212,58 +244,121 @@ td strong{font-family:var(--font-m)}
 
 .boost-gen-loading{display:flex;flex-direction:column;align-items:center;gap:10px;padding:26px 0;color:var(--soft);font-size:13.5px}
 
-/* Fluency Training */
+/* Fluency Training — quiz estruturado */
 .fluency-card{background:#FFF8E0;border:1px solid #F0E4B0;border-radius:14px;padding:18px 20px;margin-bottom:16px}
-.fluency-head{margin-bottom:12px}
-.fluency-title{font-family:var(--font-d);font-size:16px;font-weight:600;color:#8F6300;margin-bottom:4px}
-.fluency-scenario{font-size:13px;color:var(--text-soft);line-height:1.55}
-.fluency-roles{display:flex;gap:10px;margin-top:12px;align-items:center;flex-wrap:wrap}
-.role-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:20px;font-size:12px;font-weight:600;background:#fff;border:1px solid #F0E4B0}
-.role-badge.you{background:#DCFCE7;border-color:#22C55E;color:#166534}
-.swap-roles-btn{margin-left:auto;background:transparent;border:1px solid #C98A00;color:#8F6300;border-radius:20px;padding:5px 12px;font-size:12px;font-weight:600;cursor:pointer}
-.swap-roles-btn:hover{background:#C98A00;color:#fff}
 
-.chat-window{background:#fff;border:1px solid #F0E4B0;border-radius:12px;padding:12px 14px;max-height:420px;overflow-y:auto;margin-bottom:12px}
-.chat-msg{display:flex;flex-direction:column;margin-bottom:10px;max-width:78%}
-.chat-msg.a{align-self:flex-start;margin-right:auto}
-.chat-msg.b{align-self:flex-end;margin-left:auto;align-items:flex-end}
-.chat-msg .speaker{font-size:10.5px;color:var(--faint);font-family:var(--font-m);margin-bottom:2px;text-transform:uppercase;letter-spacing:.04em}
-.chat-bubble{padding:9px 13px;border-radius:14px;font-size:14px;line-height:1.45}
-.chat-msg.a .chat-bubble{background:#F5F5F2;border-bottom-left-radius:4px}
-.chat-msg.b .chat-bubble{background:#2C6FD1;color:#fff;border-bottom-right-radius:4px}
-.chat-msg .msg-actions{display:flex;gap:6px;margin-top:5px;flex-wrap:wrap}
-.msg-action-btn{background:#fff;border:1px solid var(--border-strong);border-radius:14px;padding:3px 10px;font-size:11.5px;font-weight:500;cursor:pointer;color:var(--soft)}
-.msg-action-btn:hover{background:var(--bg);border-color:var(--dark);color:var(--text)}
-.msg-action-btn:disabled{opacity:.4;cursor:not-allowed}
-.msg-feedback{margin-top:6px;font-size:12.5px;padding:7px 10px;border-radius:8px;line-height:1.45}
-.msg-feedback.ok{background:#DCFCE7;color:#166534;border:1px solid #86EFAC}
-.msg-feedback.err{background:#FFF8F8;color:#991B1B;border:1px solid #F5D0D0}
-.msg-feedback .fb-title{font-weight:700;margin-bottom:3px}
+/* Fase 1: intro */
+.ft-intro-title{font-family:var(--font-d);font-size:18px;font-weight:700;color:#8F6300;margin-bottom:16px}
+.ft-lbl{display:block;font-family:var(--font-m);font-size:11px;color:#8F6300;text-transform:uppercase;letter-spacing:.06em;font-weight:600;margin-bottom:8px}
+.ft-intro-objective,.ft-intro-legos,.ft-intro-vocab,.ft-intro-scenario{background:#fff;border-radius:10px;padding:12px 14px;margin-bottom:12px;border:1px solid #F0E4B0}
+.ft-intro-objective p,.ft-intro-scenario p{font-size:13.5px;line-height:1.5;color:var(--text);margin:0}
+.ft-lego-item{padding:6px 0;border-bottom:1px dashed #F0E4B0;font-size:13px;line-height:1.4}
+.ft-lego-item:last-child{border-bottom:none}
+.ft-lego-name{font-family:var(--font-m);color:var(--dark);margin-right:6px}
+.ft-lego-desc{color:var(--soft);font-size:12.5px}
+.ft-lego-ex{display:block;font-family:var(--font-m);font-size:12px;color:var(--faint);font-style:italic;margin-top:2px;margin-left:12px}
+.ft-vocab-item{padding:5px 0;font-size:13px;display:flex;align-items:baseline;gap:6px;flex-wrap:wrap}
+.ft-vocab-en{font-family:var(--font-m);color:var(--dark)}
+.ft-vocab-pr{font-family:var(--font-m);font-size:11.5px;color:var(--soft);font-style:italic}
+.ft-vocab-pt{font-size:12.5px;color:var(--text-soft, #6B6A63)}
+.ft-intro-actions{margin-top:16px;text-align:center}
+.ft-start-btn{background:#C98A00}
+.ft-start-btn:hover{background:#8F6300}
 
-.chat-input-row{display:flex;gap:8px;align-items:flex-end}
-.chat-input-wrap{flex:1;position:relative}
-.chat-input-txt{width:100%;font-family:var(--font-b);font-size:14px;padding:10px 12px;border:1px solid var(--border-strong);border-radius:9px;background:#fff;resize:none;min-height:40px;max-height:120px}
-.chat-input-txt:focus{outline:none;border-color:#C98A00}
-.chat-send-btn{background:#C98A00;color:#fff;border:none;border-radius:9px;padding:10px 18px;font-size:14px;font-weight:600;cursor:pointer}
-.chat-send-btn:hover{background:#8F6300}
-.chat-send-btn:disabled{opacity:.4;cursor:not-allowed}
-.chat-suggest-btn{background:#fff;border:1px dashed #C98A00;color:#8F6300;border-radius:9px;padding:9px 12px;font-size:12.5px;font-weight:600;cursor:pointer}
-.chat-suggest-btn:hover{background:#FFF8E0}
-.chat-suggested{background:#FFF8E0;border:1px dashed #C98A00;padding:8px 12px;border-radius:8px;margin-bottom:8px;font-size:13px;color:var(--text)}
-.chat-suggested .lbl{font-size:11px;color:#8F6300;font-weight:600;text-transform:uppercase;letter-spacing:.04em;display:block;margin-bottom:3px}
-.chat-suggested .txt{font-family:var(--font-m)}
-.chat-suggested .use-btn{background:#C98A00;color:#fff;border:none;border-radius:14px;padding:2px 10px;font-size:11px;font-weight:600;cursor:pointer;margin-left:8px}
+/* Fase 2: pergunta */
+.ft-qhead{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.ft-counter{font-family:var(--font-m);font-size:11px;font-weight:600;color:var(--faint);white-space:nowrap}
+.ft-pbar{flex:1;height:5px;background:#F0E4B0;border-radius:3px;overflow:hidden}
+.ft-pfill{height:100%;background:#C98A00;transition:width .3s ease}
+.ft-context{font-size:12.5px;color:var(--soft);font-style:italic;margin-bottom:10px;padding-left:8px;border-left:2px solid #C98A00}
 
-.chat-thinking{display:flex;gap:3px;padding:8px 13px;background:#F5F5F2;border-radius:14px;width:fit-content;margin-bottom:10px}
-.chat-thinking span{width:6px;height:6px;background:var(--faint);border-radius:50%;animation:think 1.2s ease-in-out infinite}
-.chat-thinking span:nth-child(2){animation-delay:.2s}
-.chat-thinking span:nth-child(3){animation-delay:.4s}
-@keyframes think{0%,60%,100%{opacity:.3}30%{opacity:1}}
+.ft-ia-bubble{background:#fff;border:1px solid #F0E4B0;border-radius:14px;border-bottom-left-radius:4px;padding:12px 14px;margin-bottom:14px;max-width:88%}
+.ft-ia-speaker{font-family:var(--font-m);font-size:10.5px;color:var(--faint);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.ft-ia-text{font-family:var(--font-m);font-size:15px;line-height:1.4;color:var(--dark);margin-bottom:8px}
+.ft-ia-actions{display:flex;gap:6px;flex-wrap:wrap}
+.ft-icon-btn{background:#fff;border:1px solid var(--border-strong);border-radius:16px;width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;padding:0;transition:all .15s}
+.ft-icon-btn:hover{background:var(--bg);border-color:var(--dark)}
+.ft-icon-btn.playing{background:var(--red);border-color:var(--red);color:#fff}
+.ft-ia-transcription,.ft-ia-translation{display:none;margin-top:8px;padding:7px 10px;background:#F5F5F2;border-radius:6px;font-size:12.5px;line-height:1.4;color:var(--text)}
+.ft-ia-transcription.show,.ft-ia-translation.show{display:block}
+.ft-ia-transcription{font-family:var(--font-m);color:var(--soft);font-style:italic}
 
-.fluency-complete{background:#DCFCE7;border:1px solid #86EFAC;border-radius:10px;padding:14px 16px;text-align:center;margin-top:12px}
-.fluency-complete p{font-size:14px;color:#166534;margin-bottom:10px}
-.fluency-complete .btn{background:#C98A00}
-.fluency-complete .btn:hover{background:#8F6300}
+/* área de resposta */
+.ft-answer-area{margin-bottom:12px}
+.ft-mode-tabs{display:flex;gap:6px;margin-bottom:10px}
+.ft-mode-btn{flex:1;background:#fff;border:1.5px solid var(--border-strong);border-radius:8px;padding:8px 12px;font-family:var(--font-d);font-size:12.5px;font-weight:600;cursor:pointer;transition:all .15s;color:var(--soft)}
+.ft-mode-btn.active{background:#C98A00;color:#fff;border-color:#C98A00}
+.ft-text-input{width:100%;min-height:70px;max-height:200px;resize:vertical;font-family:var(--font-b);font-size:14px;padding:10px 12px;border:1.5px solid var(--border-strong);border-radius:8px;background:#fff}
+.ft-text-input:focus{outline:none;border-color:#C98A00}
+.ft-input-actions{text-align:right;margin-top:8px}
+.ft-send-btn{background:#C98A00}
+.ft-send-btn:hover{background:#8F6300}
+
+/* áudio */
+.ft-audio-area{background:#fff;border:1.5px solid var(--border-strong);border-radius:10px;padding:16px;text-align:center}
+.ft-mic-btn{display:inline-flex;align-items:center;gap:10px;background:var(--dark);color:#fff;border:none;border-radius:50px;padding:12px 24px;font-size:14px;font-weight:700;cursor:pointer;transition:background .15s,transform .1s;font-family:var(--font-b)}
+.ft-mic-btn:hover{background:#3a3a3a}
+.ft-mic-btn:active{transform:scale(.96)}
+.ft-mic-btn.rec{background:var(--red);animation:mic-pulse 1.4s ease-in-out infinite}
+@keyframes mic-pulse{0%,100%{box-shadow:0 0 0 0 rgba(225,27,34,.35)}50%{box-shadow:0 0 0 8px rgba(225,27,34,0)}}
+.ft-mic-icon{font-size:16px}
+.ft-mic-status{display:none;align-items:center;justify-content:center;gap:10px;margin-top:10px;font-family:var(--font-m);font-size:12px;color:var(--red)}
+.ft-mic-wave{display:inline-block;width:8px;height:8px;background:var(--red);border-radius:50%;animation:mic-pulse 1s ease-in-out infinite}
+.ft-transcript-preview{margin-top:12px;padding:8px 10px;background:#F5F5F2;border-radius:6px;font-size:13px;color:var(--text);min-height:20px;text-align:left}
+.ft-transcript-preview:empty{display:none}
+
+/* linha auxiliar (sugestões) */
+.ft-actions-row{display:flex;gap:8px;margin-top:10px}
+.ft-link-btn{background:transparent;border:1px dashed #C98A00;color:#8F6300;border-radius:16px;padding:5px 12px;font-size:12px;font-weight:600;cursor:pointer}
+.ft-link-btn:hover{background:#FFF8E0}
+
+/* bubble do aluno + feedback */
+.ft-user-bubble{background:#2C6FD1;color:#fff;border-radius:14px;border-bottom-right-radius:4px;padding:10px 13px;margin:14px 0 10px auto;max-width:88%}
+.ft-user-speaker{font-family:var(--font-m);font-size:10.5px;color:rgba(255,255,255,.75);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;text-align:right}
+.ft-user-text{font-size:14px;line-height:1.4}
+.ft-user-actions{display:flex;gap:6px;justify-content:flex-end;margin-top:6px}
+.ft-user-actions .ft-icon-btn{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.3);color:#fff;width:28px;height:28px;font-size:12px}
+.ft-user-actions .ft-icon-btn:hover{background:rgba(255,255,255,.28)}
+
+.ft-evaluating{display:flex;align-items:center;justify-content:center;gap:10px;padding:14px 0;color:var(--soft);font-size:13px}
+.ft-feedback{margin-top:10px;padding:12px 14px;border-radius:10px;border:1px solid}
+.ft-feedback.ok{background:#F6FBF7;border-color:#BFE6C9}
+.ft-feedback.err{background:#FFF8F8;border-color:#F5D0D0}
+.ft-verdict{font-family:var(--font-d);font-size:15px;font-weight:700;margin-bottom:8px}
+.ft-verdict.ok{color:#166534}
+.ft-verdict.err{color:#991B1B}
+.ft-feedback-explain{margin-top:8px;padding-top:10px;border-top:1px dashed #F5D0D0}
+.ft-fb-lbl{font-family:var(--font-m);font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--faint);margin-bottom:5px;font-weight:600}
+.ft-fb-model{display:flex;align-items:center;gap:8px;padding:8px 10px;background:#fff;border-radius:6px;font-family:var(--font-m);font-size:14px;font-weight:600;color:var(--dark);margin-bottom:8px}
+.ft-fb-lego{font-size:12.5px;color:var(--text-soft);margin-bottom:6px}
+.ft-fb-lego strong{font-family:var(--font-m);color:var(--red)}
+.ft-fb-tip{font-size:12.5px;color:var(--soft);line-height:1.45;font-style:italic}
+.ft-fb-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.ft-next-btn{background:#C98A00}
+.ft-next-btn:hover{background:#8F6300}
+.btn-outline{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--soft);border:1.5px solid var(--border-strong);border-radius:8px;padding:10px 20px;font-size:13.5px;font-weight:600;cursor:pointer;font-family:var(--font-b)}
+.btn-outline:hover{border-color:var(--dark);color:var(--text)}
+
+/* sugestões */
+.ft-suggestions-box{background:#FFF8E0;border:1px dashed #C98A00;border-radius:8px;padding:10px 12px;margin-top:10px}
+.ft-sugg-line{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 0;font-family:var(--font-m);font-size:13px;border-bottom:1px dashed #F0E4B0}
+.ft-sugg-line:last-child{border-bottom:none}
+
+/* fase final: resultado */
+.ft-finish-title{font-family:var(--font-d);font-size:20px;font-weight:700;color:#8F6300;text-align:center;margin-bottom:8px}
+.ft-finish-score{font-family:var(--font-d);font-size:48px;font-weight:700;color:#C98A00;text-align:center;line-height:1;margin-bottom:4px}
+.ft-finish-total{font-size:24px;color:var(--faint);font-weight:400}
+.ft-finish-msg{font-size:14px;color:var(--text);text-align:center;margin-bottom:20px;line-height:1.5}
+.ft-finish-section{background:#fff;border-radius:10px;padding:12px 14px;margin-bottom:10px;border:1px solid #F0E4B0}
+.ft-finish-chips{display:flex;gap:6px;flex-wrap:wrap}
+.ft-chip{display:inline-flex;align-items:center;padding:4px 10px;border-radius:14px;font-family:var(--font-m);font-size:12px;font-weight:600}
+.ft-chip.ok{background:#DCFCE7;color:#166534;border:1px solid #86EFAC}
+.ft-chip.miss{background:#F5F5F2;color:var(--soft);border:1px solid var(--border)}
+.ft-finish-empty{color:var(--soft);font-size:13px;font-style:italic}
+.ft-finish-vocab{font-family:var(--font-m);font-size:13px;color:var(--text)}
+.ft-finish-actions{margin-top:16px;text-align:center}
+.ft-finish-actions .btn{background:#C98A00}
+.ft-finish-actions .btn:hover{background:#8F6300}
 
 
 /* analyzing */
@@ -393,16 +488,8 @@ const DAYS = {
       {"en":"next week","pr":"nékst UÍK","pt_stem":"te vejo","pt_tail":"semana que vem"}
     ]}
   ],
-  "boosts": [
-    {"pattern":"re- / re-","rule":"Prefixo de repetição ou volta","model":"I need to repeat this lesson.","lego_stem":"I need to","words":[{"en": "repeat", "pr": "riPÍT", "pt": "repetir"}, {"en": "return", "pr": "riTÃRN", "pt": "retornar/devolver"}, {"en": "remember", "pr": "riMÉMber", "pt": "lembrar"}, {"en": "relax", "pr": "riLÉKS", "pt": "relaxar"}, {"en": "receive", "pr": "riSSÍV", "pt": "receber"}, {"en": "remove", "pr": "riMÚV", "pt": "remover/tirar"}, {"en": "reduce", "pr": "riDIÚS", "pt": "reduzir"}, {"en": "respect", "pr": "risPÉKT", "pt": "respeitar/respeito"}, {"en": "result", "pr": "riZÃLT", "pt": "resultado"}, {"en": "review", "pr": "riVIÚ", "pt": "revisar/avaliação"}]},
-    {"pattern":"-ly / -mente","rule":"Advérbios: troque -mente por -ly","model":"I really like this!","lego_stem":"I need to","words":[{"en": "really", "pr": "RÍli", "pt": "realmente/mesmo"}, {"en": "normally", "pr": "NÓRmali", "pt": "normalmente"}, {"en": "exactly", "pr": "igZÉKtli", "pt": "exatamente"}, {"en": "finally", "pr": "FAInali", "pt": "finalmente"}, {"en": "usually", "pr": "IÚjuali", "pt": "geralmente"}, {"en": "probably", "pr": "PRÓbabli", "pt": "provavelmente"}, {"en": "completely", "pr": "comPLÍTli", "pt": "completamente"}, {"en": "especially", "pr": "isPÉshali", "pt": "especialmente"}, {"en": "quickly", "pr": "KUÍKli", "pt": "rapidamente"}, {"en": "absolutely", "pr": "ébsoLÚtli", "pt": "absolutamente"}]}
-  ],
-  "qa": [
-    {"q": "What's your name?", "qtr": "uóts iór neim", "pt": "Qual é o seu nome?", "answer": "My name is Ana. Nice to meet you!"},
-    {"q": "How are you?", "qtr": "rau ar iú", "pt": "Como você está?", "answer": "I'm fine, thanks! And you?"},
-    {"q": "Who is this?", "qtr": "rú is dis", "pt": "Quem é este(a)?", "answer": "This is my friend Carlos."}
-  ],
-  "roleplay": {"scenario": "Você encontra um estrangeiro num evento. Cumprimente, apresente-se e se despeça.", "lines": [{"speaker": "A", "en": "Hi! I'm Mark. What's your name?", "pt": "Oi! Sou o Mark. Qual seu nome?"}, {"speaker": "B", "en": "Hello! My name is Ana. Nice to meet you!", "pt": "Olá! Meu nome é Ana. Prazer!"}, {"speaker": "A", "en": "Nice to meet you too! How are you?", "pt": "Prazer também! Como você está?"}, {"speaker": "B", "en": "I'm fine, thanks! And you?", "pt": "Estou bem, obrigada! E você?"}, {"speaker": "A", "en": "I'm great! See you later!", "pt": "Estou ótimo! Até mais!"}, {"speaker": "B", "en": "See you! Have a nice day!", "pt": "Até! Tenha um bom dia!"}]}
+  "boosts": [{"pattern": "re- / re-", "rule": "Prefixo de repetição ou volta", "lego_stem": "I need to", "lego_pr": "ai níd tchu", "lego_pt": "Eu preciso", "words": [{"en": "repeat", "pr": "riPÍT", "pt": "repetir", "pt_clean": "repetir", "complement_en": "this lesson", "complement_pr": "dis LÉSson", "complement_pt": "esta lição"}, {"en": "return", "pr": "riTÃRN", "pt": "retornar/devolver", "pt_clean": "voltar", "complement_en": "to work", "complement_pr": "tchu uórk", "complement_pt": "ao trabalho"}, {"en": "remember", "pr": "riMÉMber", "pt": "lembrar", "pt_clean": "lembrar", "complement_en": "this", "complement_pr": "dis", "complement_pt": "disso"}, {"en": "relax", "pr": "riLÉKS", "pt": "relaxar", "pt_clean": "relaxar", "complement_en": "at home", "complement_pr": "ét RÔUM", "complement_pt": "em casa"}, {"en": "receive", "pr": "riSSÍV", "pt": "receber", "pt_clean": "receber", "complement_en": "the email", "complement_pr": "dã ÍMeil", "complement_pt": "o email"}, {"en": "remove", "pr": "riMÚV", "pt": "remover/tirar", "pt_clean": "remover", "complement_en": "this word", "complement_pr": "dis uórd", "complement_pt": "esta palavra"}, {"en": "reduce", "pr": "riDIÚS", "pt": "reduzir", "pt_clean": "reduzir", "complement_en": "my stress", "complement_pr": "mai stréss", "complement_pt": "meu estresse"}, {"en": "respect", "pr": "risPÉKT", "pt": "respeitar/respeito", "pt_clean": "respeitar", "complement_en": "the rules", "complement_pr": "dã rúls", "complement_pt": "as regras"}, {"en": "result", "pr": "riZÃLT", "pt": "resultado", "pt_clean": "resultar", "complement_en": "in good grades", "complement_pr": "in gud greids", "complement_pt": "em boas notas"}, {"en": "review", "pr": "riVIÚ", "pt": "revisar/avaliação", "pt_clean": "revisar", "complement_en": "my notes", "complement_pr": "mai nôuts", "complement_pt": "minhas anotações"}]}, {"pattern": "-ly / -mente", "rule": "Advérbios: troque -mente por -ly", "lego_stem": "I need to", "lego_pr": "ai níd tchu", "lego_pt": "Eu preciso", "words": [{"en": "really", "pr": "RÍli", "pt": "realmente/mesmo", "pt_clean": "realmente", "complement_en": "understand this", "complement_pr": "anderSTÉND dis", "complement_pt": "entender isso"}, {"en": "normally", "pr": "NÓRmali", "pt": "normalmente", "pt_clean": "normalmente", "complement_en": "wake up early", "complement_pr": "uéik ãp ÃRli", "complement_pt": "acordar cedo"}, {"en": "exactly", "pr": "igZÉKtli", "pt": "exatamente", "pt_clean": "exatamente", "complement_en": "know the time", "complement_pr": "NÔU dã TAIM", "complement_pt": "saber a hora"}, {"en": "finally", "pr": "FAInali", "pt": "finalmente", "pt_clean": "finalmente", "complement_en": "finish this", "complement_pr": "FÍnish dis", "complement_pt": "terminar isso"}, {"en": "usually", "pr": "IÚjuali", "pt": "geralmente", "pt_clean": "geralmente", "complement_en": "check my email", "complement_pr": "TCHÉK mai ÍMeil", "complement_pt": "checar meu email"}, {"en": "probably", "pr": "PRÓbabli", "pt": "provavelmente", "pt_clean": "provavelmente", "complement_en": "call you", "complement_pr": "cól iú", "complement_pt": "te ligar"}, {"en": "completely", "pr": "comPLÍTli", "pt": "completamente", "pt_clean": "completamente", "complement_en": "change this", "complement_pr": "TCHEINDJ dis", "complement_pt": "mudar isso"}, {"en": "especially", "pr": "isPÉshali", "pt": "especialmente", "pt_clean": "especialmente", "complement_en": "focus on this", "complement_pr": "FÔUkas ón dis", "complement_pt": "focar nisso"}, {"en": "quickly", "pr": "KUÍKli", "pt": "rapidamente", "pt_clean": "rapidamente", "complement_en": "answer this", "complement_pr": "ÉNser dis", "complement_pt": "responder isso"}, {"en": "absolutely", "pr": "ébsoLÚtli", "pt": "absolutamente", "pt_clean": "absolutamente", "complement_en": "agree with you", "complement_pr": "aGRÍ uif iú", "complement_pt": "concordar com você"}]}],
+  "fluency": {"objetivo": "Ao final desta sessão, você consegue se apresentar, cumprimentar alguém, apresentar pessoas próximas e se despedir de forma natural.", "cenario": "Você chegou num evento e está conhecendo pessoas novas. Vamos praticar essa conversa.", "vocabulario_chave": [{"en": "Nice to meet you", "pr": "naiss tchu mít-iu", "pt": "prazer em te conhecer"}, {"en": "I'm fine, thanks", "pr": "aim fain, fénks", "pt": "estou bem, obrigado"}, {"en": "This is my friend", "pr": "dis is mai frénd", "pt": "este é meu amigo"}, {"en": "See you later", "pr": "SSÍ-iu LEIrer", "pt": "até mais tarde"}], "perguntas": [{"numero": 1, "contexto": "Alguém se aproxima e se apresenta:", "pergunta_en": "Hi! I'm Mark. What's your name?", "transcricao": "rai! aim Mark. uóts iór neim?", "pergunta_pt": "Oi! Sou o Mark. Qual é o seu nome?", "resposta_modelo": "Hi! I'm Paulo. Nice to meet you!", "estrutura_lego": "I'm + [nome] / Nice to + meet you", "lego_names": ["I'm", "Nice to"], "variacoes_aceitas": ["Hi, I'm Paulo", "I'm Paulo, nice to meet you", "My name is Paulo, nice to meet you", "Hello, I'm Paulo"]}, {"numero": 2, "contexto": "A conversa continua e Mark pergunta:", "pergunta_en": "Nice to meet you too! How are you?", "transcricao": "naiss tchu mít-iu tchú! rau ar iú?", "pergunta_pt": "Prazer também! Como você está?", "resposta_modelo": "I'm fine, thanks! And you?", "estrutura_lego": "I'm + [estado]", "lego_names": ["I'm"], "variacoes_aceitas": ["I'm good, thanks", "I'm very happy, thank you", "Fine, thanks and you", "I'm great, and you"]}, {"numero": 3, "contexto": "Sua amiga chega junto. Mark olha para ela e pergunta:", "pergunta_en": "And who is this?", "transcricao": "énd rú is dis?", "pergunta_pt": "E quem é esta?", "resposta_modelo": "This is my friend Carla.", "estrutura_lego": "This is my + [pessoa]", "lego_names": ["This is my"], "variacoes_aceitas": ["This is my friend", "This is Carla, my friend", "This is my wife", "This is my sister"]}, {"numero": 4, "contexto": "Carla acena. Você quer apresentar melhor:", "pergunta_en": "Great to meet you, Carla!", "transcricao": "greit tchu mít-iu, Carla!", "pergunta_pt": "Ótimo te conhecer, Carla!", "resposta_modelo": "Nice to meet you too!", "estrutura_lego": "Nice to + meet you", "lego_names": ["Nice to"], "variacoes_aceitas": ["Nice to meet you", "Nice to see you", "Great to meet you too", "Nice to talk to you"]}, {"numero": 5, "contexto": "Alguém te chama de longe. Você precisa sair. Diga tchau ao Mark:", "pergunta_en": "Well, I need to go. Nice talking to you!", "transcricao": "uél, ai níd tchu gou. naiss TÓkin tchu iú!", "pergunta_pt": "Bom, preciso ir. Foi bom falar com você!", "resposta_modelo": "See you later! Have a nice day!", "estrutura_lego": "See you + [quando]", "lego_names": ["See you"], "variacoes_aceitas": ["See you soon", "See you tomorrow", "See you next week", "See you later"]}]}
   }
 };
 
@@ -454,6 +541,36 @@ function speakEn(text) {
   window.speechSynthesis.speak(u);
 }
 
+// ── TTS com estado visual por botão (usado pelo play button das linhas LEGO) ──
+// Suporta: toggle (clicar de novo no mesmo botão para/reinicia), reset visual
+// do botão anterior ao tocar um novo áudio, e nunca sobrepõe reproduções.
+let activeSpeakBtn = null;
+function speakEnToggle(text, btn) {
+  if (!HAS_TTS) return;
+  const wasThisBtnPlaying = activeSpeakBtn === btn;
+  window.speechSynthesis.cancel();
+  if (activeSpeakBtn) {
+    activeSpeakBtn.classList.remove('playing');
+    activeSpeakBtn.setAttribute('aria-pressed', 'false');
+  }
+  activeSpeakBtn = null;
+  if (wasThisBtnPlaying) return; // era um toggle para PARAR
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'en-US';
+  u.rate = 0.9;
+  u.onend = () => {
+    if (btn) { btn.classList.remove('playing'); btn.setAttribute('aria-pressed', 'false'); }
+    if (activeSpeakBtn === btn) activeSpeakBtn = null;
+  };
+  u.onerror = u.onend;
+  if (btn) {
+    btn.classList.add('playing');
+    btn.setAttribute('aria-pressed', 'true');
+    activeSpeakBtn = btn;
+  }
+  window.speechSynthesis.speak(u);
+}
+
 // ── selector ───────────────────────────────────────────
 function buildSelector() {
   const sel = el('selector');
@@ -481,13 +598,22 @@ function updatePageTitle() {
 }
 
 function renderLegoCard(l, idx) {
-  const rows = l.blocks.map(b =>
-    `<tr>
-       <td><strong>${l.stem}</strong> ${b.en}</td>
+  const rows = l.blocks.map(b => {
+    const fullPhrase = `${l.stem} ${b.en}`;
+    const phraseAttr = fullPhrase.replace(/"/g, '&quot;');
+    return `
+    <tr>
+       <td class="lego-en-cell">
+         <button type="button" class="row-play-btn" data-rowspeak="${phraseAttr}"
+           aria-label="Ouvir frase em inglês" aria-pressed="false" title="Ouvir frase em inglês">
+           <span class="row-play-icon">▶</span>
+         </button>
+         <span class="lego-en-text"><strong>${l.stem}</strong> ${b.en}</span>
+       </td>
        <td class="mono">${l.stem_pr} ${b.pr}</td>
        <td><strong>${b.pt_stem}</strong> ${b.pt_tail}</td>
-     </tr>`
-  ).join('');
+     </tr>`;
+  }).join('');
   const noteKey = `notes:day${currentLego && currentLego.day ? currentLego.day : 1}:lego${idx}`;
   el('lego-area').innerHTML = `
     <div class="lego-card">
@@ -970,6 +1096,12 @@ document.body.addEventListener('click', (e) => {
   if (btn) {
     e.preventDefault();
     speakEn(btn.dataset.speak);
+    return;
+  }
+  const rowBtn = e.target.closest('[data-rowspeak]');
+  if (rowBtn) {
+    e.preventDefault();
+    speakEnToggle(rowBtn.dataset.rowspeak, rowBtn);
   }
 });
 
@@ -1004,12 +1136,12 @@ function selectBoost(boost, idx, btn) {
 }
 
 function renderBoostCard(b, idx) {
-  // tabela com padrão idêntico ao LEGO (3 colunas)
+  // tabela: BOOST + COMPLEMENTO combinados (não mais palavra isolada)
   const rows = b.words.map(w =>
     `<tr>
-       <td><strong>${w.en}</strong></td>
-       <td class="mono">${w.pr}</td>
-       <td>${w.pt}</td>
+       <td><strong>${w.en}</strong> ${w.complement_en}</td>
+       <td class="mono">${w.pr} ${w.complement_pr}</td>
+       <td><strong>${w.pt_clean}</strong> ${w.complement_pt}</td>
      </tr>`
   ).join('');
 
@@ -1019,10 +1151,6 @@ function renderBoostCard(b, idx) {
         <span class="boost-num">BOOST ${idx+1}</span>
         <span class="boost-pattern">${b.pattern}</span>
         <span class="boost-rule">${b.rule}</span>
-      </div>
-      <div class="boost-model">
-        <span class="lbl">Exemplo do padrão</span>
-        <span class="txt">${b.model}</span>
       </div>
       <table>
         <tr><th>🇺🇸 English</th><th>🗣️ Pronounce</th><th>🇧🇷 Portuguese</th></tr>
@@ -1059,16 +1187,14 @@ async function renderBoostExercise(boost, boostIdx) {
       questions = await genBoostQuestions(boost);
       try { localStorage.setItem(cacheKey, JSON.stringify(questions)); } catch(e) {}
     } catch(e) {
-      // fallback: gerar deterministicamente
-      questions = fallbackBoostQuestions(boost);
+      try { questions = fallbackBoostQuestions(boost); } catch(e2) {}
     }
+    // se o usuário trocou de aba enquanto aguardava, ou fallback falhou — abortar
+    if (!document.getElementById(`boost-exercise-${boostIdx}`)) return;
+    if (!questions || !questions.length) return;
   }
 
-  // renderizar
-  const wordEx = boost.words[0]; // primeira palavra é usada no exemplo
-  const exampleEn = boost.model;
-  const examplePr = wordEx ? boost.model.replace(wordEx.en, wordEx.pr) : boost.model;
-
+  // renderizar (o exemplo já aparece no topo do boost-card, não repetir aqui)
   const questionsHtml = questions.map((q, i) => {
     const ansKey = `boostAns:day1:boost${boostIdx}:q${i}`;
     const evalKey = `boostEval:day1:boost${boostIdx}:q${i}`;
@@ -1101,14 +1227,20 @@ async function renderBoostExercise(boost, boostIdx) {
       </div>`;
   }).join('');
 
+  // exemplo com destaque (agora dentro da caixa do exercício)
+  const ex = boost.words[0];
+  const exampleEnHtml = `<strong>${boost.lego_stem}</strong> <span class="boost-highlight">${ex.en}</span> ${ex.complement_en}`;
+  const examplePrText = `${boost.lego_pr} ${ex.pr} ${ex.complement_pr}`;
+  const examplePtHtml = `<strong>${boost.lego_pt}</strong> <span class="boost-highlight">${ex.pt_clean}</span> ${ex.complement_pt}`;
+
   container.innerHTML = `
     <div class="exercise-card">
       <div class="exercise-title">✍️ Exercício: tradução por escrito</div>
       <div class="exercise-desc">Traduza cada frase usando a estrutura vista e uma palavra do Boost.</div>
-      <div class="exercise-example">
-        <span class="ex-lbl">Exemplo</span>
-        <span class="ex-en">${exampleEn}</span>
-        <span class="ex-pr">(${examplePr})</span>
+      <div class="boost-example">
+        <div class="boost-example-en">${exampleEnHtml}</div>
+        <div class="boost-example-pr">${examplePrText}</div>
+        <div class="boost-example-pt">${examplePtHtml}</div>
       </div>
       ${questionsHtml}
     </div>`;
@@ -1163,16 +1295,17 @@ function revealAnswer(boostIdx, qIdx) {
 
 async function genBoostQuestions(boost) {
   // usa Claude para gerar 3 perguntas naturais em PT
-  // com estrutura LEGO + palavras variadas do Boost
-  const wordsList = boost.words.slice(0, 6).map(w => `${w.en}=${w.pt}`).join('; ');
+  // com estrutura LEGO + palavras variadas do Boost (agora com complemento)
+  const exampleModel = `${boost.lego_stem} ${boost.words[0].en} ${boost.words[0].complement_en}.`;
+  const wordsList = boost.words.slice(0, 6).map(w => `${w.en} ${w.complement_en} = ${w.pt_clean} ${w.complement_pt}`).join('; ');
   const system = 'Você é professor de inglês para brasileiros iniciantes. Responda APENAS em JSON válido, sem markdown.';
   const user = `Boost de vocabulário: ${boost.pattern}
 Regra: ${boost.rule}
-Frase modelo: "${boost.model}"
-Palavras disponíveis: ${wordsList}
+Frase modelo: "${exampleModel}"
+Palavras disponíveis (palavra do boost + complemento = tradução): ${wordsList}
 
 Gere EXATAMENTE 3 perguntas de tradução escrita seguindo a estrutura da frase modelo.
-Cada pergunta usa uma palavra DIFERENTE do Boost. As frases em português devem soar naturais para um brasileiro.
+Cada pergunta usa uma palavra DIFERENTE do Boost (com seu complemento). As frases em português devem soar naturais para um brasileiro.
 
 Formato JSON:
 {"questions":[
@@ -1184,7 +1317,7 @@ Formato JSON:
 Regras absolutas:
 - Usar SOMENTE palavras da lista fornecida no expected.
 - expected_pr no sistema de pronúncia figurada brasileira do Protocolo Ovídio (nunca IPA).
-- hint_word é a palavra do Boost usada nessa pergunta específica.`;
+- hint_word é a palavra do Boost (com complemento) usada nessa pergunta específica.`;
 
   const vocab = boost.words.map(w => w.en);
   const json = await fetch('/api/claude', {
@@ -1199,308 +1332,539 @@ Regras absolutas:
 }
 
 function fallbackBoostQuestions(boost) {
-  // Gera perguntas deterministicamente se a IA falhar.
-  // Usa a estrutura da model + palavra do boost.
-  const model = boost.model; // ex: "I need to repeat this lesson."
+  // Gera perguntas deterministicamente a partir dos dados estruturados
+  // (LEGO + palavra do Boost + complemento), sem depender de string replace.
   return boost.words.slice(1, 4).map((w, i) => {
-    // substituir a palavra do boost no modelo pela nova palavra
-    const firstBoostWord = boost.words[0].en;
-    const expected = model.replace(firstBoostWord, w.en);
+    const expected = `${boost.lego_stem} ${w.en} ${w.complement_en}.`;
+    const expected_pr = `${boost.lego_pr} ${w.pr} ${w.complement_pr}`;
     return {
       id: i+1,
-      prompt: `Como dizer uma frase similar usando "${w.pt}"?`,
+      prompt: `Como dizer "${boost.lego_pt} ${w.pt_clean} ${w.complement_pt}"?`,
       expected: expected,
-      expected_pr: expected.toLowerCase(), // pobre, mas funciona como fallback
-      hint_word: { en: w.en, pr: w.pr, pt: w.pt }
+      expected_pr: expected_pr,
+      hint_word: { en: `${w.en} ${w.complement_en}`, pr: `${w.pr} ${w.complement_pr}`, pt: `${w.pt_clean} ${w.complement_pt}` }
     };
   });
 }
 
 
 
-// ── ABA FLUENCY TRAINING ────────────────────────────────
-let chatMessages = [];       // [{role, content, en, pt, feedback?, suggested?}]
-let studentRole = 'B';       // aluno começa como B (responde ao A)
-let iaRole = 'A';
-let awaitingResponse = false;
+// ── ABA FLUENCY TRAINING (roleplay guiado — quiz de conversação) ─────
+// Fluxo em 3 fases:
+//   1. Intro: objetivo + 5 estruturas LEGO + vocabulário-chave
+//   2. Perguntas: bubble da IA + área de resposta + avaliação
+//   3. Resumo: pontuação + estruturas dominadas
+// Otimização de tokens:
+//   - Fast path: comparação textual (resposta bate com modelo/variação → sem IA)
+//   - Cache: (pergunta+resposta) já avaliadas ficam em localStorage
+//   - Prompt mínimo, max_tokens=300, modelo Haiku
+
+let ftState = {
+  currentQ: 0,           // índice da pergunta atual (0-based)
+  attempts: 0,           // tentativas na pergunta atual (0 ou 1)
+  results: [],           // [{correct: bool, attempts: number, usedLegos: [...]}]
+  inputMode: 'text',     // 'text' | 'audio'
+  lastAnswer: '',        // última resposta enviada (para o botão Play)
+  suggestionsShown: {},  // cache: { [qIdx]: [str, str, str] }
+  rec: null,             // SpeechRecognition instance
+  recTimer: null,        // timer de 60s
+};
 
 function initFluencyTab() {
   fluencyBuilt = true;
   renderFluencyIntro();
 }
 
+// ─────────────────── FASE 1: INTRO ────────────────────
 function renderFluencyIntro() {
   const day = DAYS[1];
-  const rp = day.roleplay;
-  const you = studentRole;
-  const ia  = iaRole;
+  const ft = day.fluency;
+
+  const legosHtml = day.legos.map((l, i) =>
+    `<div class="ft-lego-item">
+       <span class="ft-lego-name"><strong>${l.stem}</strong></span>
+       <span class="ft-lego-desc">${l.note}</span>
+       <span class="ft-lego-ex">ex: ${l.stem} ${l.blocks[0].en}</span>
+     </div>`
+  ).join('');
+
+  const vocabHtml = ft.vocabulario_chave.map(v =>
+    `<div class="ft-vocab-item">
+       <span class="ft-vocab-en"><strong>${v.en}</strong></span>
+       <span class="ft-vocab-pr">/${v.pr}/</span>
+       <span class="ft-vocab-pt">→ ${v.pt}</span>
+     </div>`
+  ).join('');
 
   document.getElementById('fluency-area').innerHTML = `
-    <div class="fluency-card">
-      <div class="fluency-head">
-        <div class="fluency-title">💪 Treino de Fluência — ${day.title}</div>
-        <div class="fluency-scenario"><strong>Cenário:</strong> ${rp.scenario}</div>
-        <div class="fluency-roles">
-          <span class="role-badge">🤖 IA: Personagem ${ia}</span>
-          <span class="role-badge you">👤 Você: Personagem ${you}</span>
-          <button class="swap-roles-btn" onclick="swapRoles()">🔄 Trocar de papéis</button>
-        </div>
+    <div class="fluency-card ft-intro">
+      <div class="ft-intro-title">💪 Fluency Training — ${day.title}</div>
+      <div class="ft-intro-objective">
+        <span class="ft-lbl">🎯 Objetivo do dia</span>
+        <p>${ft.objetivo}</p>
       </div>
-      <div class="chat-window" id="chat-window"></div>
-      <div id="chat-suggested-slot"></div>
-      <div class="chat-input-row">
-        <div class="chat-input-wrap">
-          <textarea class="chat-input-txt" id="chat-input"
-            placeholder="Escreva sua resposta em inglês…"
-            onkeydown="if(event.key==='Enter' && !event.shiftKey){event.preventDefault();sendChatMessage()}"></textarea>
-        </div>
-        <button class="chat-suggest-btn" onclick="requestSuggestion()">💡 Sugestão</button>
-        <button class="chat-send-btn" id="chat-send-btn" onclick="sendChatMessage()">Enviar</button>
+      <div class="ft-intro-legos">
+        <span class="ft-lbl">🧱 5 Estruturas LEGO que você vai dominar</span>
+        ${legosHtml}
+      </div>
+      <div class="ft-intro-vocab">
+        <span class="ft-lbl">⚡️ Vocabulário-chave</span>
+        ${vocabHtml}
+      </div>
+      <div class="ft-intro-scenario">
+        <span class="ft-lbl">🎭 Cenário</span>
+        <p>${ft.cenario}</p>
+      </div>
+      <div class="ft-intro-actions">
+        <button class="btn ft-start-btn" onclick="ftStartQuiz()">Entendi, vamos começar →</button>
       </div>
     </div>`;
-
-  // resetar histórico
-  chatMessages = [];
-  awaitingResponse = false;
-  // IA (personagem A) começa a conversa
-  startChatWithIA();
 }
 
-async function startChatWithIA() {
-  awaitingResponse = true;
-  showChatThinking();
-  try {
-    const day = DAYS[1];
-    const rp = day.roleplay;
-    const system = `Você é um assistente que simula um diálogo em inglês para prática de fluência.
-CENÁRIO: ${rp.scenario}
-Você é o Personagem ${iaRole}. O aluno é o Personagem ${studentRole}.
-Fale APENAS em inglês, frases curtas (5-15 palavras), nível A1.
-Comece a conversa iniciando o diálogo de forma natural, como o Personagem ${iaRole} faria neste cenário.
-Não use aspas, apenas fale como o personagem.
-Retorne APENAS a fala inicial, sem explicações.`;
-
-    const response = await fetch('/api/claude', {
-      method: 'POST', headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({
-        system,
-        max_tokens: 100,
-        messages: [{role: 'user', content: 'Comece o diálogo.'}]
-      })
-    }).then(r => r.json());
-
-    const iaTxt = (response.content?.[0]?.text || 'Hi!').trim().replace(/^["']|["']$/g,'');
-    hideChatThinking();
-    addChatMessage({ role: 'ia', speaker: iaRole, en: iaTxt });
-  } catch(e) {
-    hideChatThinking();
-    addChatMessage({ role: 'ia', speaker: iaRole, en: 'Hi! Sorry, connection failed. Try again.' });
-  }
-  awaitingResponse = false;
+function ftStartQuiz() {
+  ftState.currentQ = 0;
+  ftState.attempts = 0;
+  ftState.results = [];
+  ftState.lastAnswer = '';
+  renderFluencyQuestion();
 }
 
-async function sendChatMessage() {
-  if (awaitingResponse) return;
-  const input = document.getElementById('chat-input');
-  const text = input.value.trim();
-  if (!text) return;
-  input.value = '';
-  clearSuggestion();
-  addChatMessage({ role: 'student', speaker: studentRole, en: text });
-  // IA responde
-  awaitingResponse = true;
-  showChatThinking();
-  try {
-    const day = DAYS[1];
-    const rp = day.roleplay;
-    const history = chatMessages.map(m =>
-      `${m.speaker === iaRole ? 'IA' : 'Aluno'}: ${m.en}`
-    ).join('\n');
-    const system = `Você simula um diálogo em inglês para prática de fluência.
-CENÁRIO: ${rp.scenario}
-Você é o Personagem ${iaRole}. O aluno é o Personagem ${studentRole}.
-Fale APENAS em inglês, frases curtas (5-15 palavras), nível A1.
-Mantenha o cenário e o contexto. Não corrija o aluno.
-Se a conversa chegou a uma conclusão natural (despedida), responda com uma última fala curta.
-Retorne APENAS a próxima fala como Personagem ${iaRole}, sem explicações ou aspas.`;
+// ─────────────────── FASE 2: PERGUNTA ────────────────────
+function renderFluencyQuestion() {
+  const ft = DAYS[1].fluency;
+  const q = ft.perguntas[ftState.currentQ];
+  const total = ft.perguntas.length;
+  const num = ftState.currentQ + 1;
+  const pct = Math.round((ftState.currentQ / total) * 100);
 
-    const response = await fetch('/api/claude', {
-      method: 'POST', headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({
-        system,
-        max_tokens: 100,
-        messages: [{role: 'user', content: `Diálogo até agora:\n${history}\n\nSua próxima fala como Personagem ${iaRole}:`}]
-      })
-    }).then(r => r.json());
-
-    const iaTxt = (response.content?.[0]?.text || '...').trim().replace(/^["']|["']$/g,'');
-    hideChatThinking();
-    addChatMessage({ role: 'ia', speaker: iaRole, en: iaTxt });
-  } catch(e) {
-    hideChatThinking();
-    addChatMessage({ role: 'ia', speaker: iaRole, en: '(erro na conexão)' });
-  }
-  awaitingResponse = false;
-}
-
-function addChatMessage(msg) {
-  chatMessages.push(msg);
-  const w = document.getElementById('chat-window');
-  const idx = chatMessages.length - 1;
-  const cls = msg.speaker === 'A' ? 'a' : 'b';
-  let actionsHtml = '';
-  if (msg.role === 'student') {
-    actionsHtml = `
-      <div class="msg-actions">
-        <button class="msg-action-btn" onclick="requestFeedback(${idx})">📊 Receber feedback</button>
+  document.getElementById('fluency-area').innerHTML = `
+    <div class="fluency-card ft-question-card">
+      <div class="ft-qhead">
+        <span class="ft-counter">Pergunta ${num} de ${total}</span>
+        <div class="ft-pbar"><div class="ft-pfill" style="width:${pct}%"></div></div>
       </div>
-      <div id="msg-fb-${idx}"></div>`;
-  }
-  const div = document.createElement('div');
-  div.className = `chat-msg ${cls}`;
-  div.innerHTML = `
-    <span class="speaker">${msg.role === 'ia' ? '🤖 ' : '👤 '}Personagem ${msg.speaker}</span>
-    <div class="chat-bubble">${msg.en}</div>
-    ${actionsHtml}`;
-  w.appendChild(div);
-  w.scrollTop = w.scrollHeight;
+
+      ${q.contexto ? `<div class="ft-context">${q.contexto}</div>` : ''}
+
+      <div class="ft-ia-bubble" id="ft-ia-bubble">
+        <div class="ft-ia-speaker">🤖 Mark</div>
+        <div class="ft-ia-text">${q.pergunta_en}</div>
+        <div class="ft-ia-actions">
+          <button class="ft-icon-btn" data-rowspeak="${q.pergunta_en.replace(/"/g,'&quot;')}"
+            aria-label="Ouvir pergunta" title="Ouvir pergunta">🔊</button>
+          <button class="ft-icon-btn" onclick="ftToggleTranscription()"
+            aria-label="Ver pronúncia" title="Ver pronúncia">📢</button>
+          <button class="ft-icon-btn" onclick="ftToggleTranslation()"
+            aria-label="Ver tradução" title="Ver tradução">🌐</button>
+        </div>
+        <div class="ft-ia-transcription" id="ft-transcription">/${q.transcricao}/</div>
+        <div class="ft-ia-translation" id="ft-translation">${q.pergunta_pt}</div>
+      </div>
+
+      <div class="ft-answer-area" id="ft-answer-area">
+        <div class="ft-mode-tabs">
+          <button class="ft-mode-btn ${ftState.inputMode === 'text' ? 'active' : ''}"
+            onclick="ftSetMode('text')">⌨️ Texto</button>
+          <button class="ft-mode-btn ${ftState.inputMode === 'audio' ? 'active' : ''}"
+            onclick="ftSetMode('audio')">🎤 Áudio</button>
+        </div>
+        <div id="ft-input-container"></div>
+      </div>
+
+      <div class="ft-actions-row">
+        <button class="ft-link-btn" onclick="ftShowSuggestions()">💡 Sugestões</button>
+      </div>
+      <div id="ft-suggestions-slot"></div>
+      <div id="ft-feedback-slot"></div>
+    </div>`;
+
+  renderFluencyInput();
 }
 
-function showChatThinking() {
-  const w = document.getElementById('chat-window');
-  const div = document.createElement('div');
-  div.id = 'chat-thinking-dots';
-  div.className = 'chat-thinking';
-  div.innerHTML = '<span></span><span></span><span></span>';
-  w.appendChild(div);
-  w.scrollTop = w.scrollHeight;
+function ftToggleTranscription() {
+  const el = document.getElementById('ft-transcription');
+  if (el) el.classList.toggle('show');
+}
+function ftToggleTranslation() {
+  const el = document.getElementById('ft-translation');
+  if (el) el.classList.toggle('show');
 }
 
-function hideChatThinking() {
-  const el = document.getElementById('chat-thinking-dots');
-  if (el) el.remove();
+function ftSetMode(mode) {
+  ftState.inputMode = mode;
+  // reset UI de modo
+  const container = document.getElementById('ft-input-container');
+  if (!container) return;
+  renderFluencyQuestion();
 }
 
-async function requestFeedback(msgIdx) {
-  const msg = chatMessages[msgIdx];
-  const fbSlot = document.getElementById(`msg-fb-${msgIdx}`);
-  if (!fbSlot) return;
-  if (msg.feedback) {
-    // já tem feedback, apenas mostrar/ocultar
-    fbSlot.style.display = fbSlot.style.display === 'none' ? 'block' : 'none';
-    return;
-  }
-  fbSlot.innerHTML = '<div class="msg-feedback"><em>Analisando…</em></div>';
-  try {
-    const day = DAYS[1];
-    const rp = day.roleplay;
-    // contexto = últimas 4 falas antes desta
-    const context = chatMessages.slice(Math.max(0, msgIdx-3), msgIdx).map(m =>
-      `${m.speaker === iaRole ? 'IA' : 'Aluno'}: ${m.en}`
-    ).join('\n');
-    const system = 'Você é um avaliador de inglês para brasileiros. Responda APENAS em JSON válido, sem markdown.';
-    const user = `Cenário: ${rp.scenario}
-Aluno é Personagem ${studentRole}. Deve falar em inglês simples nível A1.
-Contexto anterior:
-${context || '(início da conversa)'}
-Fala do aluno para avaliar: "${msg.en}"
-
-Avalie apenas GRAMÁTICA e VOCABULÁRIO da fala do aluno (não pronúncia).
-Retorne JSON:
-{
-  "ok": true/false,
-  "issue": "descrição curta do erro em português ou null",
-  "correct": "versão corrigida em inglês ou null",
-  "feedback_pt": "feedback curto e encorajador em português (1-2 linhas)"
-}`;
-
-    const response = await fetch('/api/claude', {
-      method: 'POST', headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({
-        system, max_tokens: 300,
-        messages: [{role: 'user', content: user}]
-      })
-    }).then(r => r.json());
-
-    const raw = response.content[0].text.trim().replace(/```json|```/g, '').trim();
-    const fb = JSON.parse(raw);
-    msg.feedback = fb;
-    renderFeedbackInMsg(msgIdx, fb);
-  } catch(e) {
-    fbSlot.innerHTML = `<div class="msg-feedback err">Não foi possível avaliar: ${e.message}</div>`;
-  }
-}
-
-function renderFeedbackInMsg(msgIdx, fb) {
-  const fbSlot = document.getElementById(`msg-fb-${msgIdx}`);
-  if (!fbSlot) return;
-  if (fb.ok) {
-    fbSlot.innerHTML = `
-      <div class="msg-feedback ok">
-        <div class="fb-title">✅ Ótimo!</div>
-        ${fb.feedback_pt || 'Sua frase está correta.'}
+function renderFluencyInput() {
+  const container = document.getElementById('ft-input-container');
+  if (!container) return;
+  if (ftState.inputMode === 'text') {
+    container.innerHTML = `
+      <textarea class="ft-text-input" id="ft-text-input"
+        placeholder="Escreva sua resposta em inglês..."
+        onkeydown="if(event.key==='Enter' && !event.shiftKey){event.preventDefault();ftSubmitText()}"></textarea>
+      <div class="ft-input-actions">
+        <button class="btn ft-send-btn" onclick="ftSubmitText()">Enviar resposta →</button>
       </div>`;
   } else {
-    fbSlot.innerHTML = `
-      <div class="msg-feedback err">
-        <div class="fb-title">💡 Sugestão</div>
-        ${fb.feedback_pt || ''}
-        ${fb.correct ? `<div style="margin-top:5px"><strong>Versão correta:</strong> <span style="font-family:var(--font-m)">${fb.correct}</span></div>` : ''}
+    const hasSpeech = !!(window.SpeechRecognition || window.webkitSpeechRecognition);
+    if (!hasSpeech) {
+      container.innerHTML = `<div class="ap-warn">⚠️ Seu navegador não suporta gravação por voz. Use Chrome ou Edge.</div>`;
+      return;
+    }
+    container.innerHTML = `
+      <div class="ft-audio-area">
+        <button class="ft-mic-btn" id="ft-mic-btn" onclick="ftToggleMic()">
+          <span class="ft-mic-icon">🎤</span>
+          <span class="ft-mic-label" id="ft-mic-label">Clique para falar</span>
+        </button>
+        <div class="ft-mic-status" id="ft-mic-status" style="display:none">
+          <span class="ft-mic-wave"></span>
+          <span id="ft-mic-timer">60s</span>
+        </div>
+        <div class="ft-transcript-preview" id="ft-transcript-preview"></div>
       </div>`;
   }
 }
 
-async function requestSuggestion() {
-  clearSuggestion();
-  const slot = document.getElementById('chat-suggested-slot');
-  slot.innerHTML = `<div class="chat-suggested"><span class="lbl">Sugestão</span><em>Gerando…</em></div>`;
-  try {
-    const day = DAYS[1];
-    const rp = day.roleplay;
-    const lastIA = [...chatMessages].reverse().find(m => m.speaker === iaRole);
-    const system = 'Você sugere respostas curtas em inglês nível A1 para prática de fluência. Responda APENAS com a frase sugerida, sem explicações, sem aspas.';
-    const user = `Cenário: ${rp.scenario}
-Você está no papel do Personagem ${studentRole}.
-Última fala do outro personagem: "${lastIA ? lastIA.en : '(início)'}"
-Sugira UMA resposta curta e natural em inglês (5-12 palavras) que faça sentido no cenário.`;
+// ─────────────────── GRAVAÇÃO ────────────────────
+function ftToggleMic() {
+  if (ftState.rec) { ftStopMic(); return; }
+  ftStartMic();
+}
 
-    const response = await fetch('/api/claude', {
-      method: 'POST', headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({
-        system, max_tokens: 60,
-        messages: [{role: 'user', content: user}]
-      })
-    }).then(r => r.json());
+function ftStartMic() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) return;
+  const rec = new SR();
+  rec.lang = 'en-US';
+  rec.continuous = true;
+  rec.interimResults = true;
+  ftState.rec = rec;
 
-    const sugg = response.content[0].text.trim().replace(/^["']|["']$/g, '');
-    slot.innerHTML = `
-      <div class="chat-suggested">
-        <span class="lbl">💡 Sugestão de resposta</span>
-        <span class="txt">${sugg}</span>
-        <button class="use-btn" onclick="useSuggestion('${sugg.replace(/'/g,"\\'")}')">Usar</button>
-      </div>`;
-  } catch(e) {
-    slot.innerHTML = `<div class="chat-suggested">Não foi possível gerar sugestão.</div>`;
+  const btn = document.getElementById('ft-mic-btn');
+  const label = document.getElementById('ft-mic-label');
+  const status = document.getElementById('ft-mic-status');
+  const preview = document.getElementById('ft-transcript-preview');
+  const timerEl = document.getElementById('ft-mic-timer');
+  btn.classList.add('rec');
+  label.textContent = 'Parar gravação';
+  status.style.display = 'flex';
+
+  let finalTranscript = '';
+  let interimTranscript = '';
+
+  rec.onresult = (e) => {
+    interimTranscript = '';
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      if (e.results[i].isFinal) finalTranscript += e.results[i][0].transcript + ' ';
+      else interimTranscript += e.results[i][0].transcript;
+    }
+    if (preview) {
+      preview.textContent = (finalTranscript + interimTranscript).trim();
+      preview.dataset.final = finalTranscript.trim();
+    }
+  };
+  rec.onerror = () => ftStopMic();
+
+  // timer de 60s
+  let secondsLeft = 60;
+  ftState.recTimer = setInterval(() => {
+    secondsLeft--;
+    if (timerEl) timerEl.textContent = `${secondsLeft}s`;
+    if (secondsLeft <= 0) ftStopMic();
+  }, 1000);
+
+  try { rec.start(); } catch(e) {}
+}
+
+function ftStopMic() {
+  if (!ftState.rec) return;
+  try { ftState.rec.stop(); } catch(e) {}
+  ftState.rec = null;
+  clearInterval(ftState.recTimer);
+  ftState.recTimer = null;
+  const btn = document.getElementById('ft-mic-btn');
+  const label = document.getElementById('ft-mic-label');
+  const status = document.getElementById('ft-mic-status');
+  const preview = document.getElementById('ft-transcript-preview');
+  if (btn) btn.classList.remove('rec');
+  if (label) label.textContent = 'Clique para falar';
+  if (status) status.style.display = 'none';
+  const text = (preview && preview.dataset.final) ? preview.dataset.final : (preview ? preview.textContent : '');
+  if (text && text.trim()) ftSubmitAnswer(text.trim());
+}
+
+function ftSubmitText() {
+  const input = document.getElementById('ft-text-input');
+  if (!input) return;
+  const text = input.value.trim();
+  if (!text) return;
+  ftSubmitAnswer(text);
+}
+
+// ─────────────────── FASE 3: AVALIAÇÃO ────────────────────
+async function ftSubmitAnswer(answer) {
+  ftState.lastAnswer = answer;
+  const q = DAYS[1].fluency.perguntas[ftState.currentQ];
+
+  // renderizar bubble do aluno
+  const answerHtml = `
+    <div class="ft-user-bubble">
+      <div class="ft-user-speaker">👤 Você</div>
+      <div class="ft-user-text">${escHtml(answer)}</div>
+      <div class="ft-user-actions">
+        <button class="ft-icon-btn" data-rowspeak="${answer.replace(/"/g,'&quot;')}"
+          aria-label="Ouvir sua resposta" title="Ouvir sua resposta">🎵</button>
+      </div>
+    </div>
+    <div class="ft-evaluating" id="ft-evaluating">
+      <div class="spinner"></div>
+      <p>Avaliando…</p>
+    </div>`;
+  document.getElementById('ft-feedback-slot').innerHTML = answerHtml;
+  // esconder área de input enquanto avalia
+  const answerArea = document.getElementById('ft-answer-area');
+  if (answerArea) answerArea.style.display = 'none';
+
+  // FAST PATH: comparação textual — economiza tokens
+  const norm = normalizeAns(answer);
+  const modelNorm = normalizeAns(q.resposta_modelo);
+  const isDirectMatch = norm === modelNorm
+    || (q.variacoes_aceitas || []).some(v => normalizeAns(v) === norm);
+
+  let evaluation;
+  if (isDirectMatch) {
+    evaluation = { correct: true, source: 'fast_path' };
+  } else {
+    // CACHE: já avaliamos esta (pergunta+resposta) antes?
+    const cacheKey = `ftEval:day1:q${ftState.currentQ}:${btoa(unescape(encodeURIComponent(norm))).slice(0,40)}`;
+    try {
+      const cached = localStorage.getItem(cacheKey);
+      if (cached) evaluation = JSON.parse(cached);
+    } catch(e) {}
+    if (!evaluation) {
+      try {
+        evaluation = await ftEvaluateWithIA(q, answer);
+        try { localStorage.setItem(cacheKey, JSON.stringify(evaluation)); } catch(e) {}
+      } catch(e) {
+        evaluation = { correct: false, error: e.message, feedback: 'Erro na avaliação. Vamos considerar como resposta enviada.' };
+      }
+    }
   }
+
+  ftState.attempts++;
+  renderFluencyEvaluation(evaluation, q);
 }
 
-function useSuggestion(txt) {
-  document.getElementById('chat-input').value = txt;
-  clearSuggestion();
-  document.getElementById('chat-input').focus();
+function normalizeAns(s) {
+  return String(s || '')
+    .toLowerCase()
+    .replace(/[.,!?;:"'()]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
-function clearSuggestion() {
-  const slot = document.getElementById('chat-suggested-slot');
-  if (slot) slot.innerHTML = '';
+function escHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
-function swapRoles() {
-  // trocar papéis: aluno vira A, IA vira B (ou vice-versa)
-  studentRole = studentRole === 'A' ? 'B' : 'A';
-  iaRole = iaRole === 'A' ? 'B' : 'A';
-  renderFluencyIntro();
+async function ftEvaluateWithIA(q, answer) {
+  const system = 'Você é avaliador de inglês para brasileiros iniciantes. Responda APENAS em JSON válido, sem markdown, sem texto extra.';
+  const user = `Pergunta: "${q.pergunta_en}"
+Resposta modelo: "${q.resposta_modelo}"
+Estrutura LEGO esperada: ${q.estrutura_lego}
+Variações aceitas: ${(q.variacoes_aceitas || []).join(' | ')}
+Resposta do aluno: "${answer}"
+
+Avalie se a resposta do aluno usa corretamente a estrutura LEGO esperada e responde à pergunta. Aceite variações naturais e pequenas diferenças. Só marque como incorreto se realmente não usou a estrutura ou se a resposta não faz sentido para a pergunta.
+
+JSON:
+{
+  "correct": true/false,
+  "feedback": "1 frase curta em português. Se correto: encorajamento. Se incorreto: explique o que faltou usando a Estrutura LEGO.",
+  "usedLegoCorrectly": true/false
+}`;
+
+  const res = await fetch('/api/claude', {
+    method: 'POST', headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({
+      system, max_tokens: 300,
+      messages: [{role:'user', content: user}]
+    })
+  }).then(r => r.json());
+  const raw = res.content[0].text.trim().replace(/```json|```/g, '').trim();
+  return JSON.parse(raw);
 }
+
+function renderFluencyEvaluation(ev, q) {
+  const slot = document.getElementById('ft-feedback-slot');
+  const isLast = ftState.currentQ === DAYS[1].fluency.perguntas.length - 1;
+  const canRetry = !ev.correct && ftState.attempts < 2;
+
+  // guardar resultado (só na primeira avaliação da pergunta ou quando avança)
+  const alreadyRegistered = ftState.results.length > ftState.currentQ;
+
+  let actionHtml;
+  if (ev.correct) {
+    if (!alreadyRegistered) ftState.results.push({ correct: true, attempts: ftState.attempts, usedLegos: q.lego_names });
+    playSound && playSound('success');
+    actionHtml = isLast
+      ? `<button class="btn ft-next-btn" onclick="ftFinish()">Ver resultado →</button>`
+      : `<button class="btn ft-next-btn" onclick="ftNextQuestion()">Próxima pergunta →</button>`;
+  } else if (canRetry) {
+    playSound && playSound('error');
+    actionHtml = `
+      <button class="ap-retry-btn" onclick="ftRetryQuestion()">🔄 Tentar novamente</button>
+      <button class="btn-outline ft-skip-btn" onclick="ftSkipQuestion()">➜ Próxima pergunta</button>`;
+  } else {
+    if (!alreadyRegistered) ftState.results.push({ correct: false, attempts: ftState.attempts, usedLegos: [] });
+    playSound && playSound('error');
+    actionHtml = isLast
+      ? `<button class="btn ft-next-btn" onclick="ftFinish()">Ver resultado →</button>`
+      : `<button class="btn ft-next-btn" onclick="ftNextQuestion()">Próxima pergunta →</button>`;
+  }
+
+  const verdictHtml = ev.correct
+    ? `<div class="ft-verdict ok">✅ That's correct!</div>`
+    : `<div class="ft-verdict err">✗ That's not quite right</div>`;
+
+  const explainHtml = ev.correct ? '' : `
+    <div class="ft-feedback-explain">
+      <div class="ft-fb-lbl">💡 Resposta modelo:</div>
+      <div class="ft-fb-model">
+        <span>${escHtml(q.resposta_modelo)}</span>
+        <button class="ft-icon-btn" data-rowspeak="${q.resposta_modelo.replace(/"/g,'&quot;')}"
+          aria-label="Ouvir resposta modelo" title="Ouvir">🔊</button>
+      </div>
+      <div class="ft-fb-lego">Estrutura LEGO: <strong>${q.estrutura_lego}</strong></div>
+      ${ev.feedback ? `<div class="ft-fb-tip">${escHtml(ev.feedback)}</div>` : ''}
+    </div>`;
+
+  // atualizar slot: manter user-bubble, trocar spinner por verdict + feedback
+  const answerText = escHtml(ftState.lastAnswer);
+  slot.innerHTML = `
+    <div class="ft-user-bubble">
+      <div class="ft-user-speaker">👤 Você</div>
+      <div class="ft-user-text">${answerText}</div>
+      <div class="ft-user-actions">
+        <button class="ft-icon-btn" data-rowspeak="${ftState.lastAnswer.replace(/"/g,'&quot;')}"
+          aria-label="Ouvir sua resposta" title="Ouvir sua resposta">🎵</button>
+      </div>
+    </div>
+    <div class="ft-feedback ${ev.correct ? 'ok' : 'err'}">
+      ${verdictHtml}
+      ${explainHtml}
+      <div class="ft-fb-actions">${actionHtml}</div>
+    </div>`;
+}
+
+function ftRetryQuestion() {
+  renderFluencyQuestion();
+}
+function ftSkipQuestion() {
+  // registrar como não-acerto e avançar
+  if (ftState.results.length <= ftState.currentQ) {
+    ftState.results.push({ correct: false, attempts: ftState.attempts, usedLegos: [] });
+  }
+  ftNextQuestion();
+}
+function ftNextQuestion() {
+  ftState.currentQ++;
+  ftState.attempts = 0;
+  ftState.lastAnswer = '';
+  renderFluencyQuestion();
+}
+
+// ─────────────────── SUGESTÕES ────────────────────
+async function ftShowSuggestions() {
+  const qIdx = ftState.currentQ;
+  const slot = document.getElementById('ft-suggestions-slot');
+  if (!slot) return;
+  if (slot.dataset.shownFor === String(qIdx) && slot.innerHTML) {
+    slot.style.display = slot.style.display === 'none' ? 'block' : 'none';
+    return;
+  }
+  slot.dataset.shownFor = String(qIdx);
+  slot.style.display = 'block';
+
+  // usar cache se já existir
+  let suggestions = ftState.suggestionsShown[qIdx];
+  if (!suggestions) {
+    const q = DAYS[1].fluency.perguntas[qIdx];
+    // usar diretamente as variações aceitas + resposta modelo — sem chamar IA!
+    suggestions = [q.resposta_modelo, ...(q.variacoes_aceitas || [])].slice(0, 3);
+    ftState.suggestionsShown[qIdx] = suggestions;
+  }
+
+  slot.innerHTML = `
+    <div class="ft-suggestions-box">
+      <div class="ft-fb-lbl">💡 Respostas possíveis (todas usam a Estrutura LEGO do dia)</div>
+      ${suggestions.map(s => `
+        <div class="ft-sugg-line">
+          <span>${escHtml(s)}</span>
+          <button class="ft-icon-btn" data-rowspeak="${s.replace(/"/g,'&quot;')}" aria-label="Ouvir" title="Ouvir">🔊</button>
+        </div>`).join('')}
+    </div>`;
+}
+
+// ─────────────────── FASE FINAL: RESULTADO ────────────────────
+function ftFinish() {
+  const ft = DAYS[1].fluency;
+  const total = ft.perguntas.length;
+  const correct = ftState.results.filter(r => r.correct).length;
+  const firstTry = ftState.results.filter(r => r.correct && r.attempts === 1).length;
+
+  // estruturas LEGO dominadas: usadas em respostas corretas
+  const dominatedSet = new Set();
+  ftState.results.forEach(r => { if (r.correct) r.usedLegos.forEach(l => dominatedSet.add(l)); });
+  const dominated = [...dominatedSet];
+
+  const missing = DAYS[1].legos
+    .map(l => l.stem)
+    .filter(name => !dominatedSet.has(name));
+
+  const vocabList = ft.vocabulario_chave.map(v => v.en).join(', ');
+
+  let msg;
+  if (correct === total && firstTry === total) msg = 'Perfeito de primeira em todas! 🎯';
+  else if (correct === total) msg = 'Todas corretas — bom trabalho!';
+  else if (correct >= Math.ceil(total * 0.6)) msg = 'Bom progresso — continue praticando!';
+  else msg = 'Vale revisar as estruturas LEGO e tentar de novo.';
+
+  document.getElementById('fluency-area').innerHTML = `
+    <div class="fluency-card ft-finish-card">
+      <div class="ft-finish-title">🎉 ${DAYS[1].title} completo!</div>
+      <div class="ft-finish-score">${correct}<span class="ft-finish-total">/${total}</span></div>
+      <div class="ft-finish-msg">${msg}</div>
+
+      <div class="ft-finish-section">
+        <div class="ft-fb-lbl">🧱 Estruturas LEGO dominadas</div>
+        ${dominated.length
+          ? `<div class="ft-finish-chips">${dominated.map(n => `<span class="ft-chip ok">${n}</span>`).join('')}</div>`
+          : `<div class="ft-finish-empty">Nenhuma ainda — vale revisar.</div>`}
+      </div>
+
+      ${missing.length ? `
+        <div class="ft-finish-section">
+          <div class="ft-fb-lbl">🔄 Ainda pode praticar</div>
+          <div class="ft-finish-chips">${missing.map(n => `<span class="ft-chip miss">${n}</span>`).join('')}</div>
+        </div>` : ''}
+
+      <div class="ft-finish-section">
+        <div class="ft-fb-lbl">⚡️ Vocabulário-chave desta sessão</div>
+        <div class="ft-finish-vocab">${vocabList}</div>
+      </div>
+
+      <div class="ft-finish-actions">
+        <button class="btn" onclick="renderFluencyIntro()">🔄 Praticar novamente</button>
+      </div>
+    </div>`;
+}
+
 
 
 // ── init ───────────────────────────────────────────────
