@@ -214,10 +214,16 @@ td strong{font-family:var(--font-m)}
 .exq-item:first-of-type{border-top:none;padding-top:0}
 .exq-counter{font-family:var(--font-m);font-size:11px;color:var(--faint);margin-bottom:6px;display:block}
 .exq-prompt{font-family:var(--font-d);font-size:15px;font-weight:600;margin-bottom:10px;line-height:1.4}
-.exq-hint{background:#F5F5F2;border-radius:7px;padding:8px 10px;margin-bottom:10px;font-size:12.5px}
-.exq-hint .hint-w{font-family:var(--font-m);font-weight:600;color:var(--dark)}
-.exq-hint .hint-pr{font-family:var(--font-m);color:var(--soft);font-style:italic;margin:0 4px}
-.exq-hint .hint-pt{color:var(--text-soft)}
+.exq-hint{display:none;background:#F5F5F2;border-radius:7px;padding:9px 12px;margin-bottom:10px;font-size:13px}
+.exq-hint.show{display:flex;flex-direction:column;gap:6px}
+.hint-line{display:flex;align-items:baseline;gap:5px;flex-wrap:wrap}
+.hint-pt{color:var(--soft)}
+.hint-ctx{color:var(--soft);font-style:italic}
+.hint-arr{color:var(--faint);flex-shrink:0}
+.hint-w{font-family:var(--font-m);font-weight:700;color:var(--dark)}
+.hint-ctx-en{font-family:var(--font-m);font-weight:600;color:var(--dark);font-style:italic}
+.exq-hint-btn{background:transparent;border:1px dashed var(--border-strong);color:var(--soft);border-radius:14px;padding:4px 12px;font-size:12px;font-weight:600;cursor:pointer;margin-bottom:8px;font-family:var(--font-b)}
+.exq-hint-btn:hover{border-color:var(--dark);color:var(--text);background:var(--bg)}
 .exq-input{width:100%;font-family:var(--font-b);font-size:14px;padding:9px 12px;border:1px solid var(--border-strong);border-radius:7px;background:#FFFEF9}
 .exq-input:focus{outline:none;border-color:#2C6FD1}
 .exq-check-btn{background:#2C6FD1;color:#fff;border:none;border-radius:7px;padding:8px 18px;font-size:13px;font-weight:600;cursor:pointer;margin-top:8px}
@@ -1202,11 +1208,18 @@ async function renderBoostExercise(boost, boostIdx) {
       <div class="exq-item" data-idx="${i}">
         <span class="exq-counter">Pergunta ${i+1} de ${questions.length}</span>
         <div class="exq-prompt">${q.prompt}</div>
-        <div class="exq-hint">
-          <span class="hint-w">${q.hint_word.en}</span>
-          <span class="hint-pr">(${q.hint_word.pr})</span>
-          <span>=</span>
-          <span class="hint-pt">${q.hint_word.pt}</span>
+        <button class="exq-hint-btn" onclick="toggleExqHint(${boostIdx},${i})">💡 Dica</button>
+        <div class="exq-hint" id="exq-hint-${boostIdx}-${i}">
+          <div class="hint-line">
+            <span class="hint-pt">${q.hint_word.boost_pt}</span>
+            <span class="hint-arr">→</span>
+            <span class="hint-w">${q.hint_word.boost_en}</span>
+          </div>
+          <div class="hint-line">
+            <span class="hint-ctx">${q.hint_word.complement_pt}</span>
+            <span class="hint-arr">→</span>
+            <span class="hint-ctx-en">${q.hint_word.complement_en}</span>
+          </div>
         </div>
         <input type="text" class="exq-input" id="exq-input-${boostIdx}-${i}"
                placeholder="Escreva sua resposta em inglês…"
@@ -1275,6 +1288,14 @@ async function renderBoostExercise(boost, boostIdx) {
 }
 
 // mostra a resposta correta (chamado pelo botão)
+function toggleExqHint(boostIdx, qIdx) {
+  const hint = document.getElementById(`exq-hint-${boostIdx}-${qIdx}`);
+  const btn = hint && hint.previousElementSibling;
+  if (!hint) return;
+  const showing = hint.classList.toggle('show');
+  if (btn) btn.textContent = showing ? '💡 Ocultar dica' : '💡 Dica';
+}
+
 function revealAnswer(boostIdx, qIdx) {
   const input = document.getElementById(`exq-input-${boostIdx}-${qIdx}`);
   const reveal = document.getElementById(`exq-reveal-${boostIdx}-${qIdx}`);
@@ -1309,7 +1330,7 @@ Cada pergunta usa uma palavra DIFERENTE do Boost (com seu complemento). As frase
 
 Formato JSON:
 {"questions":[
-  {"id":1,"prompt":"Como dizer \"frase em português natural\" em inglês?","expected":"resposta em inglês","expected_pr":"pronúncia figurada Ovídio","hint_word":{"en":"palavra","pr":"pronúncia","pt":"tradução"}},
+  {"id":1,"prompt":"Como dizer \"frase em português natural\" em inglês?","expected":"resposta em inglês","expected_pr":"pronúncia figurada Ovídio","hint_word":{"boost_en":"palavra do boost","boost_pt":"tradução PT da palavra","complement_en":"complemento em inglês","complement_pt":"complemento em português"}},
   {"id":2,...},
   {"id":3,...}
 ]}
@@ -1317,7 +1338,10 @@ Formato JSON:
 Regras absolutas:
 - Usar SOMENTE palavras da lista fornecida no expected.
 - expected_pr no sistema de pronúncia figurada brasileira do Protocolo Ovídio (nunca IPA).
-- hint_word é a palavra do Boost (com complemento) usada nessa pergunta específica.`;
+- hint_word.boost_en = a palavra do Boost usada nessa pergunta (só a palavra, sem complemento).
+- hint_word.boost_pt = tradução em português apenas da palavra do Boost.
+- hint_word.complement_en = o complemento em inglês (ex: "this important date").
+- hint_word.complement_pt = o complemento em português (ex: "dessa data importante").`;
 
   const vocab = boost.words.map(w => w.en);
   const json = await fetch('/api/claude', {
@@ -1342,7 +1366,7 @@ function fallbackBoostQuestions(boost) {
       prompt: `Como dizer "${boost.lego_pt} ${w.pt_clean} ${w.complement_pt}"?`,
       expected: expected,
       expected_pr: expected_pr,
-      hint_word: { en: `${w.en} ${w.complement_en}`, pr: `${w.pr} ${w.complement_pr}`, pt: `${w.pt_clean} ${w.complement_pt}` }
+      hint_word: { boost_en: w.en, boost_pt: w.pt_clean, complement_en: w.complement_en, complement_pt: w.complement_pt }
     };
   });
 }
