@@ -77,6 +77,29 @@ exports.handler = async (event) => {
   try { body = JSON.parse(event.body); }
   catch (e) { return { statusCode: 400, headers, body: JSON.stringify({ error: "Body inválido: " + e.message }) }; }
 
+  // === TTS proxy — evita bloqueio de CORS do frontend ===
+  // action=tts → busca o áudio do Google Translate e devolve como base64
+  if (body.action === "tts") {
+    const text = (body.text || "").trim().slice(0, 200); // limite de segurança
+    if (!text) return { statusCode: 400, headers, body: JSON.stringify({ error: "text vazio" }) };
+    try {
+      const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=en-US&client=tw-ob`;
+      const resp = await fetch(url, {
+        headers: { "User-Agent": "Mozilla/5.0 (compatible; Netlify-function)" }
+      });
+      if (!resp.ok) throw new Error("Google TTS status " + resp.status);
+      const buffer = await resp.arrayBuffer();
+      const b64 = Buffer.from(buffer).toString("base64");
+      return {
+        statusCode: 200,
+        headers: { ...headers, "Content-Type": "application/json" },
+        body: JSON.stringify({ audio: b64, mime: "audio/mpeg" })
+      };
+    } catch (e) {
+      return { statusCode: 502, headers, body: JSON.stringify({ error: "TTS falhou: " + e.message }) };
+    }
+  }
+
   // === Endpoints internos ===
   // action=lookup → devolve pronúncia oficial de palavras específicas do dicionário
   if (body.action === "lookup") {
